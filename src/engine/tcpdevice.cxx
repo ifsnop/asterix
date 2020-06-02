@@ -91,7 +91,7 @@ CTcpDevice::CTcpDevice(CDescriptor &descriptor) {
 
     // Server port argument may be 0 only in client mode
     if ((serverPort == NULL) || (strlen(serverPort) == 0)) {
-        if (isServer) LOGERROR(1, "Server port not specified\n")
+        if (isServer) LOGERROR(1, "Server port not specified\n");
         else LOGWARNING(gVerbose, "Server port not specified (%d by default)\n", serverPortNo);
     } else {
         serverPortNo = atoi(serverPort);

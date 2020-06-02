@@ -334,7 +334,7 @@ int main(int argc, const char *argv[]) {
                                   std::string(line) << std::endl;
                         exit(3);
                     }
-                    if (sscanf(p, "I%128s", item) != 1)
+                    if (sscanf(p, "I%127s", item) != 1)
                         break;
                     p = strtok(NULL, "");
                     if (NULL == p) {
@@ -343,7 +343,7 @@ int main(int argc, const char *argv[]) {
                                   std::string(line) << std::endl;
                         exit(3);
                     }
-                    if (sscanf(p, "%128s", name) != 1)
+                    if (sscanf(p, "%127s", name) != 1)
                         break;
                     ret = 1;
                     break;
