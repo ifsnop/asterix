@@ -86,19 +86,19 @@ InputParser::parsePacket(const unsigned char *m_pBuffer, unsigned int m_nBufferS
 #ifdef _DEBUG
             std::stringstream buffer;
             buffer << std::hex << std::setfill('0') << std::setw(2) <<
-          std::uppercase << static_cast<unsigned>(nCategory) << " ";
+                std::uppercase << static_cast<unsigned>(nCategory) << " ";
             buffer << std::hex << std::setfill('0') << std::setw(2) <<
-              std::uppercase << static_cast<unsigned>(nDataLen1) << " ";
+                std::uppercase << static_cast<unsigned>(nDataLen1) << " ";
             buffer << std::hex << std::setfill('0') << std::setw(2) <<
-              std::uppercase << static_cast<unsigned>(nDataLen2) << " ";
+                std::uppercase << static_cast<unsigned>(nDataLen2) << " ";
 
             for (int i = 0; i < dataLen; i++) {
-              buffer << std::hex << std::setfill('0') << std::setw(2) <<
-                std::uppercase << static_cast<unsigned>(m_pData[i]) << " ";
+                buffer << std::hex << std::setfill('0') << std::setw(2) <<
+                    std::uppercase << static_cast<unsigned>(m_pData[i]) << " ";
             }
             std::string hexString = buffer.str();
             hexString.erase(hexString.size() - 1);
-            LOGDEBUG(1, "[%s]\n", hexString.c_str());
+            LOGDEBUG(1, "[%s]", hexString.c_str());
 #endif
             DataBlock *db = new DataBlock(m_pDefinition->getCategory(nCategory), dataLen, m_pData, nTimestamp);
             m_pData += dataLen;

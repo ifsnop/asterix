@@ -138,6 +138,21 @@ bool CAsterixGPSSubformat::ReadPacket(CBaseFormatDescriptor &formatDescriptor, C
                 LOGERROR(1, "Couldn't read packet.\n");
                 return false;
             }
+/*	    {
+		// build hexdata string
+		char *m_pHexData = NULL;unsigned int i=0;
+        	m_pHexData = (char *) calloc((readSize + 3 ) * 2 + 1 , sizeof(char));
+	        // snprintf(m_pHexData, 3, "%02X", asterixHeader[0]);
+	        // snprintf(m_pHexData + sizeof(char) * 2, 3, "%02X", asterixHeader[1]);
+	        // snprintf(m_pHexData + sizeof(char) * 4, 3, "%02X", asterixHeader[2]);
+	        for (i = 0; i < readSize+3; i++) {
+	            //snprintf(m_pHexData + sizeof(char) * (6 + i * 2), 3, "%02X", pBuffer[i]);
+		    snprintf(m_pHexData + sizeof(char) * (i * 2), 3, "%02X", pBuffer[i]);
+	        }
+		LOGERROR(1, "%zd>%s<\n", readSize+3, m_pHexData);
+		free(m_pHexData);
+	    }
+*/
 
             if (leftBytes != 0 && 10 > leftBytes) // size of GPS post bytes
             {
@@ -154,12 +169,13 @@ bool CAsterixGPSSubformat::ReadPacket(CBaseFormatDescriptor &formatDescriptor, C
             }
 
             float fTimeStamp = ((GPSPost[6] << 16) + (GPSPost[7] << 8) + (GPSPost[8])) / 128.0;
-            unsigned long nTimeStamp = ((long) fTimeStamp) * 1000 + (fTimeStamp - ((long) fTimeStamp)) * 1000;
+            unsigned long nTimeStamp = (long) (fTimeStamp*1000.0); // ((long) fTimeStamp) * 1000 + (fTimeStamp - ((long) fTimeStamp)) * 1000;
 #ifdef _DEBUG
-            LOGDEBUG(1, "GPS Bytes [%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X]\n", GPSPost[0], GPSPost[1],
+            LOGDEBUG(1, "GPS Bytes [%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X]", GPSPost[0], GPSPost[1],
                 GPSPost[2], GPSPost[3], GPSPost[4], GPSPost[5], GPSPost[6], GPSPost[7],
                 GPSPost[8], GPSPost[9]);
-            LOGDEBUG(1, "GPS Timestamp [%3.4f]\n", fTimeStamp);
+            LOGDEBUG(1, "GPS IP Origin [%d.%d.%d.%d]", GPSPost[3], GPSPost[2], GPSPost[1], GPSPost[0]);
+            LOGDEBUG(1, "GPS Timestamp [%3.4f]", fTimeStamp);
 #endif
             Descriptor.SetTimeStamp(nTimeStamp);
 

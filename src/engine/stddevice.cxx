@@ -45,6 +45,20 @@ CStdDevice::~CStdDevice() {
 bool CStdDevice::Read(void *data, size_t len) {
     // Read a message from the standard input (blocking)
     ssize_t bytesRead = read(STDIN_FILENO, data, len);
+/*
+    LOGERROR(1, "IFSNOP0(%zd)\n", bytesRead);
+{
+// build hexdata string
+    char *m_pHexData = NULL;unsigned int i=0;
+        m_pHexData = (char *) calloc((len ) * 2 + 1 , sizeof(char));
+        for (i = 0; i < len; i++) {
+            //snprintf(m_pHexData + sizeof(char) * (6 + i * 2), 3, "%02X", pBuffer[i]);
+    snprintf(m_pHexData + sizeof(char) * (i * 2), 3, "%02X", ((char *) data)[i]);
+        }
+LOGERROR(1, "%zd>%s<\n", len, m_pHexData);
+free(m_pHexData);
+    }
+*/
     if (bytesRead < 0) {
         LOGERROR(1, "Error reading from stdin.\n");
         CountReadError();
