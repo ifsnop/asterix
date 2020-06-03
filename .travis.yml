@@ -1,35 +1,33 @@
-language: python
-python:
-  - '2.7'
-  - '3.4'
-  - '3.5'
-  - '3.6'
-  - '3.7'
-  - '3.8'
-  - nightly
-before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install valgrind
-compiler:
-  - gcc
-install:
-  - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then cd src;make;make MODE=DEBUG;make
-    test;cd ..; fi
-  - python setup.py install
-addons:
-  sonarcloud:
-    organization: "croatiacontrolltd"
-#    token:
-#      secure: ********* # encrypted value of your token
-script:
-  - if [[ $TRAVIS_PYTHON_VERSION == '2*' ]]; then python -m unittest discover; fi
-  - if [[ $TRAVIS_PYTHON_VERSION != 2* ]]; then python -m unittest; fi
-deploy:
-  provider: pypi
-  user: dsalantic
-  password:
-    secure: pOQCtEjqI8csLM/VfDVOpWXy7EQjsMqvPITgDkJM3tPmEk0UFfhAwcSwnWoXigT+sChCW7XfIUaK/wYH5BjK+ESWsmy3FZKxYrCkvS14jQdLm7AdJTjlLmpPX4LT01M78phh5n+8qORU5FDBFs+uQd14Ztt7L2kTL6tZcUYJFLeF46hwSR8G3WwK4JRPl/prB4X5nW7Gp6Q+LI4AnAy0htNfyhfmSryAc2CCM2ZunYKIYpvFCboJIcMBBMVa5FlwNguL+gVnteKXllgfRLLEPkQMAp6qcmjOJWLi0oWD+1eMQneBDyBPVxFWtauZ5X8WaOKIHyco7Ws6HDnFCbHEaDIzXV8yT99tmWPjQHCyM9sWPwKzL5t9o24nu3UIwgsnAGVwL7fko/PNDHIv/NINCHoJcAu8sLI3MS91wf6CotYAWFt9z5QbmOVDHgYOzraWsV+GO6Wq6jmKa4OJMp1+Zxmkj2T75chR/yD1JrFDZXw/pORx7mJKEOXd07d36UUNkAE55BgVjfGpw36e88AE5lC6GH+BXZaEt5CInfEVLkKKrwCCbg+mW6NP+YoA1gC3ULezJcntz446useJtTDCaaSfdwI8ppnjjpsSLFND1QcK6iHmuY2+4bnueJnSul/nXLHm/H4BePGx6no8mzBXLFRsgssyjQkL25GXlF8r7KA=
-  on:
-    condition: $TRAVIS_PYTHON_VERSION = "3.8"
-    tags: true
+language: cpp
 
+compiler:
+    - gcc
+    - clang
+
+install:
+    - sudo apt-get update
+    - sudo apt-get -qq install valgrind libexpat1-dev
+
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "q/Cum2XE+MZG4i8ABv7kYYy6ujJWshB3PhE9b2vjYT0WbmF+TRo0FyMNFag0aszP63qupYlhn0ZjiQC3BXQWhKOgB5T2WBCd+eqauVrcx09U0plGD+wiD9jChzNiFr4dg2v3cs9ka5YlbwRj6kA6blbdRnsHUmhVXEAIzbwpB3DhDaZY8tPwG0Bx3IZWfm51Hs7itg45LkNsIt8yLJdoSmN849/QcIUHBjDb9DCRNhCFdv2bTkMrmf467sKT37ANkHTbVxBT6cOdvNQfHW7hTyRZQTBSRBBOvisfw19QDm4z02uajKdWncel2eu/gSEBPEWHY+ygrDt8L75hU96Mu3GCymx9CLb98jOrni12LWyeDtX1WsR+L7sCYpwndHu/EZznIMaBooXfu3cbVIqb62JMfFXi6mZb7RVQz3IcUajZBv5RYK/1v3YWk9IIedgC5dPeOaR/AR9ub9lhTl+/QxK9qDRiSvh1ijh3+mykim8psJQZhBHIan0yvosbMZ/4WX6HvGHYotn5Y6dkB1g0XPJ8bgm7P27tzMi5tmCBS2PgpeUwKCBnkBfVRt+9j4byaCwITMxJv0wgVeA+kVqa6gisY5e8LPBywiysPF5edt5Lx82vGMkhMCQuusfBTfwou5Slmsy7YDiqrisIklKmz34mLxTWZEXAtKo2tltT9kA="
+
+before_install:
+  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+
+addons:
+  coverity_scan:
+    project:
+      name: "ifsnop/asterix"
+      description: "A package of utilities to record and work with multicast radar data in ASTERIX format. (radar as in air navigation surve
+illance)"
+    notification_email:
+    build_command_prepend: cd src
+    build_command: make
+    branch_pattern: coverity
+
+script:
+  - cd src && make && make MODE=DEBUG && cd ..
+  - obj/main/release/asterix -d install/config/asterix.ini -f install/sample_data/cat048.raw
