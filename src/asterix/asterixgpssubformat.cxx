@@ -172,8 +172,10 @@ bool CAsterixGPSSubformat::ReadPacket(CBaseFormatDescriptor &formatDescriptor, C
                 GPSPost[2], GPSPost[3], GPSPost[4], GPSPost[5], GPSPost[6], GPSPost[7],
                 GPSPost[8], GPSPost[9]);
             LOGDEBUG(1, "GPS Timestamp [%lf]\n", dTimeStamp);
+            LOGDEBUG(1, "SRC IP [%u.%u.%u.%u]\n", GPSPost[3], GPSPost[2], GPSPost[1], GPSPost[0]);
 #endif
             Descriptor.SetTimeStamp(dTimeStamp);
+            Descriptor.SetIP(GPSPost[3], GPSPost[2], GPSPost[1], GPSPost[0]);
 
         }
     }
@@ -252,8 +254,10 @@ bool CAsterixGPSSubformat::ProcessPacket(CBaseFormatDescriptor &formatDescriptor
         }
     } else {
         double dTimeStamp = Descriptor.GetTimeStamp();
+	unsigned int nIP = Descriptor.GetIP();
         Descriptor.m_pAsterixData = Descriptor.m_InputParser.parsePacket(Descriptor.GetBuffer(),
-                                                                         Descriptor.GetBufferLen(), dTimeStamp);
+                                                                         Descriptor.GetBufferLen(),
+                                                                         dTimeStamp, nIP);
     }
 
     return true;

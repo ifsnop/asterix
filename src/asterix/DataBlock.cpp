@@ -28,8 +28,8 @@
 
 extern bool gFiltering;
 
-DataBlock::DataBlock(Category *cat, unsigned long len, const unsigned char *data, double nTimestamp)
-        : m_pCategory(cat), m_nLength(len), m_nTimestamp(nTimestamp), m_bFormatOK(false) {
+DataBlock::DataBlock(Category *cat, unsigned long len, const unsigned char *data, double nTimestamp, unsigned int nIP)
+        : m_pCategory(cat), m_nLength(len), m_nTimestamp(nTimestamp), m_nIP(nIP), m_bFormatOK(false) {
     const unsigned char *m_pItemDataStart = data;
     long nUnparsed = len;
     int counter = 1;
@@ -40,7 +40,7 @@ DataBlock::DataBlock(Category *cat, unsigned long len, const unsigned char *data
     }
 
     while (nUnparsed > 0) {
-        DataRecord *dr = new DataRecord(cat, counter++, nUnparsed, m_pItemDataStart, nTimestamp);
+        DataRecord *dr = new DataRecord(cat, counter++, nUnparsed, m_pItemDataStart, nTimestamp, nIP);
 
         if (!dr) {
             Tracer::Error("Error DataBlock format.");
@@ -87,6 +87,7 @@ bool DataBlock::getText(std::string &strResult, const unsigned int formatType) {
             strResult += format("\nLen: %ld", m_nLength);
             strResult += format("\nTimestamp: %lf", m_nTimestamp);
             strResult += format("\nHexData: %02X%02X%02X", m_pCategory->m_id, ((m_nLength + 3) >> 8) & 0xff, (m_nLength + 3) & 0xff);
+            strResult += format("\nSrc IP: %lu", m_nIP);
             break;
         case CAsterixFormat::EOut:
             strHeader = format("Asterix.CAT%03d", m_pCategory->m_id);
