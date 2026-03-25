@@ -177,7 +177,7 @@ bool DataRecord::getText(std::string &strResult, std::string &strHeader, const u
             strNewResult = format("\n-------------------------\nData Record %d", m_nID);
             strNewResult += format("\nLen: %ld", m_nLength);
             strNewResult += format("\nCRC: %08X", m_nCrc);
-            strNewResult += format("\nSRC IP: %u.%u.%u.%u", ip[0], ip[1], ip[2], ip[3]);
+            strNewResult += format("\nSource IP: %u.%u.%u.%u", ip[0], ip[1], ip[2], ip[3]);
             strNewResult += format("\nHexData: %s", m_pHexData);
             break;
         case CAsterixFormat::EJSON:

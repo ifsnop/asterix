@@ -120,6 +120,10 @@ public:
         m_nIP = v;
     }
 
+    void SetIP(unsigned int ip) {
+        m_nIP = ip;
+    }
+
     unsigned int GetIP() {
         return m_nIP;
     }

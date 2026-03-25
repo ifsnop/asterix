@@ -184,7 +184,7 @@ bool CUdpDevice::Read(void *data, size_t *len) {
                      inet_ntoa(_mcastAddr.sin_addr),
                      lenread);
 
-
+            setLastSourceIP(ntohl(clientAddr.sin_addr.s_addr));
             ResetReadErrors(true);
             return true;
         }

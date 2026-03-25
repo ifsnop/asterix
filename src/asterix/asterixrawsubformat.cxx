@@ -204,7 +204,8 @@ bool CAsterixRawSubformat::ProcessPacket(CBaseFormatDescriptor &formatDescriptor
         }
     } else {
         Descriptor.m_pAsterixData = Descriptor.m_InputParser.parsePacket(Descriptor.GetBuffer(),
-                                                                         Descriptor.GetBufferLen(), dTimestamp);
+                                                                         Descriptor.GetBufferLen(),
+                                                                         dTimestamp, device.getLastSourceIP());
     }
 
     return true;

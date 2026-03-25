@@ -102,6 +102,8 @@ public:
         ResetErrors(true);
     }
 
+    virtual unsigned int getLastSourceIP() { return false; }
+
 protected: // to be used by derived class for error counting
     virtual void CountReadError() {
         _nReadErrors++;
