@@ -55,6 +55,7 @@ CUdpDevice::CUdpDevice(CDescriptor &descriptor) {
     const char *server;
     _countToRead = 0;
     _maxValSocketDesc = 0;
+    _nSrcIP = 0;
 
     element = descriptor.GetFirst();
 
@@ -157,6 +158,9 @@ bool CUdpDevice::Read(void *data, size_t *len) {
         CountReadError();
         return false;
     }
+
+    // Forget the source of the previous datagram, so it is never reported for this one
+    _nSrcIP = 0;
 
     // Get the message (blocking)
     struct sockaddr_in clientAddr;

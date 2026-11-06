@@ -102,7 +102,7 @@ public:
         ResetErrors(true);
     }
 
-    virtual unsigned int getLastSourceIP() { return false; }
+    virtual unsigned int getLastSourceIP() { return 0; } // source IPv4 (host byte order) of last read, 0 if unknown
 
 protected: // to be used by derived class for error counting
     virtual void CountReadError() {
