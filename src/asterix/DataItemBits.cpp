@@ -346,6 +346,22 @@ unsigned char *DataItemBits::getHexBitStringMask(int bytes, int frombit, int tob
     return str;
 }
 
+/*
+ * Append hex value of the bytes holding this item and, when the item is not byte aligned,
+ * the mask of its bits. Used by EJSONX output: ,"hex":"..."[,"mask":"..."]
+ */
+void DataItemBits::appendJsonHexMask(std::string &strResult, unsigned char *pData, long nLength) {
+    unsigned char *hexstr = getHexBitStringFullByte(pData, nLength, m_nFrom, m_nTo);
+    strResult += format(",\"hex\":\"%s\"", hexstr);
+    delete[] hexstr;
+
+    if ((m_nTo - m_nFrom + 1) % 8) {
+        unsigned char *maskstr = getHexBitStringMask(nLength, m_nFrom, m_nTo);
+        strResult += format(",\"mask\":\"%s\"", maskstr);
+        delete[] maskstr;
+    }
+}
+
 
 unsigned char *DataItemBits::getOctal(unsigned char *pData, int bytes, int frombit, int tobit) {
     int numberOfBits = (tobit - frombit + 1);
@@ -457,6 +473,9 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
         case CAsterixFormat::EJSONE:
             strResult += format("\n\t\t\"%s\":{", m_strShortName.c_str());
             break;
+        case CAsterixFormat::EJSONX:
+            strResult += format("\"%s\":{", m_strShortName.c_str());
+            break;
         case CAsterixFormat::EXML:
             strResult += format("<%s>", m_strShortName.c_str());
             break;
@@ -533,6 +552,16 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                             strResult += format(" ( ?????? )");
                         }
                     }
+                }
+                    break;
+                case CAsterixFormat::EJSONX: {
+                    if (m_dScale != 0) {
+                        double scaled = value * m_dScale;
+                        strResult += format("\"val\":%.7lf", scaled);
+                    } else {
+                        strResult += format("\"val\":%ld", value);
+                    }
+                    appendJsonHexMask(strResult, pData, nLength);
                 }
                     break;
                 case CAsterixFormat::EJSONE: {
@@ -618,6 +647,16 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                     }
                 }
                     break;
+                case CAsterixFormat::EJSONX: {
+                    if (m_dScale != 0) {
+                        double scaled = value * m_dScale;
+                        strResult += format("\"val\":%.7lf", scaled);
+                    } else {
+                        strResult += format("\"val\":%ld", value);
+                    }
+                    appendJsonHexMask(strResult, pData, nLength);
+                }
+                    break;
                 case CAsterixFormat::EJSONE: {
                     if (m_dScale != 0) {
                         double scaled = value * m_dScale;
@@ -679,6 +718,10 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                 case CAsterixFormat::EJSONH:
                     strResult += format("\"%s\"", str);
                     break;
+                case CAsterixFormat::EJSONX:
+                    strResult += format("\"val\":\"%s\"", str);
+                    appendJsonHexMask(strResult, pData, nLength);
+                    break;
                 case CAsterixFormat::EJSONE: {
                     strResult += format("\"val\"=\"%s\"", str);
 
@@ -717,6 +760,10 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                 case CAsterixFormat::EJSONH:
                     strResult += format("\"%s\"", str);
                     break;
+                case CAsterixFormat::EJSONX:
+                    strResult += format("\"val\":\"%s\"", str);
+                    appendJsonHexMask(strResult, pData, nLength);
+                    break;
                 case CAsterixFormat::EJSONE: {
                     strResult += format("\"val\"=\"%s\"", str);
                     unsigned char *hexstr = getHexBitStringFullByte(pData, nLength, m_nFrom, m_nTo);
@@ -752,6 +799,10 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                 case CAsterixFormat::EJSONH:
                     strResult += format("\"%s\"", str);
                     break;
+                case CAsterixFormat::EJSONX:
+                    strResult += format("\"val\":\"%s\"", str);
+                    appendJsonHexMask(strResult, pData, nLength);
+                    break;
                 case CAsterixFormat::EJSONE: {
                     strResult += format("\"val\"=\"%s\"", str);
                     unsigned char *hexstr = getHexBitStringFullByte(pData, nLength, m_nFrom, m_nTo);
@@ -786,6 +837,10 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                 case CAsterixFormat::EJSONH:
                     strResult += format("\"%s\"", pStr);
                     break;
+                case CAsterixFormat::EJSONX:
+                    strResult += format("\"val\":\"%s\"", pStr);
+                    appendJsonHexMask(strResult, pData, nLength);
+                    break;
                 case CAsterixFormat::EJSONE: {
                     strResult += format("\"val\"=\"%s\"", pStr);
                     unsigned char *hexstr = getHexBitStringFullByte(pData, nLength, m_nFrom, m_nTo);
@@ -817,6 +872,7 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
             strResult += format(",");
             break;
         case CAsterixFormat::EJSONE:
+        case CAsterixFormat::EJSONX:
             strResult += format("},");
             break;
         case CAsterixFormat::EXML:

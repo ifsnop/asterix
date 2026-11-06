@@ -119,6 +119,8 @@ private:
 
     unsigned char *getHexBitStringMask(int bytes, int frombit, int tobit);
 
+    void appendJsonHexMask(std::string &strResult, unsigned char *pData, long nLength); // ,"hex":"..."[,"mask":"..."]
+
     char *getASCII(unsigned char *pData, int bytes, int frombit, int tobit);
 
 

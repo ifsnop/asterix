@@ -111,6 +111,7 @@ bool DataItemFormatCompound::getText(std::string &strResult, std::string &strHea
 
     switch (formatType) {
         case CAsterixFormat::EJSON:
+        case CAsterixFormat::EJSONX:
         case CAsterixFormat::EJSONH:
         case CAsterixFormat::EJSONE: {
             strResult += '{';
@@ -141,6 +142,7 @@ bool DataItemFormatCompound::getText(std::string &strResult, std::string &strHea
                         tmpStr += "\n\t\t";
                     }
                         /* no break */
+                    case CAsterixFormat::EJSONX:
                     case CAsterixFormat::EJSON: {
                         tmpStr += "\"" + dip->getPartName(secondaryPart) + "\":";
 
@@ -179,6 +181,7 @@ bool DataItemFormatCompound::getText(std::string &strResult, std::string &strHea
 
     switch (formatType) {
         case CAsterixFormat::EJSON:
+        case CAsterixFormat::EJSONX:
         case CAsterixFormat::EJSONH:
         case CAsterixFormat::EJSONE: {
             if (strResult[strResult.length() - 1] == ',') {

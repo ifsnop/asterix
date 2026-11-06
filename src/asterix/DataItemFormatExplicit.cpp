@@ -81,6 +81,7 @@ bool DataItemFormatExplicit::getText(std::string &strResult, std::string &strHea
     if (nFullLength != bodyLength) {
         switch (formatType) {
             case CAsterixFormat::EJSON:
+            case CAsterixFormat::EJSONX:
             case CAsterixFormat::EJSONH:
             case CAsterixFormat::EJSONE: {
                 tmpStr += format("[");
@@ -97,6 +98,7 @@ bool DataItemFormatExplicit::getText(std::string &strResult, std::string &strHea
             if (nFullLength != bodyLength) {
                 switch (formatType) {
                     case CAsterixFormat::EJSON:
+                    case CAsterixFormat::EJSONX:
                     case CAsterixFormat::EJSONH:
                     case CAsterixFormat::EJSONE: {
                         tmpStr += format(",");
@@ -109,6 +111,7 @@ bool DataItemFormatExplicit::getText(std::string &strResult, std::string &strHea
     if (nFullLength != bodyLength) {
         switch (formatType) {
             case CAsterixFormat::EJSON:
+            case CAsterixFormat::EJSONX:
             case CAsterixFormat::EJSONH:
             case CAsterixFormat::EJSONE: {
                 if (tmpStr[tmpStr.length() - 1] == ',') {
