@@ -392,19 +392,21 @@ bool CDiskDevice::DoneWithFile(bool allDone) {
         }
         else {
             char newName[MAXPATHLEN+32+1];
-            char sfxFormat[10];
+            char sfxFormat[32]; // ".ci" + pid (up to 10 digits) + "_%y%m%d%H%M%S" + NUL; it was 10 bytes
             char suffix[32];
             const char *sfxBase = _input ? ".ci%d_%%y%%m%%d%%H%%M%%S"
                                          : ".co%d_%%y%%m%%d%%H%%M%%S";
 
-            sprintf(sfxFormat, sfxBase, (int) getpid());
+            snprintf(sfxFormat, sizeof(sfxFormat), sfxBase, (int) getpid());
 
             time_t t = time(NULL);
             struct tm *stm = gmtime(&t);
-            strftime(suffix, 25, sfxFormat, stm);
+            if (strftime(suffix, sizeof(suffix), sfxFormat, stm) == 0) {
+                suffix[0] = '\0';
+            }
 
-            strncpy(newName, _fileName, MAXPATHLEN);
-            strcat(newName, suffix);
+            // _fileName is shorter than MAXPATHLEN-32 (checked above), so this never truncates
+            snprintf(newName, sizeof(newName), "%s%s", _fileName, suffix);
 
             if (rename(_fileName, newName)) {
                 LOGERROR(1, "Rename of file failed\n");
@@ -474,14 +476,16 @@ char *CDiskDevice::NextFileName() {
 
     sprintf(cnt, "_%08d", _seqNo);
 
+    // <base name><sequence counter><extension>, always NUL terminated and within newName
+    int len;
     char *posExt = strrchr(_baseName, '.');
     if (posExt) {
-        strncpy(newName, _baseName, posExt - _baseName); // base name
-        strncpy(newName + (posExt - _baseName), cnt, MAXPATHLEN-(posExt - _baseName)); // sequence counter
-        strcat(newName, posExt); // extension
+        len = snprintf(newName, sizeof(newName), "%.*s%s%s", (int) (posExt - _baseName), _baseName, cnt, posExt);
     } else {
-        strncpy(newName, _baseName, MAXPATHLEN-32);
-        strcat(newName, cnt);
+        len = snprintf(newName, sizeof(newName), "%s%s", _baseName, cnt);
+    }
+    if (len < 0 || len >= (int) sizeof(newName)) {
+        LOGERROR(1, "Output file name too long, truncated to '%s'\n", newName);
     }
 
     return newName;
@@ -613,10 +617,8 @@ bool CDiskDevice::DoneAll() {
         // but we must keep the base name
         char tmpName[MAXPATHLEN+1];
 
-        if (_mode & DD_MODE_PACKETFILE)
-            strncpy(tmpName, _baseName, MAXPATHLEN);
-        else
-            strncpy(tmpName, _fileName, MAXPATHLEN);
+        // both names are NUL terminated within MAXPATHLEN+1 bytes, so they always fit in tmpName
+        snprintf(tmpName, sizeof(tmpName), "%s", (_mode & DD_MODE_PACKETFILE) ? _baseName : _fileName);
 
         memset(_fileName, 0, sizeof(_fileName));
         memset(_baseName, 0, sizeof(_baseName));
