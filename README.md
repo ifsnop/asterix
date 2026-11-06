@@ -21,6 +21,7 @@ asterix
 >   - keys are unique in every object, so standard JSON parsers keep all fields: FX bits are numbered by extent (`FX0`, `FX1`, ...) and other repeated names get a number (`spare`, `spare1`).
 >
 >   Edits must keep the record length. FX bits, UAP selectors (e.g. CAT001 I020 TYP) and the BDS register number change how the rest is decoded.
+> - **`-j` record header**: `-j` now also prints `fspec` separately, and its `hexdata` holds only the data items after the FSPEC (same as `-jx`). **This differs from the original**, where the `hexdata` of `-j` was the whole record: use `fspec + hexdata` to get it.
 >
 > The `asterix_decoder` package on PyPI and the badges above belong to the original project. The PyPI package does not include these changes.
 

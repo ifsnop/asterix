@@ -116,6 +116,8 @@ Output format:
    -x,--xml              Output will be printed in compact line-delimited XML format (one object per line, suitable for parsing).
    -xh,--xmlh            Output will be printed in human readable XML format (suitable for file storage).
    -j,--json             Output will be printed in compact line-delimited JSON format (one object per line, suitable for parsing).
+                         The record header has "fspec" (FSPEC bytes) and "hexdata" (data items after the FSPEC):
+                         the whole record is fspec+hexdata (in the original project hexdata was the whole record).
    -jh,--jsonh           Output will be printed in human readable JSON format (suitable for file storage).
    -je,--json-extensive  Output will be printed in extensive JSON format (with both hex and scaled value and description of each item).
    -jx,--json-hex        Output will be printed in compact line-delimited JSON format with hex and mask of each item (one object per line, suitable for parsing).
