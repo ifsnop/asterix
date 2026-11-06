@@ -21,6 +21,8 @@
  *
  */
 
+#include <memory>
+
 #include "DataItemFormat.h"
 #include "DataItemBits.h"
 #include "Tracer.h"
@@ -203,18 +205,29 @@ signed long DataItemBits::getSigned(unsigned char *pData, int bytes, int frombit
     return (signed long) ul;
 }
 
+/*
+ * Error result of the string getters below. It is allocated with new[] like their normal
+ * result, so callers can always release it with delete[] (or std::unique_ptr<T[]>).
+ */
+template<typename T>
+static T *newErrorString() {
+    T *str = new T[4];
+    memcpy(str, "???", 4);
+    return str;
+}
+
 unsigned char *DataItemBits::getSixBitString(unsigned char *pData, int bytes, int frombit, int tobit) {
     int numberOfBits = (tobit - frombit + 1);
     if (!numberOfBits || numberOfBits % 6) {
         Tracer::Error("Six-bit char representation not valid");
-        return (unsigned char *) strdup("???");
+        return newErrorString<unsigned char>();
     }
 
     unsigned char *pB = getBits(pData, bytes, frombit, tobit);
 
     if (!pB) {
         Tracer::Error("DATAITEM_ENCODING_SIX_BIT_CHAR : Error.");
-        return (unsigned char *) strdup("???");
+        return newErrorString<unsigned char>();
     }
 
     int numberOfCharacters = numberOfBits / 6;
@@ -254,14 +267,14 @@ unsigned char *DataItemBits::getHexBitString(unsigned char *pData, int bytes, in
     int numberOfBits = (tobit - frombit + 1);
     if (!numberOfBits || numberOfBits % 4) {
         Tracer::Error("Hex representation not valid");
-        return (unsigned char *) strdup("???");
+        return newErrorString<unsigned char>();
     }
 
     unsigned char *pB = getBits(pData, bytes, frombit, tobit);
 
     if (!pB) {
         Tracer::Error("DATAITEM_ENCODING_HEX_BIT_CHAR : Error.");
-        return (unsigned char *) strdup("???");
+        return newErrorString<unsigned char>();
     }
 
     int numberOfCharacters = numberOfBits / 4;
@@ -283,7 +296,7 @@ unsigned char *DataItemBits::getHexBitStringFullByte(unsigned char *pData, int b
     int numberOfBits = (tobit - frombit + 1);
     if (!numberOfBits) {
         Tracer::Error("Hex representation not valid");
-        return (unsigned char *) strdup("???");
+        return newErrorString<unsigned char>();
     }
 
     if (tobit%8) {
@@ -298,7 +311,7 @@ unsigned char *DataItemBits::getHexBitStringFullByte(unsigned char *pData, int b
 
     if (!pB) {
         Tracer::Error("DATAITEM_ENCODING_HEX_BIT_CHAR : Error.");
-        return (unsigned char *) strdup("???");
+        return newErrorString<unsigned char>();
     }
 
     int numberOfCharacters = numberOfBits / 4;
@@ -320,7 +333,7 @@ unsigned char *DataItemBits::getHexBitStringMask(int bytes, int frombit, int tob
     int numberOfBits = (tobit - frombit + 1);
     if (!numberOfBits) {
         Tracer::Error("Hex representation not valid");
-        return (unsigned char *) strdup("???");
+        return newErrorString<unsigned char>();
     }
 
     int tobitStart = tobit;
@@ -346,19 +359,33 @@ unsigned char *DataItemBits::getHexBitStringMask(int bytes, int frombit, int tob
     return str;
 }
 
+/*
+ * Append hex value of the bytes holding this item and, when the item is not byte aligned,
+ * the mask of its bits. Used by EJSONX output: ,"hex":"..."[,"mask":"..."]
+ */
+void DataItemBits::appendJsonHexMask(std::string &strResult, unsigned char *pData, long nLength) {
+    std::unique_ptr<unsigned char[]> hexstr(getHexBitStringFullByte(pData, nLength, m_nFrom, m_nTo));
+    strResult += format(",\"hex\":\"%s\"", hexstr.get());
+
+    if ((m_nTo - m_nFrom + 1) % 8 != 0) {
+        std::unique_ptr<unsigned char[]> maskstr(getHexBitStringMask(nLength, m_nFrom, m_nTo));
+        strResult += format(",\"mask\":\"%s\"", maskstr.get());
+    }
+}
+
 
 unsigned char *DataItemBits::getOctal(unsigned char *pData, int bytes, int frombit, int tobit) {
     int numberOfBits = (tobit - frombit + 1);
     if (!numberOfBits || numberOfBits % 3) {
         Tracer::Error("Octal representation not valid");
-        return (unsigned char *) strdup("???");
+        return newErrorString<unsigned char>();
     }
 
     unsigned char *pB = getBits(pData, bytes, frombit, tobit);
 
     if (!pB) {
         Tracer::Error("DATAITEM_ENCODING_OCTAL : Error.");
-        return (unsigned char *) strdup("???");
+        return newErrorString<unsigned char>();
     }
 
     int numberOfCharacters = numberOfBits / 3;
@@ -401,7 +428,7 @@ char *DataItemBits::getASCII(unsigned char *pData, int bytes, int frombit, int t
     int numberOfBits = (tobit - frombit + 1);
     if (bytes < numberOfBits / 8 || !numberOfBits || numberOfBits % 8) {
         Tracer::Error("ASCII representation not valid");
-        return strdup("???");
+        return newErrorString<char>();
     }
 
     unsigned char *pTmp = getBits(pData, bytes, frombit, tobit);
@@ -456,6 +483,9 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
             break;
         case CAsterixFormat::EJSONE:
             strResult += format("\n\t\t\"%s\":{", m_strShortName.c_str());
+            break;
+        case CAsterixFormat::EJSONX:
+            strResult += format("\"%s\":{", m_strShortName.c_str());
             break;
         case CAsterixFormat::EXML:
             strResult += format("<%s>", m_strShortName.c_str());
@@ -533,6 +563,16 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                             strResult += format(" ( ?????? )");
                         }
                     }
+                }
+                    break;
+                case CAsterixFormat::EJSONX: {
+                    if (m_dScale != 0) {
+                        double scaled = value * m_dScale;
+                        strResult += format("\"val\":%.7lf", scaled);
+                    } else {
+                        strResult += format("\"val\":%ld", value);
+                    }
+                    appendJsonHexMask(strResult, pData, nLength);
                 }
                     break;
                 case CAsterixFormat::EJSONE: {
@@ -618,6 +658,16 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                     }
                 }
                     break;
+                case CAsterixFormat::EJSONX: {
+                    if (m_dScale != 0) {
+                        double scaled = value * m_dScale;
+                        strResult += format("\"val\":%.7lf", scaled);
+                    } else {
+                        strResult += format("\"val\":%ld", value);
+                    }
+                    appendJsonHexMask(strResult, pData, nLength);
+                }
+                    break;
                 case CAsterixFormat::EJSONE: {
                     if (m_dScale != 0) {
                         double scaled = value * m_dScale;
@@ -679,6 +729,10 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                 case CAsterixFormat::EJSONH:
                     strResult += format("\"%s\"", str);
                     break;
+                case CAsterixFormat::EJSONX:
+                    strResult += format("\"val\":\"%s\"", str);
+                    appendJsonHexMask(strResult, pData, nLength);
+                    break;
                 case CAsterixFormat::EJSONE: {
                     strResult += format("\"val\"=\"%s\"", str);
 
@@ -717,6 +771,10 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                 case CAsterixFormat::EJSONH:
                     strResult += format("\"%s\"", str);
                     break;
+                case CAsterixFormat::EJSONX:
+                    strResult += format("\"val\":\"%s\"", str);
+                    appendJsonHexMask(strResult, pData, nLength);
+                    break;
                 case CAsterixFormat::EJSONE: {
                     strResult += format("\"val\"=\"%s\"", str);
                     unsigned char *hexstr = getHexBitStringFullByte(pData, nLength, m_nFrom, m_nTo);
@@ -752,6 +810,10 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                 case CAsterixFormat::EJSONH:
                     strResult += format("\"%s\"", str);
                     break;
+                case CAsterixFormat::EJSONX:
+                    strResult += format("\"val\":\"%s\"", str);
+                    appendJsonHexMask(strResult, pData, nLength);
+                    break;
                 case CAsterixFormat::EJSONE: {
                     strResult += format("\"val\"=\"%s\"", str);
                     unsigned char *hexstr = getHexBitStringFullByte(pData, nLength, m_nFrom, m_nTo);
@@ -786,6 +848,10 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                 case CAsterixFormat::EJSONH:
                     strResult += format("\"%s\"", pStr);
                     break;
+                case CAsterixFormat::EJSONX:
+                    strResult += format("\"val\":\"%s\"", pStr);
+                    appendJsonHexMask(strResult, pData, nLength);
+                    break;
                 case CAsterixFormat::EJSONE: {
                     strResult += format("\"val\"=\"%s\"", pStr);
                     unsigned char *hexstr = getHexBitStringFullByte(pData, nLength, m_nFrom, m_nTo);
@@ -817,6 +883,7 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
             strResult += format(",");
             break;
         case CAsterixFormat::EJSONE:
+        case CAsterixFormat::EJSONX:
             strResult += format("},");
             break;
         case CAsterixFormat::EXML:

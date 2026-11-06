@@ -59,7 +59,7 @@ static void show_usage(std::string name) {
             << "\nReads and parses ASTERIX data from stdin, file or network multicast stream\nand prints it in textual presentation on standard output.\n\n"
             << "Usage:\n"
             << name
-            << " [-h] [-V] [-v] [-L] [-o] [-s] [-P|-O|-R|-F|-H] [-l|-x|-j|-jh|-je] [-d filename] [-LF filename] -f filename|-i (mcastaddress:ipaddress:port[:srcaddress]@)+"
+            << " [-h] [-V] [-v] [-L] [-o] [-s] [-P|-O|-R|-F|-H] [-l|-x|-j|-jh|-je|-jx] [-d filename] [-LF filename] -f filename|-i (mcastaddress:ipaddress:port[:srcaddress]@)+"
             << "\n\nOptions:"
             << "\n\t-h,--help\tShow this help message and exit."
             << "\n\t-V,--version\tShow version information and exit."
@@ -85,6 +85,7 @@ static void show_usage(std::string name) {
             << "\n\t-j,--json\tOutput will be printed in compact line-delimited JSON format (one object per line, suitable for parsing)."
             << "\n\t-jh,--jsonh\tOutput will be printed in human readable JSON format (suitable for file storage)."
             << "\n\t-je,--json-extensive\tOutput will be printed in extensive JSON format (with both hex and scaled value and description of each item)."
+            << "\n\t-jx,--json-hex\tOutput will be printed in compact line-delimited JSON format with hex and mask of each item (one object per line, suitable for parsing)."
             << "\n\nData source"
             << "\n------------"
             << "\n\t-f filename\tFile generated from libpcap (tcpdump or Wireshark) or file in FINAL or HDLC format.\n\t\t\tFor example: -f filename.pcap"
@@ -203,6 +204,13 @@ int main(int argc, const char *argv[]) {
                 return 1;
             }
             strOutputFormat = "ASTERIX_JSONH";
+        } else if ((arg == "-jx") || (arg == "--json-hex")) {
+            if (strOutputFormat != "ASTERIX_TXT") {
+                std::cerr << "Error: Option -jx not allowed because output format already defined as " + strOutputFormat
+                          << std::endl;
+                return 1;
+            }
+            strOutputFormat = "ASTERIX_JSONX";
         } else if ((arg == "-je") || (arg == "--json-extensive")) {
             if (strOutputFormat != "ASTERIX_TXT") {
                 std::cerr << "Error: Option -je not allowed because output format already defined as " + strOutputFormat

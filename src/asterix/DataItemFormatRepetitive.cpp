@@ -76,6 +76,7 @@ bool DataItemFormatRepetitive::getText(std::string &strResult, std::string &strH
 
     switch (formatType) {
         case CAsterixFormat::EJSON:
+        case CAsterixFormat::EJSONX:
         case CAsterixFormat::EJSONH:
         case CAsterixFormat::EJSONE: {
             std::string tmpStr = format("[");

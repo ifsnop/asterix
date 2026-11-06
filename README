@@ -79,7 +79,7 @@ make
 USAGE
 =====
 
-asterix [-h] [-V] [-v] [-L] [-o] [-s] [-P|-O|-R|-F|-H] [-l|-x|-j|-jh|-je] [-d filename] [-LF filename] -f filename|-i mcastaddress:ipaddress:port[:srcaddress]
+asterix [-h] [-V] [-v] [-L] [-o] [-s] [-P|-O|-R|-F|-H] [-l|-x|-j|-jh|-je|-jx] [-d filename] [-LF filename] -f filename|-i mcastaddress:ipaddress:port[:srcaddress]
 
 Options:
    -h,--help        Show this help message and exit.
@@ -106,6 +106,7 @@ Output format:
    -j,--json             Output will be printed in compact line-delimited JSON format (one object per line, suitable for parsing).
    -jh,--jsonh           Output will be printed in human readable JSON format (suitable for file storage).
    -je,--json-extensive  Output will be printed in extensive JSON format (with both hex and scaled value and description of each item).
+   -jx,--json-hex        Output will be printed in compact line-delimited JSON format with hex and mask of each item (one object per line, suitable for parsing).
 
 
 Data source:

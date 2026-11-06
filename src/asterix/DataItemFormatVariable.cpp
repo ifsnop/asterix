@@ -96,6 +96,7 @@ bool DataItemFormatVariable::getText(std::string &strResult, std::string &strHea
 
     switch (formatType) {
         case CAsterixFormat::EJSON:
+        case CAsterixFormat::EJSONX:
         case CAsterixFormat::EJSONH:
         case CAsterixFormat::EJSONE: {
             if (listOfSubItems)
@@ -111,6 +112,7 @@ bool DataItemFormatVariable::getText(std::string &strResult, std::string &strHea
 
         switch (formatType) {
             case CAsterixFormat::EJSON:
+            case CAsterixFormat::EJSONX:
             case CAsterixFormat::EJSONH:
             case CAsterixFormat::EJSONE: {
                 tmpResult = "";
@@ -145,6 +147,7 @@ bool DataItemFormatVariable::getText(std::string &strResult, std::string &strHea
 
     switch (formatType) {
         case CAsterixFormat::EJSON:
+        case CAsterixFormat::EJSONX:
         case CAsterixFormat::EJSONH:
         case CAsterixFormat::EJSONE: {
             if (strResult[strResult.length() - 1] == ',') {

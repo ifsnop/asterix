@@ -3,6 +3,7 @@
 "length":23,
 "crc":"166B4DBF",
 "timestamp":45826414.000000,
+"srcip":"0.0.0.0",
 "hexdata":"F7C619C9A00EB2767F189408AA42D8033405C8800D400E",
 "CAT001":{
 	"I010":{
@@ -53,6 +54,7 @@
 "length":23,
 "crc":"451BDC4F",
 "timestamp":45826414.000000,
+"srcip":"0.0.0.0",
 "hexdata":"F7C619C9B00F7561EC1A14077EB5550E5205508014400E",
 "CAT001":{
 	"I010":{
@@ -103,6 +105,7 @@
 "length":23,
 "crc":"B1116CF7",
 "timestamp":45826414.000000,
+"srcip":"0.0.0.0",
 "hexdata":"F7C619C9B00DCA69DE1A7C07F011110E3006188016400E",
 "CAT001":{
 	"I010":{
@@ -153,6 +156,7 @@
 "length":23,
 "crc":"AA452E46",
 "timestamp":45826414.000000,
+"srcip":"0.0.0.0",
 "hexdata":"F7C619C9B00D685C881CE008424FA4004A04D88022400E",
 "CAT001":{
 	"I010":{
@@ -203,6 +207,7 @@
 "length":8,
 "crc":"E1A938EC",
 "timestamp":45826414.000000,
+"srcip":"0.0.0.0",
 "hexdata":"F019C90250598117",
 "CAT002":{
 	"I010":{
@@ -219,6 +224,7 @@
 "length":23,
 "crc":"52C8CF8E",
 "timestamp":45826414.000000,
+"srcip":"0.0.0.0",
 "hexdata":"F7C619C9B00CE173571E28081DD1100AC405A08028400E",
 "CAT001":{
 	"I010":{
@@ -269,6 +275,7 @@
 "length":23,
 "crc":"D32E1DA2",
 "timestamp":45826414.000000,
+"srcip":"0.0.0.0",
 "hexdata":"F7C619C9A00C10514C212C05DCE2D7059E025A8038400E",
 "CAT001":{
 	"I010":{
@@ -319,6 +326,7 @@
 "length":23,
 "crc":"6E189DDB",
 "timestamp":45826414.000000,
+"srcip":"0.0.0.0",
 "hexdata":"F7C619C9B00F0D37FE21C80755D1C605A505A0803B400E",
 "CAT001":{
 	"I010":{
