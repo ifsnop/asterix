@@ -107,7 +107,7 @@ bool DataItemFormatBDS::filterOutItem(const char *name) {
     int item_id = 0;
     char item_name[128] = "";
 
-    if (sscanf(name, "BDS%x:%128s", &item_id, item_name) != 2)
+    if (sscanf(name, "BDS%x:%127s", &item_id, item_name) != 2)
         return false;
 
     std::list<DataItemFormat *>::iterator it = m_lSubItems.begin();
