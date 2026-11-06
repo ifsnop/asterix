@@ -126,6 +126,14 @@ bool CAsterixPcapSubformat::ReadPacket(CBaseFormatDescriptor &formatDescriptor, 
 
     ////////////// Parse PCAP packet header
     //////////////////////////////////////////////////////////////////////////////////////
+    // Every header is checked against the captured length (incl_len) before it is read
+    auto packetError = [&](const char *msg) {
+        LOGERROR(1, "%s (captured length %lu)\n", msg, nPacketBufferSize);
+        delete[] pPacketBuffer;
+        return false;
+    };
+    auto bytesUsed = [&](const unsigned char *p) { return (unsigned long) (p - pPacketBuffer); };
+
     unsigned char *pPacketPtr = pPacketBuffer;
     if (Descriptor.m_ePcapNetworkType == CAsterixFormatDescriptor::NET_ETHERNET) { // Ethernet header
         pPacketPtr += 6; // Destination MAC
@@ -135,6 +143,10 @@ bool CAsterixPcapSubformat::ReadPacket(CBaseFormatDescriptor &formatDescriptor, 
         pPacketPtr += 2; // link-layer Address type
         pPacketPtr += 2; // Address length
         pPacketPtr += 8; // Source
+    }
+
+    if (bytesUsed(pPacketPtr) + 2 + 20 > nPacketBufferSize) { // protocol type + minimal IP header
+        return packetError("PCAP packet too short for link and IP headers");
     }
 
     unsigned short protoType = *((unsigned short *) pPacketPtr);
@@ -160,6 +172,9 @@ bool CAsterixPcapSubformat::ReadPacket(CBaseFormatDescriptor &formatDescriptor, 
     pPacketPtr++;
 
     IPheaderLength &= 0x0F;
+    if (IPheaderLength < 5) { // IHL is in 32-bit words, 5 is the minimal IP header
+        return packetError("Wrong IP header length");
+    }
 
     pPacketPtr += 1; //TOS
 
@@ -191,6 +206,9 @@ bool CAsterixPcapSubformat::ReadPacket(CBaseFormatDescriptor &formatDescriptor, 
     IPtotalLength -= IPheaderLength * 4;
 
     if (protocol == 17) { // UDP header
+        if (bytesUsed(pPacketPtr) + 8 > nPacketBufferSize) {
+            return packetError("PCAP packet too short for UDP header");
+        }
         pPacketPtr += 2; // source port
         pPacketPtr += 2; // destination port
 
@@ -208,6 +226,9 @@ bool CAsterixPcapSubformat::ReadPacket(CBaseFormatDescriptor &formatDescriptor, 
         }
         pPacketPtr += 2; // checksum
 
+        if (m_nDataLength < 8 || bytesUsed(pPacketPtr) + (m_nDataLength - 8) > nPacketBufferSize) {
+            return packetError("UDP length does not match captured data");
+        }
         m_nDataLength -= 8;
     }
 
