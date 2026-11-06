@@ -55,7 +55,7 @@ long DataItemFormatFixed::getLength() {
     return m_nLength;
 }
 
-long DataItemFormatFixed::getLength(const unsigned char *) {
+long DataItemFormatFixed::getLength(const unsigned char *, long) { // no data is read
     return m_nLength;
 }
 

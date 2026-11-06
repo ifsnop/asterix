@@ -88,7 +88,7 @@ DataItemBits::~DataItemBits() {
     }
 }
 
-long DataItemBits::getLength(const unsigned char *) {
+long DataItemBits::getLength(const unsigned char *, long) {
     Tracer::Error("DataItemBits::getLength Should not be called!");
     return 0;
 }

@@ -45,14 +45,17 @@ DataItemFormatRepetitive::DataItemFormatRepetitive(const DataItemFormatRepetitiv
 DataItemFormatRepetitive::~DataItemFormatRepetitive() {
 }
 
-long DataItemFormatRepetitive::getLength(const unsigned char *pData) {
+long DataItemFormatRepetitive::getLength(const unsigned char *pData, long nMaxLength) {
     DataItemFormat *pF = m_lSubItems.size() ? m_lSubItems.front() : NULL; // Fixed or BDS
     if (pF == NULL) {
         Tracer::Error("Wrong data in Repetitive");
         return 0;
     }
+    if (nMaxLength < 1) { // the repetition factor itself is missing
+        return nMaxLength + 1;
+    }
     unsigned char nRepetition = *pData;
-    return (1 + nRepetition * pF->getLength(pData + 1));
+    return (1 + nRepetition * pF->getLength(pData + 1, nMaxLength - 1));
 }
 
 bool DataItemFormatRepetitive::getText(std::string &strResult, std::string &strHeader, const unsigned int formatType,
@@ -64,7 +67,11 @@ bool DataItemFormatRepetitive::getText(std::string &strResult, std::string &strH
         return true;
     }
 
-    int fixedLength = pF->getLength(pData);
+    if (nLength < 1) {
+        Tracer::Error("Wrong length in Repetitive");
+        return true;
+    }
+    int fixedLength = pF->getLength(pData + 1, nLength - 1);
     unsigned char nRepetition = *pData;
 
     if (1 + nRepetition * fixedLength != nLength) {
@@ -176,7 +183,12 @@ fulliautomatix_data* DataItemFormatRepetitive::getData(unsigned char* pData, lon
         return NULL;
     }
 
-    int fixedLength = pFixed->getLength(pData);
+    if (len < 1)
+    {
+        Tracer::Error("Wrong length in repetitive item");
+        return NULL;
+    }
+    int fixedLength = pFixed->getLength(pData + 1, len - 1);
     unsigned char nRepetition = *pData;
 
     firstData = lastData = newDataUL(NULL, PID_REP, byteoffset, 1, nRepetition);
@@ -219,8 +231,8 @@ PyObject* DataItemFormatRepetitive::getObject(unsigned char* pData, long nLength
         return p;
       }
 
-      int fixedLength = pFixed->getLength(pData);
-      unsigned char nRepetition = *pData;
+      int fixedLength = nLength < 1 ? 0 : pFixed->getLength(pData + 1, nLength - 1);
+      unsigned char nRepetition = nLength < 1 ? 1 : *pData; // nLength < 1 fails the check below
 
       if (1+nRepetition*fixedLength != nLength)
       {

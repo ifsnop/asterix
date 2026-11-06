@@ -103,7 +103,7 @@ long DataItem::parse(const unsigned char *pData, long len) {
         return 0;
     }
 
-    m_nLength = m_pDescription->m_pFormat->getLength(pData);
+    m_nLength = m_pDescription->m_pFormat->getLength(pData, len);
 
     if (m_nLength > len) {
         // Print unparsed bytes

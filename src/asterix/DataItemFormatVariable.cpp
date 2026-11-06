@@ -51,7 +51,7 @@ DataItemFormatVariable::~DataItemFormatVariable() {
     }
 }
 
-long DataItemFormatVariable::getLength(const unsigned char *pData) {
+long DataItemFormatVariable::getLength(const unsigned char *pData, long nMaxLength) {
     long length = 0;
     std::list<DataItemFormat *>::iterator it;
     bool lastPart = false;
@@ -60,8 +60,12 @@ long DataItemFormatVariable::getLength(const unsigned char *pData) {
     DataItemFormatFixed *dip = (DataItemFormatFixed *) (*it);
 
     do {
-        lastPart = dip->isLastPart(pData);
         long partlen = dip->getLength();
+        if (partlen <= 0 || length + partlen > nMaxLength) {
+            // the FX chain runs past the available data (isLastPart would read beyond it)
+            return nMaxLength + 1;
+        }
+        lastPart = dip->isLastPart(pData);
 
         length += partlen;
         pData += partlen;

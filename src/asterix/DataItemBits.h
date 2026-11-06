@@ -100,7 +100,7 @@ public:
     void insertToDict(PyObject* p, unsigned char* pData, long nLength, int description);
 #endif
 
-    long getLength(const unsigned char *pData);
+    long getLength(const unsigned char *pData, long nMaxLength);
 
 private:
     unsigned char *getBits(unsigned char *pData, int bytes, int frombit, int tobit);

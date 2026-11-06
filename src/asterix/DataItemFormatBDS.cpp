@@ -46,7 +46,7 @@ DataItemFormatBDS::DataItemFormatBDS(const DataItemFormatBDS &obj)
 }
 
 
-long DataItemFormatBDS::getLength(const unsigned char *pData) {
+long DataItemFormatBDS::getLength(const unsigned char *, long) { // no data is read
     return 8; // BDS length is always 8 bytes
 }
 
@@ -164,7 +164,7 @@ fulliautomatix_data* DataItemFormatBDS::getData(unsigned char* pData, long len, 
         return NULL;
     }
 
-    int fixedLength = pFixed->getLength(pData);
+    int fixedLength = pFixed->getLength();
     unsigned char nRepetition = *pData;
 
     firstData = lastData = newDataUL(NULL, PID_REP, byteoffset, 1, nRepetition);

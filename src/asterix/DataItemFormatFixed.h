@@ -47,7 +47,7 @@ public:
 
     std::string &getPartName(int part);
 
-    long getLength(const unsigned char *pData);
+    long getLength(const unsigned char *pData, long nMaxLength);
 
     bool getText(std::string &strResult, std::string &strHeader, const unsigned int formatType, unsigned char *pData,
                  long nLength); // appends value description to strResult
