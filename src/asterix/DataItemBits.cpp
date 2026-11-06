@@ -432,14 +432,18 @@ char *DataItemBits::getASCII(unsigned char *pData, int bytes, int frombit, int t
     }
 
     unsigned char *pTmp = getBits(pData, bytes, frombit, tobit);
+    if (!pTmp) {
+        Tracer::Error("ASCII representation not valid");
+        return newErrorString<char>();
+    }
     int numberOfBytes = numberOfBits/8;
 
     char *pStr = new char[numberOfBytes + 1];
     char *ppStr = pStr;
 
-    // replace non alphabetic ASCII characters with empty string
+    // replace non printable ASCII characters with a space
     for (int i = 0; i < numberOfBytes; i++) {
-        if (*pData >= 32 && *pData <= 126)
+        if (pTmp[i] >= 32 && pTmp[i] <= 126)
             *ppStr++ = pTmp[i];
         else
             *ppStr++ = ' ';
