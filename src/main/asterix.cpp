@@ -48,6 +48,7 @@ static void DisplayCopyright() {
 #ifdef _DEBUG
     std::cerr << " DEBUG version";
 #endif
+    std::cerr << "\nFork of CroatiaControlLtd/asterix " _UPSTREAM_VERSION_STR ", maintained at " _FORK_URL;
     std::cerr
             << "\n\nCopyright (c) 2013 Croatia Control Ltd. (www.crocontrol.hr)\nThis program comes with ABSOLUTELY NO WARRANTY.\nThis is free software, and you are welcome to redistribute it\nunder certain conditions. See COPYING file for details.\n";
 }

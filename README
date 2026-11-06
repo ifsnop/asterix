@@ -10,6 +10,18 @@ More about ASTERIX protocol you can find here: http://www.eurocontrol.int/servic
 
 Asterix application was developed by Croatia Control Ltd.
 
+FORK NOTICE
+===========
+
+This is a fork of https://github.com/CroatiaControlLtd/asterix, maintained at
+https://github.com/ifsnop/asterix. The original project has not been updated since
+December 2025, and its decoder had memory-safety problems (out-of-bounds reads on
+malformed or truncated input, leaks, invalid casts) that needed to be fixed. They are
+fixed in this fork.
+
+Fork versions are numbered <upstream version>-ifsnop.<n>. This is 2.8.11-ifsnop.1,
+based on upstream 2.8.11. See HISTORY for the changes.
+
 This program comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions. See COPYING file for details.
 
 BUILDING FOR WINDOWS
