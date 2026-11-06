@@ -233,15 +233,15 @@ CBaseFormatDescriptor *CAsterixFormat::CreateFormatDescriptor
 
         Tracer::Configure(debug_trace);
 
-        // initialize Fulliautomatix engine
-        AsterixDefinition *pDefinition = new AsterixDefinition();
-
-        // open asterix.ini file
+        // open asterix.ini file (before allocating anything, so nothing leaks if it fails)
         FILE *fpini = fopen(gAsterixDefinitionsFile, "rt");
         if (!fpini) {
             LOGERROR(1, "Failed to open definitions file");
             return NULL;
         }
+
+        // initialize Fulliautomatix engine
+        AsterixDefinition *pDefinition = new AsterixDefinition();
 
         // extract ini file path
         std::string strInifile = gAsterixDefinitionsFile;
