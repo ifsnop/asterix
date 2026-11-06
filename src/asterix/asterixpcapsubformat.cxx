@@ -218,7 +218,7 @@ bool CAsterixPcapSubformat::ReadPacket(CBaseFormatDescriptor &formatDescriptor, 
     }
 
     if (oradis) {
-        while (m_nDataLength > 0) {
+        while (m_nDataLength >= 6) { // room for the ORADIS header
             // parse ORADIS header (6 bytes)
             // Byte count (1) (MSB)
             // Byte count (2) (LSB)
@@ -236,7 +236,7 @@ bool CAsterixPcapSubformat::ReadPacket(CBaseFormatDescriptor &formatDescriptor, 
             // skip time
             pPacketPtr += 4;
 
-            if (byteCount > m_nDataLength)
+            if (byteCount < 6 || byteCount > m_nDataLength) // byte count includes the 6-byte header
                 break;
 
             // Parse ASTERIX data
@@ -248,6 +248,7 @@ bool CAsterixPcapSubformat::ReadPacket(CBaseFormatDescriptor &formatDescriptor, 
             } else {
                 Descriptor.m_pAsterixData->m_lDataBlocks.splice(Descriptor.m_pAsterixData->m_lDataBlocks.end(),
                                                                 m_ptmpAsterixData->m_lDataBlocks);
+                delete m_ptmpAsterixData; // its blocks were moved, the container is empty
             }
 
             pPacketPtr += (byteCount - 6);
