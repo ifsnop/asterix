@@ -359,17 +359,31 @@ unsigned char *DataItemBits::getHexBitStringMask(int bytes, int frombit, int tob
     return str;
 }
 
+const unsigned char *DataItemBits::JsonPosition::s_pItemData = NULL;
+long DataItemBits::JsonPosition::s_nItemOffset = 0;
+
 /*
- * Append hex value of the bytes holding this item and, when the item is not byte aligned,
- * the mask of its bits. Used by EJSONX output: ,"hex":"..."[,"mask":"..."]
+ * Append hex value of the bytes holding this item and, when the item does not fill those bytes
+ * completely, the mask of its bits, then the byte position of hex in the record hexdata.
+ * Used by EJSONX output: ,"hex":"..."[,"mask":"..."],"pos":N
+ * With hex and mask a field can be rewritten in place: new = (old & ~mask) | (value & mask).
+ * The mask is also needed for fields of 8*n bits that do not start on a byte boundary
+ * (e.g. BDS res1), otherwise the byte they share with the next field cannot be told apart.
  */
 void DataItemBits::appendJsonHexMask(std::string &strResult, unsigned char *pData, long nLength) {
     std::unique_ptr<unsigned char[]> hexstr(getHexBitStringFullByte(pData, nLength, m_nFrom, m_nTo));
     strResult += format(",\"hex\":\"%s\"", hexstr.get());
 
-    if ((m_nTo - m_nFrom + 1) % 8 != 0) {
-        std::unique_ptr<unsigned char[]> maskstr(getHexBitStringMask(nLength, m_nFrom, m_nTo));
+    std::unique_ptr<unsigned char[]> maskstr(getHexBitStringMask(nLength, m_nFrom, m_nTo));
+    if (strchr((const char *) maskstr.get(), '0') != NULL) {
         strResult += format(",\"mask\":\"%s\"", maskstr.get());
+    }
+
+    if (JsonPosition::s_pItemData != NULL) {
+        // bit nLength*8 is the MSB of pData[0], so the byte holding bit m_nTo is the first byte of hex
+        long firstByte = (nLength * 8 - m_nTo) / 8;
+        long pos = JsonPosition::s_nItemOffset + (long) (pData - JsonPosition::s_pItemData) + firstByte;
+        strResult += format(",\"pos\":%ld", pos);
     }
 }
 
@@ -457,6 +471,11 @@ char *DataItemBits::getASCII(unsigned char *pData, int bytes, int frombit, int t
 
 bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const unsigned int formatType,
                            unsigned char *pData, long nLength) {
+    return getText(strResult, strHeader, formatType, pData, nLength, NULL);
+}
+
+bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const unsigned int formatType,
+                           unsigned char *pData, long nLength, const char *pJsonKey) {
     if (gFiltering && !m_bFiltered)
         return false;
 
@@ -489,7 +508,7 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
             strResult += format("\n\t\t\"%s\":{", m_strShortName.c_str());
             break;
         case CAsterixFormat::EJSONX:
-            strResult += format("\"%s\":{", m_strShortName.c_str());
+            strResult += format("\"%s\":{", pJsonKey ? pJsonKey : m_strShortName.c_str());
             break;
         case CAsterixFormat::EXML:
             strResult += format("<%s>", m_strShortName.c_str());

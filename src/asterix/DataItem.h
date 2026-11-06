@@ -42,6 +42,8 @@ public:
 
     long getLength() { return m_nLength; }
 
+    long m_nOffset; //!< position of this item in the record data after the FSPEC (EJSONX "pos")
+
 #if defined(WIRESHARK_WRAPPER) || defined(ETHEREAL_WRAPPER)
     fulliautomatix_data* getData(int byteoffset);
 #endif

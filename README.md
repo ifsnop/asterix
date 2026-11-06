@@ -15,7 +15,12 @@ asterix
 > Changes in this fork (see [HISTORY](HISTORY)):
 > - **Security fixes**: out-of-bounds reads on truncated or malformed records (item lengths, PCAP and ORADIS headers), a stack overflow with `-LF` filters on BDS items, memory leaks with ORADIS input, invalid pointer casts, and string overflows in file naming. Found with AddressSanitizer/UBSan and fuzzing.
 > - **Source IP** of each record in the TXT, JSON and XML outputs (`srcip`), taken from UDP multicast input and GPS files.
-> - **New `-jx` / `--json-hex` output**: compact one-line-per-record JSON with the hex value and bit mask of each field.
+> - **New `-jx` / `--json-hex` output**: compact one-line-per-record JSON made to change a value and write it back to ASTERIX at minimal cost:
+>   - each record has `fspec` (the FSPEC bytes: while a byte ends in 1 the next one belongs to it) and `hexdata` (the data items after it), so the record is `fspec + hexdata`;
+>   - each field is `{"val":..., "hex":"...", "mask":"...", "pos":N}`: `pos` is the byte offset of `hex` in `hexdata` and `mask` (present when the field does not fill its hex bytes) the field's bits, so a field is rewritten with `hexdata[pos..] = (hex & ~mask) | (value & mask)`, without knowing the item structure;
+>   - keys are unique in every object, so standard JSON parsers keep all fields: FX bits are numbered by extent (`FX0`, `FX1`, ...) and other repeated names get a number (`spare`, `spare1`).
+>
+>   Edits must keep the record length. FX bits, UAP selectors (e.g. CAT001 I020 TYP) and the BDS register number change how the rest is decoded.
 >
 > The `asterix_decoder` package on PyPI and the badges above belong to the original project. The PyPI package does not include these changes.
 

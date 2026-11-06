@@ -93,6 +93,7 @@ DataRecord::DataRecord(Category *cat, int nID, unsigned long len, const unsigned
             break;
         }
 
+        di->m_nOffset = (long) (m_pItemDataStart - data) - (long) m_nFSPECLength;
         long usedbytes = di->parse(m_pItemDataStart, nUnparsed);
         if (usedbytes <= 0 || usedbytes > nUnparsed) {
             Tracer::Error("Wrong length in DataItem format for CAT%03d/I%s", cat->m_id,
@@ -181,11 +182,21 @@ bool DataRecord::getText(std::string &strResult, std::string &strHeader, const u
             strNewResult += format("\nHexData: %s", m_pHexData);
             break;
         case CAsterixFormat::EJSON:
-        case CAsterixFormat::EJSONX:
             strNewResult = format(
                     "{\"id\":%d,\"cat\":%d,\"length\":%ld,\"crc\":\"%08X\",\"timestamp\":%lf,\"srcip\":\"%u.%u.%u.%u\",\"hexdata\":\"%s\",\"CAT%03d\":{",
                     m_nID, m_pCategory->m_id, m_nLength, m_nCrc, m_nTimestamp, ip[0], ip[1], ip[2], ip[3], m_pHexData, m_pCategory->m_id);
             break;
+        case CAsterixFormat::EJSONX: {
+            // FSPEC (bytes while the last bit, FX, is 1) and the data items after it, as separate fields:
+            // field "pos" values are offsets in this hexdata, so the record is fspec + hexdata
+            size_t hexLen = strlen(m_pHexData);
+            size_t fspecChars = m_nFSPECLength * 2 < hexLen ? m_nFSPECLength * 2 : hexLen;
+            strNewResult = format(
+                    "{\"id\":%d,\"cat\":%d,\"length\":%ld,\"crc\":\"%08X\",\"timestamp\":%lf,\"srcip\":\"%u.%u.%u.%u\",\"fspec\":\"%.*s\",\"hexdata\":\"%s\",\"CAT%03d\":{",
+                    m_nID, m_pCategory->m_id, m_nLength, m_nCrc, m_nTimestamp, ip[0], ip[1], ip[2], ip[3],
+                    (int) fspecChars, m_pHexData, m_pHexData + fspecChars, m_pCategory->m_id);
+            break;
+        }
         case CAsterixFormat::EJSONH:
         case CAsterixFormat::EJSONE:
             strNewResult = format(

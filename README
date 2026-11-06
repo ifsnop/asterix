@@ -119,6 +119,11 @@ Output format:
    -jh,--jsonh           Output will be printed in human readable JSON format (suitable for file storage).
    -je,--json-extensive  Output will be printed in extensive JSON format (with both hex and scaled value and description of each item).
    -jx,--json-hex        Output will be printed in compact line-delimited JSON format with hex and mask of each item (one object per line, suitable for parsing).
+                         Each record has "fspec" (FSPEC bytes) and "hexdata" (data items after the FSPEC): the record is fspec+hexdata.
+                         Each field is {"val":...,"hex":"..."[,"mask":"..."],"pos":N}. "pos" is the byte offset of hex in hexdata and
+                         "mask" (present when the field does not fill its hex bytes) its bits, so a value is written back with
+                         hexdata[pos..] = (hex & ~mask) | (value & mask). Keys are unique: FX bits are numbered by extent
+                         (FX0, FX1, ...), other repeated names get a number (spare, spare1).
 
 
 Data source:

@@ -158,6 +158,27 @@ bool DataItemFormatFixed::isSecondaryPartPresent(const unsigned char *pData, int
 
 bool DataItemFormatFixed::getText(std::string &strResult, std::string &strHeader, const unsigned int formatType,
                                   unsigned char *pData, long nLength) {
+    std::set<std::string> jsonKeys; // a Fixed item on its own is one JSON object
+    return getText(strResult, strHeader, formatType, pData, nLength, jsonKeys, 0);
+}
+
+/*
+ * Key of a bits field in EJSONX, unique within the JSON object being written:
+ *  - extension (FX) bits are numbered by extent: FX0, FX1, ... so FXn is always the FX of extent n
+ *  - any other repeated name gets the first free number: spare, spare1, spare2, ...
+ */
+static std::string jsonUniqueKey(DataItemBits *bv, std::set<std::string> &jsonKeys, int extent) {
+    std::string base = bv->getJsonBaseName();
+    std::string key = bv->m_bExtension ? base + std::to_string(extent) : base;
+    for (int n = 1; jsonKeys.count(key); n++) {
+        key = base + std::to_string(n);
+    }
+    jsonKeys.insert(key);
+    return key;
+}
+
+bool DataItemFormatFixed::getText(std::string &strResult, std::string &strHeader, const unsigned int formatType,
+                                  unsigned char *pData, long nLength, std::set<std::string> &jsonKeys, int extent) {
     if (m_nLength != nLength) {
         Tracer::Error("Length doesn't match!!!");
         return false;
@@ -178,7 +199,12 @@ bool DataItemFormatFixed::getText(std::string &strResult, std::string &strHeader
     DataItemBits *bv = NULL;
     for (it = m_lSubItems.begin(); it != m_lSubItems.end(); it++) {
         bv = (DataItemBits *) (*it);
-        ret |= bv->getText(strResult, strHeader, formatType, pData, m_nLength);
+        if (formatType == CAsterixFormat::EJSONX) {
+            std::string key = jsonUniqueKey(bv, jsonKeys, extent);
+            ret |= bv->getText(strResult, strHeader, formatType, pData, m_nLength, key.c_str());
+        } else {
+            ret |= bv->getText(strResult, strHeader, formatType, pData, m_nLength);
+        }
     }
 
     switch (formatType) {

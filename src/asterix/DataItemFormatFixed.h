@@ -24,6 +24,7 @@
 #ifndef DATAITEMFORMATFIXED_H_
 #define DATAITEMFORMATFIXED_H_
 
+#include <set>
 #include "DataItemFormat.h"
 #include "DataItemBits.h"
 
@@ -51,6 +52,13 @@ public:
 
     bool getText(std::string &strResult, std::string &strHeader, const unsigned int formatType, unsigned char *pData,
                  long nLength); // appends value description to strResult
+    /**
+     * Same as getText, but keys in EJSONX are made unique within the JSON object being written:
+     * jsonKeys holds the keys already used in that object (shared by all parts of a Variable item)
+     * and extent is the index of this part (0 for the first one), used to number FX bits: FX0, FX1...
+     */
+    bool getText(std::string &strResult, std::string &strHeader, const unsigned int formatType, unsigned char *pData,
+                 long nLength, std::set<std::string> &jsonKeys, int extent);
     std::string printDescriptors(std::string header); // print items format descriptors
     bool filterOutItem(const char *name); // mark item for filtering
     bool isFiltered(const char *name);

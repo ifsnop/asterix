@@ -95,6 +95,8 @@ bool DataItemFormatVariable::getText(std::string &strResult, std::string &strHea
 
     it = m_lSubItems.begin();
     std::string tmpResult;
+    std::set<std::string> jsonKeys; // EJSONX keys used in the current JSON object
+    int extent = 0;                 // index of the current part, numbers the FX bits in EJSONX
 
     DataItemFormatFixed *dip = (DataItemFormatFixed *) (*it);
 
@@ -120,7 +122,13 @@ bool DataItemFormatVariable::getText(std::string &strResult, std::string &strHea
             case CAsterixFormat::EJSONH:
             case CAsterixFormat::EJSONE: {
                 tmpResult = "";
-                ret |= dip->getText(tmpResult, strHeader, formatType, pData, dip->getLength());
+                if (formatType == CAsterixFormat::EJSONX) {
+                    if (listOfSubItems)
+                        jsonKeys.clear(); // each extent is its own object in the list
+                    ret |= dip->getText(tmpResult, strHeader, formatType, pData, dip->getLength(), jsonKeys, extent);
+                } else {
+                    ret |= dip->getText(tmpResult, strHeader, formatType, pData, dip->getLength());
+                }
                 if (tmpResult.length() > 2) { // if result != {}
                     if (listOfSubItems)
                         strResult += '{';
@@ -140,6 +148,7 @@ bool DataItemFormatVariable::getText(std::string &strResult, std::string &strHea
 
         pData += dip->getLength();
         nLength -= dip->getLength();
+        extent++;
 
         if (it != m_lSubItems.end()) {
             it++;
