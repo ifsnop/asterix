@@ -156,6 +156,27 @@ section_robustness() {
             run_guarded "mutant $(basename "$f") -LF" "$BIN" -d $DEFS $opt -f "$f" -je -LF $FILTER
         done
     fi
+    # whatever the input, -j and -jx must be valid JSON (text fields only keep characters that need no escaping)
+    local jsonbad
+    jsonbad=$(for f in tests/data/bad/* ${MUTANTS:+"$MUTANTS"/*}; do
+                  opt=$(input_option "$f")
+                  for fmt in -j -jx; do
+                      # shellcheck disable=SC2086
+                      timeout "$TIMEOUT" "$BIN" -d $DEFS $opt -f "$f" $fmt 2>/dev/null
+                  done
+              done | python3 -c '
+import json, sys
+bad = 0
+for line in sys.stdin:
+    try:
+        json.loads(line)
+    except ValueError:
+        bad += 1
+        if bad <= 3:
+            print(line[:200])
+print(bad)' )
+    if [ "$(echo "$jsonbad" | tail -1)" = "0" ]; then ok "-j/-jx output of malformed inputs is valid JSON"
+    else fail "-j/-jx output of malformed inputs is not valid JSON" "$jsonbad"; fi
     # a '%' in the definitions file name or in the XML error used to be read as a printf format
     mkdir -p "$TMP/defs"
     printf '<?xml version="1.0"?>\n<Category id="1">\n<Bad%%s%%s%%n>\n</Category>\n' > "$TMP/defs/bad%s%s%n.xml"
@@ -175,6 +196,12 @@ section_cli() {
     if [ $rc -eq 1 ]; then ok "two output formats are rejected"; else fail "two output formats: exit $rc, expected 1"; fi
     "$BIN" -d "$TMP/missing.ini" -f install/sample_data/cat048.raw > /dev/null 2>&1; rc=$?
     if [ $rc -eq 2 ]; then ok "missing definitions file"; else fail "missing definitions file: exit $rc, expected 2"; fi
+    # a block with a malformed record: same stdout, a warning with the whole block on stderr
+    out=$("$BIN" -d $DEFS -jx -f tests/data/bad/raw_broken_record_in_block.raw 2>&1 >/dev/null | mask_log)
+    local hex
+    hex=$(od -An -tx1 -v tests/data/bad/raw_broken_record_in_block.raw | tr -d ' \n' | tr 'a-f' 'A-F')
+    if echo "$out" | grep -q "^WARNING: .*malformed record .*Block: $hex\$"; then ok "warning with the block of a malformed record"
+    else fail "no warning with the block of a malformed record" "$out"; fi
     out=$("$BIN" -d $DEFS -L 2>/dev/null)
     if [ "$out" = "$(cat install/sample_output/filter.txt)" ]; then ok "-L matches install/sample_output/filter.txt"
     else fail "-L differs from install/sample_output/filter.txt (definitions changed? regenerate it)" "$(diff <(echo "$out") install/sample_output/filter.txt | head)"; fi

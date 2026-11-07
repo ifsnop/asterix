@@ -58,6 +58,29 @@ DataBlock::DataBlock(Category *cat, unsigned long len, const unsigned char *data
         nUnparsed -= dr->m_nLength;
     }
 
+    // A malformed record does not stop the block: decoding goes on from where that record stopped (ASTERIX
+    // records carry no length, so this is the only place to go on from). Most records after it decode
+    // correctly, some may be wrong: report the whole block, as received, to be able to check it later.
+    int nBadRecord = 0, nRecord = 0, nAfterBad = 0;
+    for (std::list<DataRecord *>::iterator it = m_lDataRecords.begin(); it != m_lDataRecords.end(); ++it) {
+        nRecord++;
+        if (nBadRecord == 0 && !(*it)->m_bFormatOK)
+            nBadRecord = nRecord;
+        else if (nBadRecord != 0 && (*it)->m_bFormatOK)
+            nAfterBad++;
+    }
+    if (nBadRecord != 0) {
+        std::string strBlock;
+        unsigned long nBlockLength = len + 3;  // the 3-byte header (CAT, LEN) is not in data
+        appendHexByte(strBlock, (unsigned char) (m_pCategory ? m_pCategory->m_id : 0));
+        appendHexByte(strBlock, (unsigned char) ((nBlockLength >> 8) & 0xFF));
+        appendHexByte(strBlock, (unsigned char) (nBlockLength & 0xFF));
+        appendHexBytes(strBlock, data, len);
+        Tracer::Error("Warning: malformed record %d in data block CAT%03d (%lu bytes), %d record(s) decoded after it "
+                      "may be wrong. Block: %s", nBadRecord, m_pCategory ? m_pCategory->m_id : 0, nBlockLength,
+                      nAfterBad, strBlock.c_str());
+    }
+
     if (nUnparsed > 0) {
         m_nLength -= nUnparsed;
     }
