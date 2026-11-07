@@ -313,3 +313,15 @@ New output format -jx / --json-hex: compact JSON, one record per line, with hex 
            Unique keys: FX bits numbered by extent (FX0, FX1, ...), other repeated names numbered (spare, spare1)
 -j record header changed (incompatible with the original): "fspec" printed separately and "hexdata" holds
            only the data items after the FSPEC (in the original, hexdata was the whole record)
+
+2.8.11-ifsnop.3 (python_v0.7.11 unchanged)
+Faster decoding with byte-identical output: -jx about 8x faster (51 MB GPS file: 68 s -> 8.5 s),
+           other output formats 2-2.6x faster:
+           format() formats once into a stack buffer instead of twice through the heap
+           -jx fields written without allocations (hex, mask and pos built in place, mask built once per field)
+           Items written straight into the output string instead of copied through temporary strings
+           -jx unique keys computed once per format instead of a std::set per field
+           Cached FRN -> item and Compound presence-bit lookups
+           Disk input: no ftell/fstat/select system calls per packet
+make rebuilds objects when an included header changes (dependency targets were never matched);
+           run make clean once after updating

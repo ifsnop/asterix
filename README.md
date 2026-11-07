@@ -10,7 +10,7 @@ asterix
 > **This is a fork of [CroatiaControlLtd/asterix](https://github.com/CroatiaControlLtd/asterix).**
 > The original project has not been updated since December 2025 (last commit for 2.8.11 on 2025-12-03, last release v2.8.10). Its decoder had memory-safety problems that needed to be fixed, and they are fixed here. ASTERIX data usually comes from the network, so malformed or truncated packets made the original code read past its buffers, which can crash it.
 >
-> Fork versions are numbered `<upstream version>-ifsnop.<n>`. The current one is **2.8.11-ifsnop.2**, based on upstream 2.8.11 (`asterix -V` shows both).
+> Fork versions are numbered `<upstream version>-ifsnop.<n>`. The current one is **2.8.11-ifsnop.3**, based on upstream 2.8.11 (`asterix -V` shows both).
 >
 > Changes in this fork (see [HISTORY](HISTORY)):
 > - **Security fixes**: out-of-bounds reads on truncated or malformed records (item lengths, PCAP and ORADIS headers), a stack overflow with `-LF` filters on BDS items, memory leaks with ORADIS input, invalid pointer casts, and string overflows in file naming. Found with AddressSanitizer/UBSan and fuzzing.
@@ -22,6 +22,8 @@ asterix
 >
 >   Edits must keep the record length. FX bits, UAP selectors (e.g. CAT001 I020 TYP) and the BDS register number change how the rest is decoded.
 > - **`-j` record header**: `-j` now also prints `fspec` separately, and its `hexdata` holds only the data items after the FSPEC (same as `-jx`). **This differs from the original**, where the `hexdata` of `-j` was the whole record: use `fspec + hexdata` to get it.
+> - **Faster decoding, same output**: `-jx` is about 8 times faster (a 51 MB GPS file takes 8.5 s instead of 68 s) and the other output formats 2 to 2.6 times faster. The output is byte for byte the same as before.
+> - **Build**: `make` now rebuilds the objects that include a header when it changes (the original makefiles never did). Run `make clean` once after updating.
 >
 > The `asterix_decoder` package on PyPI and the badges above belong to the original project. The PyPI package does not include these changes.
 
