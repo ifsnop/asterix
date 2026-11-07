@@ -59,7 +59,7 @@ bool DataItemFormatExplicit::getText(std::string &strResult, std::string &strHea
     bool ret = false;
 
     if (nLength <= 1) {
-        Tracer::Error("Not enough data in Explicit. There is %d byte.", nLength);
+        Tracer::Error("Not enough data in Explicit. There is %ld byte.", nLength);
         return false;
     }
 

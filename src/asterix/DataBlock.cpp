@@ -86,7 +86,8 @@ bool DataBlock::getText(std::string &strResult, const unsigned int formatType) {
             strResult += format("\nCategory: %d", m_pCategory->m_id);
             strResult += format("\nLen: %ld", m_nLength);
             strResult += format("\nTimestamp: %lf", m_nTimestamp);
-            strResult += format("\nHexData: %02X%02X%02X", m_pCategory->m_id, ((m_nLength + 3) >> 8) & 0xff, (m_nLength + 3) & 0xff);
+            strResult += format("\nHexData: %02X%02X%02X", (unsigned int) m_pCategory->m_id,
+                                (unsigned int) (((m_nLength + 3) >> 8) & 0xff), (unsigned int) ((m_nLength + 3) & 0xff));
             strResult += format("\nSrc IP: %u.%u.%u.%u",
                                 (m_nIP >> 24) & 0xff, (m_nIP >> 16) & 0xff, (m_nIP >> 8) & 0xff, m_nIP & 0xff);
             break;

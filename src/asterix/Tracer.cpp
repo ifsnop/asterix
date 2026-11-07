@@ -63,10 +63,12 @@ void Tracer::Error(const char *format, ...) {
     vsnprintf(buffer, 1024, format, args);
     va_end (args);
     Tracer &instance = Tracer::instance();
+    // the print functions are printf-like: buffer is already formatted, so it must not be the format
+    // again (a '%' coming from the data or a file name would read arguments that do not exist)
     if (instance.pPrintFunc) {
-        instance.pPrintFunc(buffer);
+        instance.pPrintFunc("%s", buffer);
     } else if (instance.pPrintFunc2) {
-        instance.pPrintFunc2(buffer);
+        instance.pPrintFunc2("%s", buffer);
     } else {
         puts(buffer);
     }

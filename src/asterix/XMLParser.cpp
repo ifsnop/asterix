@@ -94,7 +94,7 @@ void XMLParser::Error(const char *errstr) {
 #ifdef PYTHON_WRAPPER
     PyErr_SetString(PyExc_SyntaxError, (char*)tmpstr.c_str());
 #else
-    Tracer::Error((char *) tmpstr.c_str());
+    Tracer::Error("%s", tmpstr.c_str()); // the text holds file data: never use it as the format
 #endif
 
     m_bErrorDetectedStopParsing = true;
