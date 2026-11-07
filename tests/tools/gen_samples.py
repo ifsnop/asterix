@@ -134,6 +134,9 @@ def main():
     write('bad/raw_len_too_small.raw', first[:1] + b'\x00\x02' + first[3:])           # block length < 3
     write('bad/raw_truncated_record.raw', first[:3] + first[3:len(first) // 2])       # record cut in an item
     write('bad/raw_truncated_stream.raw', good[:len(good) - 7])                       # stream cut in a block
+    rec = bytes.fromhex('F7C619C9A00EB2767F189408AA42D8033405C8800D400E')  # one CAT001 record of first
+    body = rec + rec[:10] + rec                                                  # a cut record between two good ones
+    write('bad/raw_broken_record_in_block.raw', bytes([1]) + (3 + len(body)).to_bytes(2, 'big') + body)
     write('bad/raw_fspec_only_fx.raw', first[:1] + b'\x00\x08' + b'\xff' * 5)          # FSPEC that never ends
     write('bad/oradis_count_zero.oradis', b'\x00\x00\x00\x00\x00\x00' + first)        # used to loop forever
     write('bad/oradis_count_too_big.oradis', b'\xff\xff\x00\x00\x00\x00' + first)

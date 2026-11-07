@@ -297,7 +297,7 @@ Item 390 : Flight Plan Related Data
 	Departure Airport: EDDL
 	Destination Airport: HELX
 	First number:  
-	Second number:  
+	Second number: @
 	Letter:  
 	Current Cleared Flight Level: 1400 (350.0000000 FL)
 

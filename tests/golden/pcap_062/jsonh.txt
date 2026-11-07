@@ -67,9 +67,9 @@
 		"CSN":{
 		"CS":"ATILOWW"},
 		"TAC":{
-		"TYPE":"    "},
+		"TYPE":"@@@@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":1,
 "cat":62,
 "length":49,
@@ -128,9 +128,9 @@
 		"MHG":17.2500000}},
 	"I390":{
 		"CSN":{
-		"CS":"DLHEGN "},
+		"CS":"DLHEGN@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":4,
 "cat":62,
 "length":4,
@@ -314,9 +314,9 @@
 		"CSN":{
 		"CS":"SZBZZZZ"},
 		"TAC":{
-		"TYPE":"    "},
+		"TYPE":"@@@@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":1,
 "cat":62,
 "length":49,
@@ -388,7 +388,7 @@
 		"MD1":17.2500000}},
 	"I390":{
 		"CSN":{
-		"CS":"WALIRF "},
+		"CS":"WALIRF@"},
 		"FCT":{
 		"GATOAT":0,
 		"FR1FR2":0,
@@ -457,9 +457,9 @@
 		"CSN":{
 		"CS":"KPRLIRN"},
 		"TAC":{
-		"TYPE":"    "},
+		"TYPE":"@@@@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":4,
 "cat":62,
 "length":4,
@@ -704,9 +704,9 @@
 		"CSN":{
 		"CS":"IRFLOWW"},
 		"TAC":{
-		"TYPE":"    "},
+		"TYPE":"@@@@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":1,
 "cat":62,
 "length":52,
@@ -765,9 +765,9 @@
 		"CSN":{
 		"CS":"ATILIPE"},
 		"TAC":{
-		"TYPE":"    "},
+		"TYPE":"@@@@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":1,
 "cat":62,
 "length":46,
@@ -963,9 +963,9 @@
 		"SAL":17.0000000}},
 	"I390":{
 		"CSN":{
-		"CS":"LLGTS  "},
+		"CS":"LLGTS@@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":3,
 "cat":62,
 "length":4,
@@ -1035,9 +1035,9 @@
 		"MHG":19.0000000}},
 	"I390":{
 		"CSN":{
-		"CS":"ZALKPR "},
+		"CS":"ZALKPR@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":1,
 "cat":62,
 "length":46,
@@ -1150,9 +1150,9 @@
 		"CSN":{
 		"CS":"DVALDZA"},
 		"TAC":{
-		"TYPE":"    "},
+		"TYPE":"@@@@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":1,
 "cat":62,
 "length":50,
@@ -1477,9 +1477,9 @@
 		"CSN":{
 		"CS":"IRFLYBE"},
 		"TAC":{
-		"TYPE":"    "},
+		"TYPE":"@@@@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":1,
 "cat":62,
 "length":50,
@@ -1660,9 +1660,9 @@
 		"COM":19.0000000}},
 	"I390":{
 		"CSN":{
-		"CS":"LOLHSM "},
+		"CS":"LOLHSM@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":6,
 "cat":62,
 "length":4,
@@ -1825,9 +1825,9 @@
 		"CSN":{
 		"CS":"ATILOWW"},
 		"TAC":{
-		"TYPE":"    "},
+		"TYPE":"@@@@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":1,
 "cat":62,
 "length":49,
@@ -1886,9 +1886,9 @@
 		"MHG":17.2500000}},
 	"I390":{
 		"CSN":{
-		"CS":"DLHEGN "},
+		"CS":"DLHEGN@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":4,
 "cat":62,
 "length":4,
@@ -2072,9 +2072,9 @@
 		"CSN":{
 		"CS":"SZBZZZZ"},
 		"TAC":{
-		"TYPE":"    "},
+		"TYPE":"@@@@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":1,
 "cat":62,
 "length":49,
@@ -2146,7 +2146,7 @@
 		"MD1":17.2500000}},
 	"I390":{
 		"CSN":{
-		"CS":"WALIRF "},
+		"CS":"WALIRF@"},
 		"FCT":{
 		"GATOAT":0,
 		"FR1FR2":0,
@@ -2215,9 +2215,9 @@
 		"CSN":{
 		"CS":"KPRLIRN"},
 		"TAC":{
-		"TYPE":"    "},
+		"TYPE":"@@@@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":4,
 "cat":62,
 "length":4,
@@ -2462,9 +2462,9 @@
 		"CSN":{
 		"CS":"IRFLOWW"},
 		"TAC":{
-		"TYPE":"    "},
+		"TYPE":"@@@@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":1,
 "cat":62,
 "length":52,
@@ -2523,9 +2523,9 @@
 		"CSN":{
 		"CS":"ATILIPE"},
 		"TAC":{
-		"TYPE":"    "},
+		"TYPE":"@@@@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":1,
 "cat":62,
 "length":46,
@@ -2721,9 +2721,9 @@
 		"SAL":17.0000000}},
 	"I390":{
 		"CSN":{
-		"CS":"LLGTS  "},
+		"CS":"LLGTS@@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":3,
 "cat":62,
 "length":4,
@@ -2793,9 +2793,9 @@
 		"MHG":19.0000000}},
 	"I390":{
 		"CSN":{
-		"CS":"ZALKPR "},
+		"CS":"ZALKPR@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":1,
 "cat":62,
 "length":52,
@@ -2848,9 +2848,9 @@
 		"CSN":{
 		"CS":"DVALDZA"},
 		"TAC":{
-		"TYPE":"    "},
+		"TYPE":"@@@@"},
 		"WTC":{
-		"WTC":" "}}}},
+		"WTC":"@"}}}},
 {"id":1,
 "cat":62,
 "length":46,

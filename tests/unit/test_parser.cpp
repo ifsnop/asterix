@@ -2,6 +2,8 @@
  * InputParser / DataBlock / DataRecord: data block framing, FSPEC, UAP selection and the record
  * header of each output format.
  */
+#include <algorithm>
+#include <cstdio>
 #include <memory>
 #include <string>
 #include <vector>
@@ -136,4 +138,48 @@ TEST_CASE("-jx keys: repeated names get a number, FX bits are numbered by extent
     REQUIRE(i020 != std::string::npos);
     std::string obj = jx.substr(i020, jx.find('}', jx.find("\"FX0\"", i020)) - i020);
     CHECK_EQ(obj.find("\"FX1\""), std::string::npos);
+}
+
+TEST_CASE("a block with a malformed record reports a warning with the whole block, output unchanged") {
+    std::string rec(CAT001_RECORD);
+    std::string body = rec + rec.substr(0, 20) + rec;  // a cut record between two good ones
+    std::vector<unsigned char> data = block(1, body);
+    tracerMessages().clear();
+    std::unique_ptr<AsterixData> d = parse(data);
+    std::string blockHex;
+    for (size_t i = 0; i < data.size(); i++) {
+        char h[3];
+        snprintf(h, sizeof(h), "%02X", data[i]);
+        blockHex += h;
+    }
+    bool found = false;
+    for (size_t i = 0; i < tracerMessages().size(); i++) {
+        const std::string &m = tracerMessages()[i];
+        if (m.compare(0, 9, "Warning: ") == 0) {
+            found = true;
+            CHECK(m.find("malformed record") != std::string::npos);
+            CHECK(m.find("Block: " + blockHex) != std::string::npos);
+        }
+    }
+    CHECK(found);
+    // a good block gives no warning
+    tracerMessages().clear();
+    parse(block(1, rec + rec));
+    for (size_t i = 0; i < tracerMessages().size(); i++)
+        CHECK(tracerMessages()[i].compare(0, 9, "Warning: ") != 0);
+}
+
+TEST_CASE("warning messages longer than 1024 characters are not cut") {
+    std::string rec(CAT001_RECORD);
+    std::string body;
+    for (int i = 0; i < 40; i++)
+        body += rec;              // 920 bytes of good records
+    body += rec.substr(0, 10);    // and a cut one at the end
+    std::vector<unsigned char> data = block(1, body);
+    tracerMessages().clear();
+    parse(data);
+    size_t longest = 0;
+    for (size_t i = 0; i < tracerMessages().size(); i++)
+        longest = std::max(longest, tracerMessages()[i].size());
+    CHECK(longest > 2 * data.size());
 }
