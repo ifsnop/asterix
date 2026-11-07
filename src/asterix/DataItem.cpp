@@ -38,27 +38,32 @@ DataItem::~DataItem() {
 
 bool DataItem::getText(std::string &strResult, std::string &strHeader, const unsigned int formatType) {
     std::string newHeader;
-    std::string strNewResult;
     std::string indent("    ");  // 4 spaces make an indent.
+
+    // The item is written straight into strResult; if it has nothing to print, it is cut off again.
+    const std::string::size_type itemStart = strResult.length();
+    std::string &strNewResult = strResult;
 
     switch (formatType) {
         case CAsterixFormat::EJSON:
         case CAsterixFormat::EJSONX:
-            strNewResult = format("\"I%s\":", m_pDescription->m_strID.c_str());
+            strNewResult.append("\"I", 2);
+            strNewResult += m_pDescription->m_strID;
+            strNewResult.append("\":", 2);
             break;
         case CAsterixFormat::EJSONH:
         case CAsterixFormat::EJSONE:
-            strNewResult = format("\t\"I%s\":", m_pDescription->m_strID.c_str());
+            strNewResult += format("\t\"I%s\":", m_pDescription->m_strID.c_str());
             break;
         case CAsterixFormat::EXML:
-            strNewResult = format("<I%s>", m_pDescription->m_strID.c_str());
+            strNewResult += format("<I%s>", m_pDescription->m_strID.c_str());
             break;
         case CAsterixFormat::EXMLH:
-            strNewResult = format("\n%s", indent.c_str());  // New line and indent 1 level (4 spaces).
+            strNewResult += format("\n%s", indent.c_str());  // New line and indent 1 level (4 spaces).
             strNewResult += format("<I%s>", m_pDescription->m_strID.c_str());
             break;
         case CAsterixFormat::ETxt:
-            strNewResult = format("\n\nItem %s : %s", m_pDescription->m_strID.c_str(),
+            strNewResult += format("\n\nItem %s : %s", m_pDescription->m_strID.c_str(),
                                   m_pDescription->m_strName.c_str());
             strNewResult += format("\n[ ");
             for (int i = 0; i < m_nLength; i++) {
@@ -74,9 +79,9 @@ bool DataItem::getText(std::string &strResult, std::string &strHeader, const uns
     // EJSONX fields report their byte position in the record: tell them where this item's copy starts
     DataItemBits::JsonPosition jsonPos(formatType == CAsterixFormat::EJSONX ? m_pData : NULL, m_nOffset);
     if (false == m_pDescription->getText(strNewResult, newHeader, formatType, m_pData, m_nLength)) {
+        strResult.resize(itemStart);
         return false;
     }
-    strResult += strNewResult;
 
     switch (formatType) {
         case CAsterixFormat::EXML:

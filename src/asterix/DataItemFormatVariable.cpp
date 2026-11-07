@@ -51,6 +51,25 @@ DataItemFormatVariable::~DataItemFormatVariable() {
     }
 }
 
+const std::vector<std::string> &DataItemFormatVariable::getJsonPrefixes(int extent) {
+    // part at index e uses sub item e, or the last sub item when there are fewer (as getText does)
+    while ((int) m_vJsonPrefixes.size() <= extent) {
+        int e = (int) m_vJsonPrefixes.size();
+        std::list<DataItemFormat *>::iterator it = m_lSubItems.begin();
+        for (int i = 0; i < e && it != m_lSubItems.end(); i++) {
+            std::list<DataItemFormat *>::iterator next = it;
+            if (++next == m_lSubItems.end())
+                break;
+            it = next;
+        }
+        if (m_lSubItems.size() == 1)
+            m_sJsonKeys.clear(); // each extent is its own object in the list
+        m_vJsonPrefixes.push_back(std::vector<std::string>());
+        ((DataItemFormatFixed *) (*it))->makeJsonPrefixes(m_sJsonKeys, e, m_vJsonPrefixes.back());
+    }
+    return m_vJsonPrefixes[extent];
+}
+
 long DataItemFormatVariable::getLength(const unsigned char *pData, long nMaxLength) {
     long length = 0;
     std::list<DataItemFormat *>::iterator it;
@@ -94,8 +113,6 @@ bool DataItemFormatVariable::getText(std::string &strResult, std::string &strHea
         listOfSubItems = true;
 
     it = m_lSubItems.begin();
-    std::string tmpResult;
-    std::set<std::string> jsonKeys; // EJSONX keys used in the current JSON object
     int extent = 0;                 // index of the current part, numbers the FX bits in EJSONX
 
     DataItemFormatFixed *dip = (DataItemFormatFixed *) (*it);
@@ -121,23 +138,24 @@ bool DataItemFormatVariable::getText(std::string &strResult, std::string &strHea
             case CAsterixFormat::EJSONX:
             case CAsterixFormat::EJSONH:
             case CAsterixFormat::EJSONE: {
-                tmpResult = "";
+                // the part is written as {...} straight into strResult, then the braces are trimmed in place
+                const std::string::size_type partStart = strResult.length();
                 if (formatType == CAsterixFormat::EJSONX) {
-                    if (listOfSubItems)
-                        jsonKeys.clear(); // each extent is its own object in the list
-                    ret |= dip->getText(tmpResult, strHeader, formatType, pData, dip->getLength(), jsonKeys, extent);
+                    ret |= dip->getText(strResult, strHeader, formatType, pData, dip->getLength(),
+                                        getJsonPrefixes(extent));
                 } else {
-                    ret |= dip->getText(tmpResult, strHeader, formatType, pData, dip->getLength());
+                    ret |= dip->getText(strResult, strHeader, formatType, pData, dip->getLength());
                 }
-                if (tmpResult.length() > 2) { // if result != {}
-                    if (listOfSubItems)
-                        strResult += '{';
-                    strResult += tmpResult.substr(1, tmpResult.length() - 2); // trim {}
-                    if (listOfSubItems)
-                        strResult += '}';
+                if (strResult.length() - partStart > 2) { // if result != {}
+                    if (!listOfSubItems) { // a list keeps {} around each part
+                        strResult.erase(partStart, 1);
+                        strResult.erase(strResult.length() - 1);
+                    }
                     if (!lastPart) {
                         strResult += ',';
                     }
+                } else {
+                    strResult.resize(partStart);
                 }
             }
                 break;

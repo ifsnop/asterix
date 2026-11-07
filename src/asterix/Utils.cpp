@@ -23,6 +23,17 @@
 
 #include "Utils.h"
 
+#if __cplusplus >= 201703L && defined(__has_include)
+#if __has_include(<charconv>)
+#include <charconv>
+#endif
+#endif
+#if defined(__cpp_lib_to_chars) && __cpp_lib_to_chars >= 201611L
+#define ASTERIX_HAVE_FLOAT_TO_CHARS 1
+#else
+#define ASTERIX_HAVE_FLOAT_TO_CHARS 0
+#endif
+
 std::string format_arg_list(const char *fmt, int size, va_list args) {
     char *buffer = new char[++size];;
     size = vsnprintf(buffer, size, fmt, args);
@@ -48,18 +59,44 @@ int get_format_len(const char *fmt, va_list args) {
 }
 
 std::string format(const char *fmt, ...) {
+    // Format once into a stack buffer; only results that do not fit need a second pass.
+    char buffer[512];
     va_list args;
-    int size = 0;
 
     va_start(args, fmt);
-    size = get_format_len(fmt, args);
+    int size = vsnprintf(buffer, sizeof(buffer), fmt, args);
     va_end(args);
+
+    if (size < 0) {
+        return std::string();
+    }
+    if ((size_t) size < sizeof(buffer)) {
+        return std::string(buffer);
+    }
 
     va_start(args, fmt);
     std::string s = format_arg_list(fmt, size, args);
     va_end(args);
 
     return s;
+}
+
+void appendDouble7(std::string &s, double value) {
+#if ASTERIX_HAVE_FLOAT_TO_CHARS
+    // std::to_chars with a precision is specified to give the same result as printf("%.7f")
+    char buffer[400];
+    std::to_chars_result r = std::to_chars(buffer, buffer + sizeof(buffer), value, std::chars_format::fixed, 7);
+    if (r.ec == std::errc()) {
+        s.append(buffer, r.ptr - buffer);
+        return;
+    }
+#endif
+    char small[64];
+    int size = snprintf(small, sizeof(small), "%.7lf", value);
+    if (size >= 0 && (size_t) size < sizeof(small))
+        s.append(small, size);
+    else
+        s += format("%.7lf", value);
 }
 
 uint32_t crc32(const void *pBuffer, size_t nLength, uint32_t nPreviousCrc32) {
