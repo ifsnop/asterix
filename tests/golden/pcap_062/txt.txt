@@ -99,8 +99,8 @@ Item 295 : Track Data Ages
 Item 390 : Flight Plan Related Data
 [ 4C 41 54 49 4C 4F 57 57 01 08 00 00 00 ]
 	Callsign: ATILOWW
-	Type of Aircraft:     
-	Wake Turbulence Category:  
+	Type of Aircraft: @@@@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 3
@@ -182,8 +182,8 @@ Item 295 : Track Data Ages
 
 Item 390 : Flight Plan Related Data
 [ 44 44 4C 48 45 47 4E 01 08 ]
-	Callsign: DLHEGN 
-	Wake Turbulence Category:  
+	Callsign: DLHEGN@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 4
@@ -473,8 +473,8 @@ Item 295 : Track Data Ages
 Item 390 : Flight Plan Related Data
 [ 4C 53 5A 42 5A 5A 5A 5A 01 08 00 00 00 ]
 	Callsign: SZBZZZZ
-	Type of Aircraft:     
-	Wake Turbulence Category:  
+	Type of Aircraft: @@@@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 11
@@ -572,7 +572,7 @@ Item 295 : Track Data Ages
 
 Item 390 : Flight Plan Related Data
 [ 50 57 41 4C 49 52 46 01 08 ]
-	Callsign: WALIRF 
+	Callsign: WALIRF@
 	GATOAT: 0 (Unknown)
 	FR1FR2: 0 (Instrument Flight Rules)
 	RVSM: 2 (Exempt)
@@ -664,8 +664,8 @@ Item 295 : Track Data Ages
 Item 390 : Flight Plan Related Data
 [ 4C 4B 50 52 4C 49 52 4E 01 08 00 00 00 ]
 	Callsign: KPRLIRN
-	Type of Aircraft:     
-	Wake Turbulence Category:  
+	Type of Aircraft: @@@@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 13
@@ -1047,8 +1047,8 @@ Item 295 : Track Data Ages
 Item 390 : Flight Plan Related Data
 [ 4C 49 52 46 4C 4F 57 57 01 08 00 00 00 ]
 	Callsign: IRFLOWW
-	Type of Aircraft:     
-	Wake Turbulence Category:  
+	Type of Aircraft: @@@@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 25
@@ -1130,8 +1130,8 @@ Item 295 : Track Data Ages
 Item 390 : Flight Plan Related Data
 [ 4C 41 54 49 4C 49 50 45 01 08 00 00 00 ]
 	Callsign: ATILIPE
-	Type of Aircraft:     
-	Wake Turbulence Category:  
+	Type of Aircraft: @@@@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 26
@@ -1414,8 +1414,8 @@ Item 295 : Track Data Ages
 
 Item 390 : Flight Plan Related Data
 [ 44 4C 4C 47 54 53 01 08 00 ]
-	Callsign: LLGTS  
-	Wake Turbulence Category:  
+	Callsign: LLGTS@@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 32
@@ -1524,8 +1524,8 @@ Item 295 : Track Data Ages
 
 Item 390 : Flight Plan Related Data
 [ 44 5A 41 4C 4B 50 52 01 08 ]
-	Callsign: ZALKPR 
-	Wake Turbulence Category:  
+	Callsign: ZALKPR@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 35
@@ -1684,8 +1684,8 @@ Item 295 : Track Data Ages
 Item 390 : Flight Plan Related Data
 [ 4C 44 56 41 4C 44 5A 41 01 08 0C 03 00 ]
 	Callsign: DVALDZA
-	Type of Aircraft:     
-	Wake Turbulence Category:  
+	Type of Aircraft: @@@@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 37
@@ -2156,8 +2156,8 @@ Item 295 : Track Data Ages
 Item 390 : Flight Plan Related Data
 [ 4C 49 52 46 4C 59 42 45 01 08 00 00 00 ]
 	Callsign: IRFLYBE
-	Type of Aircraft:     
-	Wake Turbulence Category:  
+	Type of Aircraft: @@@@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 46
@@ -2402,8 +2402,8 @@ Item 295 : Track Data Ages
 
 Item 390 : Flight Plan Related Data
 [ 44 4C 4F 4C 48 53 4D 01 08 ]
-	Callsign: LOLHSM 
-	Wake Turbulence Category:  
+	Callsign: LOLHSM@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 50
@@ -2669,8 +2669,8 @@ Item 295 : Track Data Ages
 Item 390 : Flight Plan Related Data
 [ 4C 41 54 49 4C 4F 57 57 01 08 00 00 00 ]
 	Callsign: ATILOWW
-	Type of Aircraft:     
-	Wake Turbulence Category:  
+	Type of Aircraft: @@@@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 59
@@ -2752,8 +2752,8 @@ Item 295 : Track Data Ages
 
 Item 390 : Flight Plan Related Data
 [ 44 44 4C 48 45 47 4E 01 08 ]
-	Callsign: DLHEGN 
-	Wake Turbulence Category:  
+	Callsign: DLHEGN@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 60
@@ -3034,8 +3034,8 @@ Item 295 : Track Data Ages
 Item 390 : Flight Plan Related Data
 [ 4C 53 5A 42 5A 5A 5A 5A 01 08 00 00 00 ]
 	Callsign: SZBZZZZ
-	Type of Aircraft:     
-	Wake Turbulence Category:  
+	Type of Aircraft: @@@@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 66
@@ -3133,7 +3133,7 @@ Item 295 : Track Data Ages
 
 Item 390 : Flight Plan Related Data
 [ 50 57 41 4C 49 52 46 01 08 ]
-	Callsign: WALIRF 
+	Callsign: WALIRF@
 	GATOAT: 0 (Unknown)
 	FR1FR2: 0 (Instrument Flight Rules)
 	RVSM: 2 (Exempt)
@@ -3225,8 +3225,8 @@ Item 295 : Track Data Ages
 Item 390 : Flight Plan Related Data
 [ 4C 4B 50 52 4C 49 52 4E 01 08 00 00 00 ]
 	Callsign: KPRLIRN
-	Type of Aircraft:     
-	Wake Turbulence Category:  
+	Type of Aircraft: @@@@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 68
@@ -3608,8 +3608,8 @@ Item 295 : Track Data Ages
 Item 390 : Flight Plan Related Data
 [ 4C 49 52 46 4C 4F 57 57 01 08 00 00 00 ]
 	Callsign: IRFLOWW
-	Type of Aircraft:     
-	Wake Turbulence Category:  
+	Type of Aircraft: @@@@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 80
@@ -3691,8 +3691,8 @@ Item 295 : Track Data Ages
 Item 390 : Flight Plan Related Data
 [ 4C 41 54 49 4C 49 50 45 01 08 00 00 00 ]
 	Callsign: ATILIPE
-	Type of Aircraft:     
-	Wake Turbulence Category:  
+	Type of Aircraft: @@@@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 81
@@ -3975,8 +3975,8 @@ Item 295 : Track Data Ages
 
 Item 390 : Flight Plan Related Data
 [ 44 4C 4C 47 54 53 01 08 00 ]
-	Callsign: LLGTS  
-	Wake Turbulence Category:  
+	Callsign: LLGTS@@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 87
@@ -4085,8 +4085,8 @@ Item 295 : Track Data Ages
 
 Item 390 : Flight Plan Related Data
 [ 44 5A 41 4C 4B 50 52 01 08 ]
-	Callsign: ZALKPR 
-	Wake Turbulence Category:  
+	Callsign: ZALKPR@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 90
@@ -4161,8 +4161,8 @@ Item 295 : Track Data Ages
 Item 390 : Flight Plan Related Data
 [ 4C 44 56 41 4C 44 5A 41 01 08 0C 03 00 ]
 	Callsign: DVALDZA
-	Type of Aircraft:     
-	Wake Turbulence Category:  
+	Type of Aircraft: @@@@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 91
