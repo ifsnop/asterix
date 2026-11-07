@@ -42,6 +42,8 @@ public:
 
 private:
     bool m_bJsonPrefixesSet;                   //!< m_vJsonPrefixes is built
+    bool m_bPresenceBitsSet;                   //!< m_vPresenceBits is built
+    std::vector<int> m_vPresenceBits;          //!< index part: bit number of its BitsPresence bit, 0 none, -1 use the list
     std::vector<std::string> m_vJsonPrefixes;  //!< EJSONX prefixes of this item on its own (empty object, extent 0)
 
 public:

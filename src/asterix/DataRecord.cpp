@@ -50,8 +50,7 @@ DataRecord::DataRecord(Category *cat, int nID, unsigned long len, const unsigned
 
         while (bitmask > 1) {
             if (FSPEC & bitmask) {
-                DataItemDescription *dataitemdesc = m_pCategory->getDataItemDescription(
-                        pUAP->getDataItemIDByUAPfrn(nFRN));
+                DataItemDescription *dataitemdesc = pUAP->getDataItemDescriptionByUAPfrn(m_pCategory, nFRN);
                 if (dataitemdesc) {
                     DataItem *di = new DataItem(dataitemdesc);
                     m_lDataItems.push_back(di);

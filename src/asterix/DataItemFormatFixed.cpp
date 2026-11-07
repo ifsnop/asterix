@@ -26,11 +26,11 @@
 #include "asterixformat.hxx"
 
 DataItemFormatFixed::DataItemFormatFixed(int id)
-        : DataItemFormat(id), m_nLength(0), m_bJsonPrefixesSet(false) {
+        : DataItemFormat(id), m_nLength(0), m_bJsonPrefixesSet(false), m_bPresenceBitsSet(false) {
 }
 
 DataItemFormatFixed::DataItemFormatFixed(const DataItemFormatFixed &obj)
-        : DataItemFormat(obj.m_nID), m_nLength(obj.m_nLength), m_bJsonPrefixesSet(false) {
+        : DataItemFormat(obj.m_nID), m_nLength(obj.m_nLength), m_bJsonPrefixesSet(false), m_bPresenceBitsSet(false) {
     std::list<DataItemFormat *>::iterator it = ((DataItemFormat &) obj).m_lSubItems.begin();
 
     while (it != obj.m_lSubItems.end()) {
@@ -121,6 +121,38 @@ std::string &DataItemFormatFixed::getPartName(int part) {
 }
 
 bool DataItemFormatFixed::isSecondaryPartPresent(const unsigned char *pData, int part) {
+    // Called for every secondary part of every Compound item: the bit of each part is looked up once.
+    if (!m_bPresenceBitsSet) {
+        m_bPresenceBitsSet = true;
+        std::list<DataItemFormat *>::iterator bitit;
+        for (bitit = m_lSubItems.begin(); bitit != m_lSubItems.end(); bitit++) {
+            DataItemBits *bit = (DataItemBits *) (*bitit);
+            if (bit == NULL) {
+                m_vPresenceBits.clear(); // let the loop below report it
+                break;
+            }
+            int p = bit->m_nPresenceOfField;
+            if (p > 0) {
+                if ((size_t) p >= m_vPresenceBits.size())
+                    m_vPresenceBits.resize(p + 1, 0);
+                if (m_vPresenceBits[p] == 0) // the first bit with this part is the one used
+                    m_vPresenceBits[p] = bit->m_nFrom >= 1 ? bit->m_nFrom : -1;
+            }
+        }
+        if (bitit == m_lSubItems.end() && m_vPresenceBits.empty())
+            m_vPresenceBits.push_back(0); // no parts at all, cache is still valid
+    }
+    if (part > 0 && !m_vPresenceBits.empty()) {
+        int bitnr = (size_t) part < m_vPresenceBits.size() ? m_vPresenceBits[part] : 0;
+        if (bitnr == 0)
+            return false;
+        if (bitnr > 0 && bitnr <= m_nLength * 8) {
+            int shift = (bitnr - 1) % 8;
+            return (pData[m_nLength - 1 - (bitnr - 1) / 8] & (0x01 << shift)) != 0;
+        }
+        // out of range: the loop below reports it
+    }
+
     // go through all bits and find which has BitsPresence set to part
     std::list<DataItemFormat *>::iterator bitit;
     for (bitit = m_lSubItems.begin(); bitit != m_lSubItems.end(); bitit++) {
