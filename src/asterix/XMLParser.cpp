@@ -759,6 +759,8 @@ XMLParser::XMLParser()
  */
 XMLParser::~XMLParser() {
     XML_ParserFree(m_Parser);
+    // a category is handed to the definitions at </Category>: if parsing stopped before, it is still ours
+    delete m_pCategory;
 }
 
 /*!
