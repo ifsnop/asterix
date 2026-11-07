@@ -81,6 +81,12 @@ public:
 
     bool m_bFiltered; //! item shall be printed when filter is applied
 
+private:
+    std::string m_strJsonMask;            //!< EJSONX ,"mask":"..." text (empty: no mask) for bits below
+    int m_nJsonMaskFrom, m_nJsonMaskTo;   //!< m_nFrom, m_nTo m_strJsonMask was built for (0: not built)
+
+public:
+
     DataItemBits *clone() const { return new DataItemBits(*this); } // Return clone of object
     bool getText(std::string &strResult, std::string &strHeader, const unsigned int formatType, unsigned char *pData,
                  long nLength); // appends value to strResult
