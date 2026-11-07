@@ -117,6 +117,16 @@ bool CAsterixPcapSubformat::ReadPacket(CBaseFormatDescriptor &formatDescriptor, 
     if (Descriptor.m_bInvertByteOrder) {
         nPacketBufferSize = convert_long(nPacketBufferSize);
     }
+    // incl_len comes from the file: a corrupt value asked for up to 4 GB here (std::bad_alloc abort).
+    // libpcap never writes more than MAXIMUM_SNAPLEN (262144) bytes per packet, and a file cannot hold
+    // more than what is left of it (BytesLeftToRead() is 0 when unknown).
+    const unsigned long maxPcapPacket = 262144;
+    unsigned long leftBytes = device.BytesLeftToRead();
+    if (nPacketBufferSize == 0 || nPacketBufferSize > maxPcapPacket ||
+        (leftBytes > 0 && nPacketBufferSize > leftBytes)) {
+        LOGERROR(1, "Wrong PCAP packet length (%lu).\n", nPacketBufferSize);
+        return false;
+    }
     unsigned char *pPacketBuffer = new unsigned char[nPacketBufferSize]; // input data buffer
     if (!device.Read((void *) pPacketBuffer, nPacketBufferSize)) {
         LOGERROR(1, "Couldn't read PCAP packet.\n");
