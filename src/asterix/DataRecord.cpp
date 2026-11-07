@@ -175,23 +175,38 @@ bool DataRecord::getText(std::string &strResult, std::string &strHeader, const u
     const std::string::size_type recordStart = strResult.length();
     std::string &strNewResult = strResult;
 
+    // Text and JSON outputs print the FSPEC apart ("Fspec" / "fspec", from the FSPEC bytes stored when the
+    // record was parsed, m_pFSPECData) and "HexData" / "hexdata" holds only the data items after it, so the
+    // record is fspec + hexdata. In EJSONX, field "pos" values are byte offsets in this hexdata (its first
+    // byte is pos 0). XML keeps the whole record in hexdata.
+    std::string strFSPEC;
+    const char *pItemsHex = m_pHexData;
+    switch (formatType) {
+        case CAsterixFormat::ETxt:
+        case CAsterixFormat::EJSON:
+        case CAsterixFormat::EJSONX:
+        case CAsterixFormat::EJSONH:
+        case CAsterixFormat::EJSONE: {
+            appendHexBytes(strFSPEC, m_pFSPECData, m_nFSPECLength);
+            size_t hexLen = strlen(m_pHexData);
+            pItemsHex = m_pHexData + (strFSPEC.length() < hexLen ? strFSPEC.length() : hexLen);
+            break;
+        }
+    }
+
     switch (formatType) {
         case CAsterixFormat::ETxt:
             strNewResult += format("\n-------------------------\nData Record %d", m_nID);
             strNewResult += format("\nLen: %ld", m_nLength);
             strNewResult += format("\nCRC: %08X", m_nCrc);
             strNewResult += format("\nSource IP: %u.%u.%u.%u", ip[0], ip[1], ip[2], ip[3]);
-            strNewResult += format("\nHexData: %s", m_pHexData);
+            strNewResult += "\nFspec: ";
+            strNewResult += strFSPEC;
+            strNewResult += "\nHexData: ";
+            strNewResult += pItemsHex;
             break;
         case CAsterixFormat::EJSON:
         case CAsterixFormat::EJSONX: {
-            // "fspec" is printed from the FSPEC bytes stored when the record was parsed (m_pFSPECData) and
-            // "hexdata" holds only the data items after it, so the record is fspec + hexdata.
-            // In EJSONX, field "pos" values are byte offsets in this hexdata (its first byte is pos 0).
-            std::string strFSPEC;
-            appendHexBytes(strFSPEC, m_pFSPECData, m_nFSPECLength);
-            size_t hexLen = strlen(m_pHexData);
-            const char *pItemsHex = m_pHexData + (strFSPEC.length() < hexLen ? strFSPEC.length() : hexLen);
             // same text as one format() of the whole header; the long hex strings are appended directly
             strNewResult += format(
                     "{\"id\":%d,\"cat\":%d,\"length\":%ld,\"crc\":\"%08X\",\"timestamp\":%lf,\"srcip\":\"%u.%u.%u.%u\",\"fspec\":\"",
@@ -205,8 +220,12 @@ bool DataRecord::getText(std::string &strResult, std::string &strHeader, const u
         case CAsterixFormat::EJSONH:
         case CAsterixFormat::EJSONE:
             strNewResult += format(
-                    "{\"id\":%d,\n\"cat\":%d,\n\"length\":%ld,\n\"crc\":\"%08X\",\n\"timestamp\":%lf,\n\"srcip\":\"%u.%u.%u.%u\",\n\"hexdata\":\"%s\",\n\"CAT%03d\":{\n",
-                    m_nID, m_pCategory->m_id, m_nLength, m_nCrc, m_nTimestamp, ip[0], ip[1], ip[2], ip[3], m_pHexData, m_pCategory->m_id);
+                    "{\"id\":%d,\n\"cat\":%d,\n\"length\":%ld,\n\"crc\":\"%08X\",\n\"timestamp\":%lf,\n\"srcip\":\"%u.%u.%u.%u\",\n\"fspec\":\"",
+                    m_nID, m_pCategory->m_id, m_nLength, m_nCrc, m_nTimestamp, ip[0], ip[1], ip[2], ip[3]);
+            strNewResult += strFSPEC;
+            strNewResult += "\",\n\"hexdata\":\"";
+            strNewResult += pItemsHex;
+            strNewResult += format("\",\n\"CAT%03d\":{\n", m_pCategory->m_id);
             break;
         case CAsterixFormat::EXML:
         case CAsterixFormat::EXMLH: {
