@@ -22,12 +22,13 @@
  */
 
 #include "DataItem.h"
+#include "DataItemBits.h"
 #include "Tracer.h"
 #include "Utils.h"
 #include "asterixformat.hxx"
 
 DataItem::DataItem(DataItemDescription *pDesc)
-        : m_pDescription(pDesc), m_pData(NULL), m_nLength(0) {
+        : m_pDescription(pDesc), m_nOffset(0), m_pData(NULL), m_nLength(0) {
 }
 
 DataItem::~DataItem() {
@@ -70,6 +71,8 @@ bool DataItem::getText(std::string &strResult, std::string &strHeader, const uns
             break;
     }
 
+    // EJSONX fields report their byte position in the record: tell them where this item's copy starts
+    DataItemBits::JsonPosition jsonPos(formatType == CAsterixFormat::EJSONX ? m_pData : NULL, m_nOffset);
     if (false == m_pDescription->getText(strNewResult, newHeader, formatType, m_pData, m_nLength)) {
         return false;
     }

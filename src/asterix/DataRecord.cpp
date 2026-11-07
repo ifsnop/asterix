@@ -93,6 +93,7 @@ DataRecord::DataRecord(Category *cat, int nID, unsigned long len, const unsigned
             break;
         }
 
+        di->m_nOffset = (long) (m_pItemDataStart - data) - (long) m_nFSPECLength;
         long usedbytes = di->parse(m_pItemDataStart, nUnparsed);
         if (usedbytes <= 0 || usedbytes > nUnparsed) {
             Tracer::Error("Wrong length in DataItem format for CAT%03d/I%s", cat->m_id,
@@ -181,11 +182,22 @@ bool DataRecord::getText(std::string &strResult, std::string &strHeader, const u
             strNewResult += format("\nHexData: %s", m_pHexData);
             break;
         case CAsterixFormat::EJSON:
-        case CAsterixFormat::EJSONX:
+        case CAsterixFormat::EJSONX: {
+            // "fspec" is printed from the FSPEC bytes stored when the record was parsed (m_pFSPECData) and
+            // "hexdata" holds only the data items after it, so the record is fspec + hexdata.
+            // In EJSONX, field "pos" values are byte offsets in this hexdata (its first byte is pos 0).
+            std::string strFSPEC;
+            for (unsigned long i = 0; i < m_nFSPECLength; i++) {
+                strFSPEC += format("%02X", m_pFSPECData[i]);
+            }
+            size_t hexLen = strlen(m_pHexData);
+            const char *pItemsHex = m_pHexData + (strFSPEC.length() < hexLen ? strFSPEC.length() : hexLen);
             strNewResult = format(
-                    "{\"id\":%d,\"cat\":%d,\"length\":%ld,\"crc\":\"%08X\",\"timestamp\":%lf,\"srcip\":\"%u.%u.%u.%u\",\"hexdata\":\"%s\",\"CAT%03d\":{",
-                    m_nID, m_pCategory->m_id, m_nLength, m_nCrc, m_nTimestamp, ip[0], ip[1], ip[2], ip[3], m_pHexData, m_pCategory->m_id);
+                    "{\"id\":%d,\"cat\":%d,\"length\":%ld,\"crc\":\"%08X\",\"timestamp\":%lf,\"srcip\":\"%u.%u.%u.%u\",\"fspec\":\"%s\",\"hexdata\":\"%s\",\"CAT%03d\":{",
+                    m_nID, m_pCategory->m_id, m_nLength, m_nCrc, m_nTimestamp, ip[0], ip[1], ip[2], ip[3],
+                    strFSPEC.c_str(), pItemsHex, m_pCategory->m_id);
             break;
+        }
         case CAsterixFormat::EJSONH:
         case CAsterixFormat::EJSONE:
             strNewResult = format(

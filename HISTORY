@@ -304,3 +304,12 @@ Security fixes (found with AddressSanitizer/UBSan and fuzzing):
            TCP client socket used after close, definition object leaked when asterix.ini is missing
 Source IP of each record in TXT, JSON and XML outputs (UDP multicast input and GPS files)
 New output format -jx / --json-hex: compact JSON, one record per line, with hex and mask of each field
+
+2.8.11-ifsnop.2 (python_v0.7.11 unchanged)
+-jx / --json-hex made to change a value and write it back to ASTERIX:
+           "fspec" (FSPEC bytes) and "hexdata" (data items after the FSPEC): the record is fspec+hexdata
+           "pos" in every field: byte offset of its hex in hexdata (first byte of hexdata is pos 0)
+           "mask" whenever a field does not fill its hex bytes, so hexdata[pos..] = (hex & ~mask) | (value & mask)
+           Unique keys: FX bits numbered by extent (FX0, FX1, ...), other repeated names numbered (spare, spare1)
+-j record header changed (incompatible with the original): "fspec" printed separately and "hexdata" holds
+           only the data items after the FSPEC (in the original, hexdata was the whole record)
