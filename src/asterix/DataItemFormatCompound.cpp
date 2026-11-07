@@ -152,29 +152,33 @@ bool DataItemFormatCompound::getText(std::string &strResult, std::string &strHea
                     break;
                 }
                 nSecRemaining -= skip;
-                std::string tmpStr = "";
 
                 switch (formatType) {
                     case CAsterixFormat::EJSONH:
                     case CAsterixFormat::EJSONE:
                     case CAsterixFormat::EJSONX:
                     case CAsterixFormat::EJSON: {
+                        // written straight into strResult, cut off again if the part prints nothing
+                        const std::string::size_type partStart = strResult.length();
                         if (formatType == CAsterixFormat::EJSONH || formatType == CAsterixFormat::EJSONE) {
-                            tmpStr += "\n\t\t";
+                            strResult += "\n\t\t";
                         }
-                        tmpStr += "\"" + dip->getPartName(secondaryPart) + "\":";
+                        strResult += '"';
+                        strResult += dip->getPartName(secondaryPart);
+                        strResult += "\":";
 
-                        bool r = dip2->getText(tmpStr, strHeader, formatType, pSecData, skip);
+                        bool r = dip2->getText(strResult, strHeader, formatType, pSecData, skip);
                         ret |= r;
                         pSecData += skip;
 
                         if (r) {
-                            strResult += tmpStr;
                             // replace last ',' with '}'
                             if (strResult[strResult.length() - 1] == ',') {
                                 strResult[strResult.length() - 1] = '}';
                             }
                             strResult += ",";
+                        } else {
+                            strResult.resize(partStart);
                         }
                     }
                         break;

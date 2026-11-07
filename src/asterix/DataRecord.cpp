@@ -140,7 +140,8 @@ DataRecord::DataRecord(Category *cat, int nID, unsigned long len, const unsigned
         // build hexdata string
         m_pHexData = (char *) calloc(m_nLength  * 2 + 1 /* null */, sizeof(char));
         for (i = 0; i < m_nLength; i++) {
-            snprintf(m_pHexData + sizeof(char) * i * 2, 3, "%02X", data[i]);
+            m_pHexData[i * 2] = HEXDIGITS_UPPER[data[i] >> 4];
+            m_pHexData[i * 2 + 1] = HEXDIGITS_UPPER[data[i] & 0x0F];
         }
     }
 }
@@ -171,11 +172,13 @@ bool DataRecord::getText(std::string &strResult, std::string &strHeader, const u
     ip[2] = (unsigned char)(m_nIP >> 8);
     ip[3] = (unsigned char)(m_nIP);
 
-    std::string strNewResult;
+    // The record is written straight into strResult; if no item has anything to print, it is cut off again.
+    const std::string::size_type recordStart = strResult.length();
+    std::string &strNewResult = strResult;
 
     switch (formatType) {
         case CAsterixFormat::ETxt:
-            strNewResult = format("\n-------------------------\nData Record %d", m_nID);
+            strNewResult += format("\n-------------------------\nData Record %d", m_nID);
             strNewResult += format("\nLen: %ld", m_nLength);
             strNewResult += format("\nCRC: %08X", m_nCrc);
             strNewResult += format("\nSource IP: %u.%u.%u.%u", ip[0], ip[1], ip[2], ip[3]);
@@ -187,27 +190,29 @@ bool DataRecord::getText(std::string &strResult, std::string &strHeader, const u
             // "hexdata" holds only the data items after it, so the record is fspec + hexdata.
             // In EJSONX, field "pos" values are byte offsets in this hexdata (its first byte is pos 0).
             std::string strFSPEC;
-            for (unsigned long i = 0; i < m_nFSPECLength; i++) {
-                strFSPEC += format("%02X", m_pFSPECData[i]);
-            }
+            appendHexBytes(strFSPEC, m_pFSPECData, m_nFSPECLength);
             size_t hexLen = strlen(m_pHexData);
             const char *pItemsHex = m_pHexData + (strFSPEC.length() < hexLen ? strFSPEC.length() : hexLen);
-            strNewResult = format(
-                    "{\"id\":%d,\"cat\":%d,\"length\":%ld,\"crc\":\"%08X\",\"timestamp\":%lf,\"srcip\":\"%u.%u.%u.%u\",\"fspec\":\"%s\",\"hexdata\":\"%s\",\"CAT%03d\":{",
-                    m_nID, m_pCategory->m_id, m_nLength, m_nCrc, m_nTimestamp, ip[0], ip[1], ip[2], ip[3],
-                    strFSPEC.c_str(), pItemsHex, m_pCategory->m_id);
+            // same text as one format() of the whole header; the long hex strings are appended directly
+            strNewResult += format(
+                    "{\"id\":%d,\"cat\":%d,\"length\":%ld,\"crc\":\"%08X\",\"timestamp\":%lf,\"srcip\":\"%u.%u.%u.%u\",\"fspec\":\"",
+                    m_nID, m_pCategory->m_id, m_nLength, m_nCrc, m_nTimestamp, ip[0], ip[1], ip[2], ip[3]);
+            strNewResult += strFSPEC;
+            strNewResult.append("\",\"hexdata\":\"", 13);
+            strNewResult += pItemsHex;
+            strNewResult += format("\",\"CAT%03d\":{", m_pCategory->m_id);
             break;
         }
         case CAsterixFormat::EJSONH:
         case CAsterixFormat::EJSONE:
-            strNewResult = format(
+            strNewResult += format(
                     "{\"id\":%d,\n\"cat\":%d,\n\"length\":%ld,\n\"crc\":\"%08X\",\n\"timestamp\":%lf,\n\"srcip\":\"%u.%u.%u.%u\",\n\"hexdata\":\"%s\",\n\"CAT%03d\":{\n",
                     m_nID, m_pCategory->m_id, m_nLength, m_nCrc, m_nTimestamp, ip[0], ip[1], ip[2], ip[3], m_pHexData, m_pCategory->m_id);
             break;
         case CAsterixFormat::EXML:
         case CAsterixFormat::EXMLH: {
             const int nXIDEFv = 1;
-            strNewResult = format(
+            strNewResult += format(
                     "<ASTERIX ver=\"%d\" cat=\"%d\" length=\"%ld\" crc=\"%08X\" timestamp=\"%lf\" srcip=\"%u.%u.%u.%u\" hexdata=\"%s\">",
                     nXIDEFv, m_pCategory->m_id, m_nLength, m_nCrc, m_nTimestamp, ip[0], ip[1], ip[2], ip[3], m_pHexData);
             break;
@@ -221,25 +226,30 @@ bool DataRecord::getText(std::string &strResult, std::string &strHeader, const u
     for (it = m_lDataItems.begin(); it != m_lDataItems.end(); it++) {
         DataItem *di = (DataItem *) (*it);
         if (di != NULL) {
-            if (di->getText(strNewResult, strHeader, formatType)) {
-                if (!ret) {
-                    ret = true;
-                } else {
-                    switch (formatType) {
-                        case CAsterixFormat::EJSON:
-                        case CAsterixFormat::EJSONX:
-                            strResult += ",";
-                            break;
-                        case CAsterixFormat::EJSONH:
-                        case CAsterixFormat::EJSONE:
-                            strResult += ",\n";
-                            break;
-                    }
+            const std::string::size_type itemStart = strResult.length();
+            if (ret) {
+                // separator from the previous item, removed below if this item prints nothing
+                switch (formatType) {
+                    case CAsterixFormat::EJSON:
+                    case CAsterixFormat::EJSONX:
+                        strResult += ",";
+                        break;
+                    case CAsterixFormat::EJSONH:
+                    case CAsterixFormat::EJSONE:
+                        strResult += ",\n";
+                        break;
                 }
-                strResult += strNewResult;
-                strNewResult = "";
+            }
+            if (di->getText(strNewResult, strHeader, formatType)) {
+                ret = true;
+            } else {
+                strResult.resize(itemStart);
             }
         }
+    }
+
+    if (!ret) {
+        strResult.resize(recordStart);
     }
 
     if (ret) {

@@ -94,7 +94,6 @@ bool DataItemFormatVariable::getText(std::string &strResult, std::string &strHea
         listOfSubItems = true;
 
     it = m_lSubItems.begin();
-    std::string tmpResult;
     std::set<std::string> jsonKeys; // EJSONX keys used in the current JSON object
     int extent = 0;                 // index of the current part, numbers the FX bits in EJSONX
 
@@ -121,23 +120,25 @@ bool DataItemFormatVariable::getText(std::string &strResult, std::string &strHea
             case CAsterixFormat::EJSONX:
             case CAsterixFormat::EJSONH:
             case CAsterixFormat::EJSONE: {
-                tmpResult = "";
+                // the part is written as {...} straight into strResult, then the braces are trimmed in place
+                const std::string::size_type partStart = strResult.length();
                 if (formatType == CAsterixFormat::EJSONX) {
                     if (listOfSubItems)
                         jsonKeys.clear(); // each extent is its own object in the list
-                    ret |= dip->getText(tmpResult, strHeader, formatType, pData, dip->getLength(), jsonKeys, extent);
+                    ret |= dip->getText(strResult, strHeader, formatType, pData, dip->getLength(), jsonKeys, extent);
                 } else {
-                    ret |= dip->getText(tmpResult, strHeader, formatType, pData, dip->getLength());
+                    ret |= dip->getText(strResult, strHeader, formatType, pData, dip->getLength());
                 }
-                if (tmpResult.length() > 2) { // if result != {}
-                    if (listOfSubItems)
-                        strResult += '{';
-                    strResult += tmpResult.substr(1, tmpResult.length() - 2); // trim {}
-                    if (listOfSubItems)
-                        strResult += '}';
+                if (strResult.length() - partStart > 2) { // if result != {}
+                    if (!listOfSubItems) { // a list keeps {} around each part
+                        strResult.erase(partStart, 1);
+                        strResult.erase(strResult.length() - 1);
+                    }
                     if (!lastPart) {
                         strResult += ',';
                     }
+                } else {
+                    strResult.resize(partStart);
                 }
             }
                 break;
