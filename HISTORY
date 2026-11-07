@@ -325,3 +325,12 @@ Faster decoding with byte-identical output: -jx about 8x faster (51 MB GPS file:
            Disk input: no ftell/fstat/select system calls per packet
 make rebuilds objects when an included header changes (dependency targets were never matched);
            run make clean once after updating
+
+2.8.11-ifsnop.4 (python_v0.7.11 unchanged)
+Record header with the FSPEC apart in -jh, -je and the default text output, as in -j and -jx (incompatible):
+           "fspec" (JSON) / "Fspec:" (text) has the FSPEC bytes and "hexdata" / "HexData:" only the data
+           items after the FSPEC: the record is fspec+hexdata. XML keeps the whole record in hexdata.
+-h documents the default text output and lists -G and -xh in the usage line
+Format strings: text from input data or file names is never used as a printf format
+           (a definitions file name with % made the program crash); format/argument type mismatches fixed
+Python publish workflow runs only by hand; CodeQL workflow updated (codeql-action v4, make build)
