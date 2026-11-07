@@ -334,3 +334,30 @@ Record header with the FSPEC apart in -jh, -je and the default text output, as i
 Format strings: text from input data or file names is never used as a printf format
            (a definitions file name with % made the program crash); format/argument type mismatches fixed
 Python publish workflow runs only by hand; CodeQL workflow updated (codeql-action v4, make build)
+Text fields (ASCII encoding: callsign, aircraft type, airports, runway, stand, SID/STAR, CAT004
+           designators...) only print A-Z, 0-9, space and '.' (radio channel names, I205/090); any other
+           byte is printed as '@'. A quote or backslash in damaged data made -j/-jx invalid JSON.
+           Visible on captures that pad these fields with control characters: they used to print as
+           spaces and now print as '@' (e.g. callsign DLHEGN + 0x01 -> DLHEGN@). -jx "hex" keeps the raw bytes.
+Malformed records: decoding goes on after them as before, and a WARNING on stderr gives the record
+           number and the whole data block in hex (CAT, LEN, data) for later analysis. Decoder messages
+           are no longer cut at 1024 characters.
+Fixes found by the new test suite:
+           HDLC input from files: files under 4 KB decoded nothing and longer files lost their last
+           partial 4 KB buffer
+           HDLC: a frame with an Asterix block length of 0 looped forever
+           PCAP: a corrupt packet length (incl_len) allocated up to 4 GB and could abort (std::bad_alloc);
+           lengths over 262144 bytes or past the end of the file are rejected
+           FINAL: a byte count smaller than the record header wrapped around to almost 4 GB (same abort)
+           XMLParser: a definitions file that failed inside <Category> leaked that category
+Test suite (tests/, see tests/README.md), run by GitHub Actions on every push and pull request:
+           golden outputs: 13 inputs x 8 output formats x with and without -LF, including synthetic FINAL,
+           HDLC and ORADIS files generated from the real samples (tests/tools/gen_samples.py)
+           -jx consistency (fspec, length, crc, hex/mask/pos/val, unique keys) and agreement of -j, -jh,
+           -je, text and XML; write-back of edited values through hex/mask/pos
+           stdin, UDP multicast and loop mode input; command line options
+           malformed inputs (one per fixed bug) and mutated inputs under AddressSanitizer/UBSan, valid JSON
+           whatever the input; unit tests (bit fields, getLength contract of every item of every category,
+           parser, UAP selection, record headers); libFuzzer; line coverage floor (65%, from 48%)
+CMake: minimum version 3.10; the decoder is a static library; options ASTERIX_TESTS, ASTERIX_FUZZ and
+           ASTERIX_COVERAGE. install/test/test.sh prints the diff of a failed case.

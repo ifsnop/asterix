@@ -26,7 +26,9 @@ asterix
 > - **Text fields** (callsign, aircraft type, airports, stands...) only print `A-Z`, `0-9`, space and `.`; any other byte, including control characters used as padding, is printed as `@`, so JSON and XML outputs are always valid.
 > - **Malformed records**: decoding goes on after them as before, and a `WARNING` on stderr gives the whole data block in hex for later analysis.
 > - **Faster decoding, same output**: `-jx` is about 8 times faster (a 51 MB GPS file takes 8.5 s instead of 68 s) and the other output formats 2 to 2.6 times faster. The output is byte for byte the same as before.
-> - **Build**: `make` now rebuilds the objects that include a header when it changes (the original makefiles never did). Run `make clean` once after updating.
+> - **Build**: `make` now rebuilds the objects that include a header when it changes (the original makefiles never did). Run `make clean` once after updating. CMake needs version 3.10 or later.
+> - **Test suite run on every push and pull request** (GitHub Actions, see [tests/README.md](tests/README.md)): golden outputs of every input format and output format, consistency and write-back checks of `-jx`, stdin/multicast input, malformed and mutated inputs under AddressSanitizer/UBSan, unit tests, libFuzzer and a line coverage floor (about 65%, from 48%).
+> - **Fixes found by the test suite**: HDLC files under 4 KB decoded nothing and longer ones lost their end; an HDLC block length of 0 looped forever; corrupt PCAP packet lengths and FINAL byte counts allocated up to 4 GB and could abort; a definitions file that failed to parse leaked memory.
 >
 > The `asterix_decoder` package on PyPI and the badges above belong to the original project. The PyPI package does not include these changes.
 
@@ -73,6 +75,14 @@ make
 Then run it from asterix/install folder:
 ```console
 ./asterix
+```
+
+To run the tests (see [tests/README.md](tests/README.md) for every layer and what to update when an output changes on purpose):
+```console
+make -C src && make -C src debug
+(cd install/test && bash test.sh)
+tests/run_tests.sh
+cmake -S . -B build -DASTERIX_TESTS=ON && cmake --build build && ctest --test-dir build --output-on-failure
 ```
 
 If you are using Windows install it through Cygwin terminal.

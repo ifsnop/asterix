@@ -82,10 +82,28 @@ asterix.exe will be created in asterix/install
 
 USING CMAKE
 ===========
-If you have CMake installed, on any platform run:
+If you have CMake (3.10 or later) installed, on any platform run:
 
 cmake .
 make 
+
+Options: -DASTERIX_TESTS=ON builds the unit tests (run them with ctest), -DASTERIX_FUZZ=ON the fuzz
+target (libFuzzer with clang), -DASTERIX_COVERAGE=ON a gcov build.
+
+
+TESTS
+=====
+Every push and pull request runs the whole suite in GitHub Actions (.github/workflows/tests.yml).
+To run it locally, from the repository root:
+
+make -C src && make -C src debug
+(cd install/test && bash test.sh)      expected outputs and valgrind
+tests/run_tests.sh                     golden outputs of every input and output format, -jx
+                                       consistency and write-back, stdin/multicast, malformed inputs, CLI
+cmake -S . -B build -DASTERIX_TESTS=ON && cmake --build build && ctest --test-dir build
+
+tests/README.md describes every layer (sanitizers, mutated inputs, fuzzing, coverage) and what to
+update when an output changes on purpose.
 
 
 USAGE
