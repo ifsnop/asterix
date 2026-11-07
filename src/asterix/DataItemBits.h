@@ -91,7 +91,7 @@ public:
     bool getText(std::string &strResult, std::string &strHeader, const unsigned int formatType, unsigned char *pData,
                  long nLength); // appends value to strResult
     bool getText(std::string &strResult, std::string &strHeader, const unsigned int formatType, unsigned char *pData,
-                 long nLength, const char *pJsonKey); // same, pJsonKey is the key used in EJSONX (NULL: short name)
+                 long nLength, const std::string *pJsonPrefix); // same, in EJSONX starts with *pJsonPrefix ("key":{), NULL: short name
     std::string getJsonBaseName() const { return m_strShortName.empty() ? m_strName : m_strShortName; }
 
     /**

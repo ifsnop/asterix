@@ -26,11 +26,11 @@
 #include "asterixformat.hxx"
 
 DataItemFormatFixed::DataItemFormatFixed(int id)
-        : DataItemFormat(id), m_nLength(0) {
+        : DataItemFormat(id), m_nLength(0), m_bJsonPrefixesSet(false) {
 }
 
 DataItemFormatFixed::DataItemFormatFixed(const DataItemFormatFixed &obj)
-        : DataItemFormat(obj.m_nID), m_nLength(obj.m_nLength) {
+        : DataItemFormat(obj.m_nID), m_nLength(obj.m_nLength), m_bJsonPrefixesSet(false) {
     std::list<DataItemFormat *>::iterator it = ((DataItemFormat &) obj).m_lSubItems.begin();
 
     while (it != obj.m_lSubItems.end()) {
@@ -158,8 +158,16 @@ bool DataItemFormatFixed::isSecondaryPartPresent(const unsigned char *pData, int
 
 bool DataItemFormatFixed::getText(std::string &strResult, std::string &strHeader, const unsigned int formatType,
                                   unsigned char *pData, long nLength) {
-    std::set<std::string> jsonKeys; // a Fixed item on its own is one JSON object
-    return getText(strResult, strHeader, formatType, pData, nLength, jsonKeys, 0);
+    if (formatType == CAsterixFormat::EJSONX) {
+        if (!m_bJsonPrefixesSet) {
+            std::set<std::string> jsonKeys; // a Fixed item on its own is one JSON object
+            makeJsonPrefixes(jsonKeys, 0, m_vJsonPrefixes);
+            m_bJsonPrefixesSet = true;
+        }
+        return getText(strResult, strHeader, formatType, pData, nLength, m_vJsonPrefixes);
+    }
+    static const std::vector<std::string> noPrefixes;
+    return getText(strResult, strHeader, formatType, pData, nLength, noPrefixes);
 }
 
 /*
@@ -177,8 +185,17 @@ static std::string jsonUniqueKey(DataItemBits *bv, std::set<std::string> &jsonKe
     return key;
 }
 
+void DataItemFormatFixed::makeJsonPrefixes(std::set<std::string> &jsonKeys, int extent,
+                                           std::vector<std::string> &jsonPrefixes) {
+    std::list<DataItemFormat *>::iterator it;
+    for (it = m_lSubItems.begin(); it != m_lSubItems.end(); it++) {
+        DataItemBits *bv = (DataItemBits *) (*it);
+        jsonPrefixes.push_back("\"" + jsonUniqueKey(bv, jsonKeys, extent) + "\":{");
+    }
+}
+
 bool DataItemFormatFixed::getText(std::string &strResult, std::string &strHeader, const unsigned int formatType,
-                                  unsigned char *pData, long nLength, std::set<std::string> &jsonKeys, int extent) {
+                                  unsigned char *pData, long nLength, const std::vector<std::string> &jsonPrefixes) {
     if (m_nLength != nLength) {
         Tracer::Error("Length doesn't match!!!");
         return false;
@@ -197,11 +214,12 @@ bool DataItemFormatFixed::getText(std::string &strResult, std::string &strHeader
     bool ret = false;
     std::list<DataItemFormat *>::iterator it;
     DataItemBits *bv = NULL;
-    for (it = m_lSubItems.begin(); it != m_lSubItems.end(); it++) {
+    size_t nField = 0;
+    for (it = m_lSubItems.begin(); it != m_lSubItems.end(); it++, nField++) {
         bv = (DataItemBits *) (*it);
         if (formatType == CAsterixFormat::EJSONX) {
-            std::string key = jsonUniqueKey(bv, jsonKeys, extent);
-            ret |= bv->getText(strResult, strHeader, formatType, pData, m_nLength, key.c_str());
+            const std::string *pPrefix = nField < jsonPrefixes.size() ? &jsonPrefixes[nField] : NULL;
+            ret |= bv->getText(strResult, strHeader, formatType, pData, m_nLength, pPrefix);
         } else {
             ret |= bv->getText(strResult, strHeader, formatType, pData, m_nLength);
         }

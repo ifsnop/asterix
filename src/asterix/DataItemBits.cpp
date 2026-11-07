@@ -528,7 +528,7 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
 }
 
 bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const unsigned int formatType,
-                           unsigned char *pData, long nLength, const char *pJsonKey) {
+                           unsigned char *pData, long nLength, const std::string *pJsonPrefix) {
     if (gFiltering && !m_bFiltered)
         return false;
 
@@ -561,12 +561,13 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
             strResult += format("\n\t\t\"%s\":{", m_strShortName.c_str());
             break;
         case CAsterixFormat::EJSONX:
-            strResult += '"';
-            if (pJsonKey)
-                strResult += pJsonKey;
-            else
+            if (pJsonPrefix) {
+                strResult += *pJsonPrefix;
+            } else {
+                strResult += '"';
                 strResult += m_strShortName;
-            strResult.append("\":{", 3);
+                strResult.append("\":{", 3);
+            }
             break;
         case CAsterixFormat::EXML:
             strResult += format("<%s>", m_strShortName.c_str());
