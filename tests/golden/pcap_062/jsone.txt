@@ -67,9 +67,9 @@
 		"CSN":{
 		"CS":{"val"="ATILOWW", "hex"="4154494C4F5757", "name"="Callsign"}},
 		"TAC":{
-		"TYPE":{"val"="    ", "hex"="01080000", "name"="Type of Aircraft"}},
+		"TYPE":{"val"="@@@@", "hex"="01080000", "name"="Type of Aircraft"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="00", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="00", "name"="Wake Turbulence Category"}}}}},
 {"id":1,
 "cat":62,
 "length":49,
@@ -128,9 +128,9 @@
 		"MHG":{"val"=17.2500000, "hex"="45", "name"="MHG"}}},
 	"I390":{
 		"CSN":{
-		"CS":{"val"="DLHEGN ", "hex"="444C4845474E01", "name"="Callsign"}},
+		"CS":{"val"="DLHEGN@", "hex"="444C4845474E01", "name"="Callsign"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="08", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="08", "name"="Wake Turbulence Category"}}}}},
 {"id":4,
 "cat":62,
 "length":4,
@@ -314,9 +314,9 @@
 		"CSN":{
 		"CS":{"val"="SZBZZZZ", "hex"="535A425A5A5A5A", "name"="Callsign"}},
 		"TAC":{
-		"TYPE":{"val"="    ", "hex"="01080000", "name"="Type of Aircraft"}},
+		"TYPE":{"val"="@@@@", "hex"="01080000", "name"="Type of Aircraft"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="00", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="00", "name"="Wake Turbulence Category"}}}}},
 {"id":1,
 "cat":62,
 "length":49,
@@ -388,7 +388,7 @@
 		"MD1":{"val"=17.2500000, "hex"="45", "name"="MD1"}}},
 	"I390":{
 		"CSN":{
-		"CS":{"val"="WALIRF ", "hex"="57414C49524601", "name"="Callsign"}},
+		"CS":{"val"="WALIRF@", "hex"="57414C49524601", "name"="Callsign"}},
 		"FCT":{
 		"GATOAT":{"val"=0, "hex"="08", "mask"="11000000", "name"="GATOAT", "meaning"="Unknown"},
 		"FR1FR2":{"val"=0, "hex"="08", "mask"="00110000", "name"="FR1FR2", "meaning"="Instrument Flight Rules"},
@@ -457,9 +457,9 @@
 		"CSN":{
 		"CS":{"val"="KPRLIRN", "hex"="4B50524C49524E", "name"="Callsign"}},
 		"TAC":{
-		"TYPE":{"val"="    ", "hex"="01080000", "name"="Type of Aircraft"}},
+		"TYPE":{"val"="@@@@", "hex"="01080000", "name"="Type of Aircraft"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="00", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="00", "name"="Wake Turbulence Category"}}}}},
 {"id":4,
 "cat":62,
 "length":4,
@@ -704,9 +704,9 @@
 		"CSN":{
 		"CS":{"val"="IRFLOWW", "hex"="4952464C4F5757", "name"="Callsign"}},
 		"TAC":{
-		"TYPE":{"val"="    ", "hex"="01080000", "name"="Type of Aircraft"}},
+		"TYPE":{"val"="@@@@", "hex"="01080000", "name"="Type of Aircraft"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="00", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="00", "name"="Wake Turbulence Category"}}}}},
 {"id":1,
 "cat":62,
 "length":52,
@@ -765,9 +765,9 @@
 		"CSN":{
 		"CS":{"val"="ATILIPE", "hex"="4154494C495045", "name"="Callsign"}},
 		"TAC":{
-		"TYPE":{"val"="    ", "hex"="01080000", "name"="Type of Aircraft"}},
+		"TYPE":{"val"="@@@@", "hex"="01080000", "name"="Type of Aircraft"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="00", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="00", "name"="Wake Turbulence Category"}}}}},
 {"id":1,
 "cat":62,
 "length":46,
@@ -963,9 +963,9 @@
 		"SAL":{"val"=17.0000000, "hex"="44", "name"="SAL"}}},
 	"I390":{
 		"CSN":{
-		"CS":{"val"="LLGTS  ", "hex"="4C4C4754530108", "name"="Callsign"}},
+		"CS":{"val"="LLGTS@@", "hex"="4C4C4754530108", "name"="Callsign"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="00", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="00", "name"="Wake Turbulence Category"}}}}},
 {"id":3,
 "cat":62,
 "length":4,
@@ -1035,9 +1035,9 @@
 		"MHG":{"val"=19.0000000, "hex"="4C", "name"="MHG"}}},
 	"I390":{
 		"CSN":{
-		"CS":{"val"="ZALKPR ", "hex"="5A414C4B505201", "name"="Callsign"}},
+		"CS":{"val"="ZALKPR@", "hex"="5A414C4B505201", "name"="Callsign"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="08", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="08", "name"="Wake Turbulence Category"}}}}},
 {"id":1,
 "cat":62,
 "length":46,
@@ -1150,9 +1150,9 @@
 		"CSN":{
 		"CS":{"val"="DVALDZA", "hex"="4456414C445A41", "name"="Callsign"}},
 		"TAC":{
-		"TYPE":{"val"="    ", "hex"="01080C03", "name"="Type of Aircraft"}},
+		"TYPE":{"val"="@@@@", "hex"="01080C03", "name"="Type of Aircraft"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="00", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="00", "name"="Wake Turbulence Category"}}}}},
 {"id":1,
 "cat":62,
 "length":50,
@@ -1477,9 +1477,9 @@
 		"CSN":{
 		"CS":{"val"="IRFLYBE", "hex"="4952464C594245", "name"="Callsign"}},
 		"TAC":{
-		"TYPE":{"val"="    ", "hex"="01080000", "name"="Type of Aircraft"}},
+		"TYPE":{"val"="@@@@", "hex"="01080000", "name"="Type of Aircraft"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="00", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="00", "name"="Wake Turbulence Category"}}}}},
 {"id":1,
 "cat":62,
 "length":50,
@@ -1660,9 +1660,9 @@
 		"COM":{"val"=19.0000000, "hex"="4C", "name"="COM"}}},
 	"I390":{
 		"CSN":{
-		"CS":{"val"="LOLHSM ", "hex"="4C4F4C48534D01", "name"="Callsign"}},
+		"CS":{"val"="LOLHSM@", "hex"="4C4F4C48534D01", "name"="Callsign"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="08", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="08", "name"="Wake Turbulence Category"}}}}},
 {"id":6,
 "cat":62,
 "length":4,
@@ -1825,9 +1825,9 @@
 		"CSN":{
 		"CS":{"val"="ATILOWW", "hex"="4154494C4F5757", "name"="Callsign"}},
 		"TAC":{
-		"TYPE":{"val"="    ", "hex"="01080000", "name"="Type of Aircraft"}},
+		"TYPE":{"val"="@@@@", "hex"="01080000", "name"="Type of Aircraft"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="00", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="00", "name"="Wake Turbulence Category"}}}}},
 {"id":1,
 "cat":62,
 "length":49,
@@ -1886,9 +1886,9 @@
 		"MHG":{"val"=17.2500000, "hex"="45", "name"="MHG"}}},
 	"I390":{
 		"CSN":{
-		"CS":{"val"="DLHEGN ", "hex"="444C4845474E01", "name"="Callsign"}},
+		"CS":{"val"="DLHEGN@", "hex"="444C4845474E01", "name"="Callsign"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="08", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="08", "name"="Wake Turbulence Category"}}}}},
 {"id":4,
 "cat":62,
 "length":4,
@@ -2072,9 +2072,9 @@
 		"CSN":{
 		"CS":{"val"="SZBZZZZ", "hex"="535A425A5A5A5A", "name"="Callsign"}},
 		"TAC":{
-		"TYPE":{"val"="    ", "hex"="01080000", "name"="Type of Aircraft"}},
+		"TYPE":{"val"="@@@@", "hex"="01080000", "name"="Type of Aircraft"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="00", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="00", "name"="Wake Turbulence Category"}}}}},
 {"id":1,
 "cat":62,
 "length":49,
@@ -2146,7 +2146,7 @@
 		"MD1":{"val"=17.2500000, "hex"="45", "name"="MD1"}}},
 	"I390":{
 		"CSN":{
-		"CS":{"val"="WALIRF ", "hex"="57414C49524601", "name"="Callsign"}},
+		"CS":{"val"="WALIRF@", "hex"="57414C49524601", "name"="Callsign"}},
 		"FCT":{
 		"GATOAT":{"val"=0, "hex"="08", "mask"="11000000", "name"="GATOAT", "meaning"="Unknown"},
 		"FR1FR2":{"val"=0, "hex"="08", "mask"="00110000", "name"="FR1FR2", "meaning"="Instrument Flight Rules"},
@@ -2215,9 +2215,9 @@
 		"CSN":{
 		"CS":{"val"="KPRLIRN", "hex"="4B50524C49524E", "name"="Callsign"}},
 		"TAC":{
-		"TYPE":{"val"="    ", "hex"="01080000", "name"="Type of Aircraft"}},
+		"TYPE":{"val"="@@@@", "hex"="01080000", "name"="Type of Aircraft"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="00", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="00", "name"="Wake Turbulence Category"}}}}},
 {"id":4,
 "cat":62,
 "length":4,
@@ -2462,9 +2462,9 @@
 		"CSN":{
 		"CS":{"val"="IRFLOWW", "hex"="4952464C4F5757", "name"="Callsign"}},
 		"TAC":{
-		"TYPE":{"val"="    ", "hex"="01080000", "name"="Type of Aircraft"}},
+		"TYPE":{"val"="@@@@", "hex"="01080000", "name"="Type of Aircraft"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="00", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="00", "name"="Wake Turbulence Category"}}}}},
 {"id":1,
 "cat":62,
 "length":52,
@@ -2523,9 +2523,9 @@
 		"CSN":{
 		"CS":{"val"="ATILIPE", "hex"="4154494C495045", "name"="Callsign"}},
 		"TAC":{
-		"TYPE":{"val"="    ", "hex"="01080000", "name"="Type of Aircraft"}},
+		"TYPE":{"val"="@@@@", "hex"="01080000", "name"="Type of Aircraft"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="00", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="00", "name"="Wake Turbulence Category"}}}}},
 {"id":1,
 "cat":62,
 "length":46,
@@ -2721,9 +2721,9 @@
 		"SAL":{"val"=17.0000000, "hex"="44", "name"="SAL"}}},
 	"I390":{
 		"CSN":{
-		"CS":{"val"="LLGTS  ", "hex"="4C4C4754530108", "name"="Callsign"}},
+		"CS":{"val"="LLGTS@@", "hex"="4C4C4754530108", "name"="Callsign"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="00", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="00", "name"="Wake Turbulence Category"}}}}},
 {"id":3,
 "cat":62,
 "length":4,
@@ -2793,9 +2793,9 @@
 		"MHG":{"val"=19.0000000, "hex"="4C", "name"="MHG"}}},
 	"I390":{
 		"CSN":{
-		"CS":{"val"="ZALKPR ", "hex"="5A414C4B505201", "name"="Callsign"}},
+		"CS":{"val"="ZALKPR@", "hex"="5A414C4B505201", "name"="Callsign"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="08", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="08", "name"="Wake Turbulence Category"}}}}},
 {"id":1,
 "cat":62,
 "length":52,
@@ -2848,9 +2848,9 @@
 		"CSN":{
 		"CS":{"val"="DVALDZA", "hex"="4456414C445A41", "name"="Callsign"}},
 		"TAC":{
-		"TYPE":{"val"="    ", "hex"="01080C03", "name"="Type of Aircraft"}},
+		"TYPE":{"val"="@@@@", "hex"="01080C03", "name"="Type of Aircraft"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="00", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="00", "name"="Wake Turbulence Category"}}}}},
 {"id":1,
 "cat":62,
 "length":46,

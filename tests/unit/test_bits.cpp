@@ -51,9 +51,15 @@ TEST_CASE("bits: six-bit, hex, octal and ASCII encodings") {
     // Mode 3/A 7700 in octal: 111 111 000 000
     BitsPtr oct(makeBits("M3A", 1, 12, DataItemBits::DATAITEM_ENCODING_OCTAL));
     CHECK_EQ(render(oct.get(), "0FC0", CAsterixFormat::EJSON), std::string("\"M3A\":\"7700\","));
-    // non printable characters become spaces
+    // only A-Z, 0-9, space and '.' are kept, anything else becomes '@' (no output format has to escape it)
     BitsPtr ascii(makeBits("T", 1, 32, DataItemBits::DATAITEM_ENCODING_ASCII));
-    CHECK_EQ(render(ascii.get(), "41014243", CAsterixFormat::EJSON), std::string("\"T\":\"A BC\","));
+    CHECK_EQ(render(ascii.get(), "41014243", CAsterixFormat::EJSON), std::string("\"T\":\"A@BC\","));
+    BitsPtr cs(makeBits("CS", 1, 56, DataItemBits::DATAITEM_ENCODING_ASCII));
+    // quote, backslash, '<', '&', lower case and control characters
+    CHECK_EQ(render(cs.get(), "225C3C26610009", CAsterixFormat::EJSON), std::string("\"CS\":\"@@@@@@@\","));
+    CHECK_EQ(render(cs.get(), "45474744204720", CAsterixFormat::EJSONX).find("\"val\":\"EGGD G \""), (size_t) 6);
+    // radio channel names (I205/090) keep their decimal point
+    CHECK_EQ(render(cs.get(), "3132312E313030", CAsterixFormat::EJSON), std::string("\"CS\":\"121.100\","));
 }
 
 TEST_CASE("bits -jx: hex is the bytes holding the field, mask only when it does not fill them, pos") {

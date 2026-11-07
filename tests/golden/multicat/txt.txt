@@ -724,7 +724,7 @@ Item 390 : Flight Plan Related Data
 	Departure Airport: EDDL
 	Destination Airport: HELX
 	First number:  
-	Second number:  
+	Second number: @
 	Letter:  
 	Current Cleared Flight Level: 1400 (350.0000000 FL)
 
@@ -1171,8 +1171,8 @@ Item 295 : Track Data Ages
 Item 390 : Flight Plan Related Data
 [ 4C 41 54 49 4C 4F 57 57 01 08 00 00 00 ]
 	Callsign: ATILOWW
-	Type of Aircraft:     
-	Wake Turbulence Category:  
+	Type of Aircraft: @@@@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 11
@@ -1405,8 +1405,8 @@ Item 295 : Track Data Ages
 
 Item 390 : Flight Plan Related Data
 [ 44 44 4C 48 45 47 4E 01 08 ]
-	Callsign: DLHEGN 
-	Wake Turbulence Category:  
+	Callsign: DLHEGN@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 14
@@ -2993,8 +2993,8 @@ Item 295 : Track Data Ages
 Item 390 : Flight Plan Related Data
 [ 4C 53 5A 42 5A 5A 5A 5A 01 08 00 00 00 ]
 	Callsign: SZBZZZZ
-	Type of Aircraft:     
-	Wake Turbulence Category:  
+	Type of Aircraft: @@@@
+	Wake Turbulence Category: @
 
 -------------------------
 Data Block 31

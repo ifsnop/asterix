@@ -508,12 +508,16 @@ char *DataItemBits::getASCII(unsigned char *pData, int bytes, int frombit, int t
     char *pStr = new char[numberOfBytes + 1];
     char *ppStr = pStr;
 
-    // replace non printable ASCII characters with a space
+    // Keep only the characters ASTERIX text fields are made of: upper-case letters, digits and the space
+    // padding (callsigns, aircraft types, airports, stands... are upper-case alphanumeric, I062/390), plus the
+    // decimal point of radio channel names (I205/090, e.g. 121.100). Anything else, including control
+    // characters and the quote or backslash of corrupt data, becomes '@', which no output format has to escape.
     for (int i = 0; i < numberOfBytes; i++) {
-        if (pTmp[i] >= 32 && pTmp[i] <= 126)
-            *ppStr++ = pTmp[i];
+        unsigned char c = pTmp[i];
+        if ((c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == ' ' || c == '.')
+            *ppStr++ = (char) c;
         else
-            *ppStr++ = ' ';
+            *ppStr++ = '@';
     }
 
     delete[] pTmp;

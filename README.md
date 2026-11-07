@@ -23,6 +23,8 @@ asterix
 >   Edits must keep the record length. FX bits, UAP selectors (e.g. CAT001 I020 TYP) and the BDS register number change how the rest is decoded.
 > - **Record header with the FSPEC apart**: `-j`, `-jh`, `-je` and the default text output print the FSPEC bytes separately (`"fspec"` in JSON, a `Fspec:` line in text), and `hexdata` / `HexData:` holds only the data items after the FSPEC (same as `-jx`). **This differs from the original**, where hexdata was the whole record: use `fspec + hexdata` to get it. XML (`-x`, `-xh`) keeps the whole record.
 > - **`-h`** documents the default text output (used when no output format option is given).
+> - **Text fields** (callsign, aircraft type, airports, stands...) only print `A-Z`, `0-9`, space and `.`; any other byte, including control characters used as padding, is printed as `@`, so JSON and XML outputs are always valid.
+> - **Malformed records**: decoding goes on after them as before, and a `WARNING` on stderr gives the whole data block in hex for later analysis.
 > - **Faster decoding, same output**: `-jx` is about 8 times faster (a 51 MB GPS file takes 8.5 s instead of 68 s) and the other output formats 2 to 2.6 times faster. The output is byte for byte the same as before.
 > - **Build**: `make` now rebuilds the objects that include a header when it changes (the original makefiles never did). Run `make clean` once after updating.
 >

@@ -550,7 +550,7 @@
 		"DES":{"val"="HELX", "hex"="48454C58", "name"="Destination Airport"}},
 		"RDS":{
 		"NU1":{"val"=" ", "hex"="20", "name"="First number"},
-		"NU2":{"val"=" ", "hex"="00", "name"="Second number"},
+		"NU2":{"val"="@", "hex"="00", "name"="Second number"},
 		"LTR":{"val"=" ", "hex"="20", "name"="Letter"}},
 		"CFL":{
 		"CFL":{"val"=350.0000000, "hex"="0578", "name"="Current Cleared Flight Level"}}},
@@ -869,9 +869,9 @@
 		"CSN":{
 		"CS":{"val"="ATILOWW", "hex"="4154494C4F5757", "name"="Callsign"}},
 		"TAC":{
-		"TYPE":{"val"="    ", "hex"="01080000", "name"="Type of Aircraft"}},
+		"TYPE":{"val"="@@@@", "hex"="01080000", "name"="Type of Aircraft"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="00", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="00", "name"="Wake Turbulence Category"}}}}},
 {"id":1,
 "cat":2,
 "length":8,
@@ -1034,9 +1034,9 @@
 		"MHG":{"val"=17.2500000, "hex"="45", "name"="MHG"}}},
 	"I390":{
 		"CSN":{
-		"CS":{"val"="DLHEGN ", "hex"="444C4845474E01", "name"="Callsign"}},
+		"CS":{"val"="DLHEGN@", "hex"="444C4845474E01", "name"="Callsign"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="08", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="08", "name"="Wake Turbulence Category"}}}}},
 {"id":1,
 "cat":1,
 "length":23,
@@ -2160,9 +2160,9 @@
 		"CSN":{
 		"CS":{"val"="SZBZZZZ", "hex"="535A425A5A5A5A", "name"="Callsign"}},
 		"TAC":{
-		"TYPE":{"val"="    ", "hex"="01080000", "name"="Type of Aircraft"}},
+		"TYPE":{"val"="@@@@", "hex"="01080000", "name"="Type of Aircraft"}},
 		"WTC":{
-		"WTC":{"val"=" ", "hex"="00", "name"="Wake Turbulence Category"}}}}},
+		"WTC":{"val"="@", "hex"="00", "name"="Wake Turbulence Category"}}}}},
 {"id":1,
 "cat":48,
 "length":55,

@@ -245,7 +245,7 @@
 		"DES":{"val"="HELX", "hex"="48454C58", "name"="Destination Airport"}},
 		"RDS":{
 		"NU1":{"val"=" ", "hex"="20", "name"="First number"},
-		"NU2":{"val"=" ", "hex"="00", "name"="Second number"},
+		"NU2":{"val"="@", "hex"="00", "name"="Second number"},
 		"LTR":{"val"=" ", "hex"="20", "name"="Letter"}},
 		"CFL":{
 		"CFL":{"val"=350.0000000, "hex"="0578", "name"="Current Cleared Flight Level"}}},
