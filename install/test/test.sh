@@ -13,6 +13,7 @@ test_compare () {
 	  echo "OK      " $1
 	else
 	  echo "Failed  " $1
+	  diff <(echo "$expected") <(echo "$result") | head -20 | sed 's/^/        /'
 	  failedtests=$[$failedtests +1]
 	fi
 }
