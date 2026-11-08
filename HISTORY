@@ -361,3 +361,10 @@ Test suite (tests/, see tests/README.md), run by GitHub Actions on every push an
            parser, UAP selection, record headers); libFuzzer; line coverage floor (65%, from 48%)
 CMake: minimum version 3.10; the decoder is a static library; options ASTERIX_TESTS, ASTERIX_FUZZ and
            ASTERIX_COVERAGE. install/test/test.sh prints the diff of a failed case.
+
+2.8.11-ifsnop.5 (python_v0.7.11 unchanged)
+-j, -jh, -x and -xh about twice as fast as in ifsnop.4, output byte for byte the same: the field key,
+           numeric value and text value no longer go through format() (51 MB GPS file: -j 15.4 s -> 7.7 s,
+           39.9 s before any optimization; -jh 15.6 -> 8.5 s; -x 17.6 -> 8.8 s; -xh 22.0 -> 10.8 s)
+README: build and coverage badges of this fork; the coverage job publishes the line coverage to the
+           badges branch on each push to master
