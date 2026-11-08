@@ -124,6 +124,8 @@ jobs:
   coverage:
     name: Line coverage
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # only to publish the README badge to the badges branch, on pushes to master
     steps:
       - uses: actions/checkout@v5
       - name: Install dependencies
@@ -140,4 +142,18 @@ jobs:
           python3 tests/tools/mutate.py "$RUNNER_TEMP/mutants" 40 1
           MEMLIMIT_KB=2000000 MUTANTS="$RUNNER_TEMP/mutants" tests/run_tests.sh build/install/asterix
       - name: Report (fails under tests/coverage_min.txt)
-        run: python3 tests/tools/coverage_report.py build
+        run: COVERAGE_BADGE="$RUNNER_TEMP/coverage.json" python3 tests/tools/coverage_report.py build
+      # README badge: shields.io reads badges/coverage.json; the branch holds that one file in one commit
+      - name: Publish the coverage badge (pushes to master)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd "$RUNNER_TEMP"
+          mkdir badges && cp coverage.json badges/ && cd badges
+          git init -q -b badges
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add coverage.json
+          git commit -q -m "Coverage badge for ${GITHUB_SHA::7}: $(sed -E 's/.*"message": "([^"]*)".*/\1/' coverage.json)"
+          git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" badges
