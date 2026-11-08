@@ -1,6 +1,8 @@
 asterix
 =======
 
+[![build](https://img.shields.io/github/actions/workflow/status/ifsnop/asterix/tests.yml?branch=master&label=build)](https://github.com/ifsnop/asterix/actions/workflows/tests.yml)
+[![coverage](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fifsnop%2Fasterix%2Fbadges%2Fcoverage.json)](https://github.com/ifsnop/asterix/actions/workflows/tests.yml)
 [![Build Status](https://travis-ci.org/CroatiaControlLtd/asterix.svg?branch=master)](https://travis-ci.org/CroatiaControlLtd/asterix)
 [![Documentation badge](https://readthedocs.org/projects/asterix/badge/?version=latest)](http://asterix.readthedocs.io/en/latest/)
 [![Upload Python Package](https://github.com/CroatiaControlLtd/asterix/actions/workflows/python-publish.yml/badge.svg)](https://github.com/CroatiaControlLtd/asterix/actions/workflows/python-publish.yml)
@@ -30,7 +32,7 @@ asterix
 > - **Test suite run on every push and pull request** (GitHub Actions, see [tests/README.md](tests/README.md)): golden outputs of every input format and output format, consistency and write-back checks of `-jx`, stdin/multicast input, malformed and mutated inputs under AddressSanitizer/UBSan, unit tests, libFuzzer and a line coverage floor (about 65%, from 48%).
 > - **Fixes found by the test suite**: HDLC files under 4 KB decoded nothing and longer ones lost their end; an HDLC block length of 0 looped forever; corrupt PCAP packet lengths and FINAL byte counts allocated up to 4 GB and could abort; a definitions file that failed to parse leaked memory.
 >
-> The `asterix_decoder` package on PyPI and the badges above belong to the original project. The PyPI package does not include these changes.
+> The **build** and **coverage** badges above are this fork's (GitHub Actions, `tests.yml`). The other badges and the `asterix_decoder` package on PyPI belong to the original project; the PyPI package does not include these changes.
 
 Asterix is Python module and standalone application used for reading and parsing of EUROCONTROL ASTERIX protocol data from stdin, file or network multicast stream.
 

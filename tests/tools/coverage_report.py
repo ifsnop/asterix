@@ -2,7 +2,8 @@
 """
 Line coverage of src/ from the .gcda files of a --coverage build, after running the tests.
 
-Prints a table per file and the total; with $GITHUB_STEP_SUMMARY set, also writes it there.
+Prints a table per file and the total; with $GITHUB_STEP_SUMMARY set, also writes it there; with
+$COVERAGE_BADGE set, writes a shields.io endpoint JSON file there (the README coverage badge).
 Fails when the total is under the minimum in tests/coverage_min.txt (raise that file when coverage
 goes up, so it cannot silently go down again).
 
@@ -58,6 +59,12 @@ def main():
     if summary:
         with open(summary, 'a') as f:
             f.write('## Line coverage: %.1f%% (minimum %.1f%%)\n\n%s\n' % (pct, minimum, report))
+    badge = os.environ.get('COVERAGE_BADGE')
+    if badge:  # shields.io endpoint JSON, published by CI for the README badge
+        color = ('brightgreen' if pct >= 80 else 'green' if pct >= 70 else 'yellowgreen' if pct >= 60
+                 else 'yellow' if pct >= 50 else 'orange' if pct >= 40 else 'red')
+        with open(badge, 'w') as f:
+            f.write('{"schemaVersion": 1, "label": "coverage", "message": "%.1f%%", "color": "%s"}\n' % (pct, color))
     if pct < minimum:
         sys.exit('coverage %.1f%% is under the minimum %.1f%% (tests/coverage_min.txt)' % (pct, minimum))
 

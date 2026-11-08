@@ -22,6 +22,9 @@ A change is ready when all jobs are green; when a golden output changes on purpo
 CI jobs: `make` (make build, `install/test`, `run_tests.sh`), `cmake` (C++11 build with gcc and
 clang, unit tests and `run_tests.sh` through ctest), `sanitizers` (ASan+UBSan build: unit tests,
 `run_tests.sh` with 520 mutated inputs), `fuzz` (60 s per push, 30 min weekly), `coverage`.
+The README badges show the state of this workflow on `master` and its coverage: on each push to
+`master` the coverage job writes `coverage.json` to the `badges` branch (one file, one commit,
+rewritten every time), which shields.io reads.
 
 ## Running locally
 
