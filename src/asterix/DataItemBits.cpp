@@ -556,10 +556,14 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
 
     switch (formatType) {
         case CAsterixFormat::EJSON:
-            strResult += format("\"%s\":", m_strShortName.c_str());
+            strResult += '"';
+            strResult += m_strShortName;
+            strResult.append("\":", 2);
             break;
         case CAsterixFormat::EJSONH:
-            strResult += format("\n\t\t\"%s\":", m_strShortName.c_str());
+            strResult.append("\n\t\t\"", 4);
+            strResult += m_strShortName;
+            strResult.append("\":", 2);
             break;
         case CAsterixFormat::EJSONE:
             strResult += format("\n\t\t\"%s\":{", m_strShortName.c_str());
@@ -574,11 +578,17 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
             }
             break;
         case CAsterixFormat::EXML:
-            strResult += format("<%s>", m_strShortName.c_str());
+            strResult += '<';
+            strResult += m_strShortName;
+            strResult += '>';
             break;
         case CAsterixFormat::EXMLH:
-            strResult += format("\n%s%s", indent.c_str(), indent.c_str());  // New line and indent 2 levels (8 spaces).
-            strResult += format("<%s>", m_strShortName.c_str());
+            strResult += '\n';  // New line and indent 2 levels (8 spaces).
+            strResult += indent;
+            strResult += indent;
+            strResult += '<';
+            strResult += m_strShortName;
+            strResult += '>';
             break;
     }
 
@@ -700,9 +710,9 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                 default: {
                     if (m_dScale != 0) {
                         double scaled = value * m_dScale;
-                        strResult += format("%.7lf", scaled);
+                        appendDouble7(strResult, scaled);
                     } else {
-                        strResult += format("%ld", value);
+                        appendLong(strResult, (long) value);
                     }
                 }
             }
@@ -794,9 +804,9 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                 default: {
                     if (m_dScale != 0) {
                         double scaled = (double) value * m_dScale;
-                        strResult += format("%.7lf", scaled);
+                        appendDouble7(strResult, scaled);
                     } else {
-                        strResult += format("%ld", value);
+                        appendLong(strResult, (long) value);
                     }
                 }
             }
@@ -815,7 +825,9 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                     break;
                 case CAsterixFormat::EJSON:
                 case CAsterixFormat::EJSONH:
-                    strResult += format("\"%s\"", str);
+                    strResult += '"';
+                    strResult += (const char *) str;
+                    strResult += '"';
                     break;
                 case CAsterixFormat::EJSONX:
                     strResult.append("\"val\":\"", 7);
@@ -840,7 +852,7 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                     break;
                 }
                 default:
-                    strResult += format("%s", str);
+                    strResult += (const char *) str;
                     break;
             }
             delete[] str;
@@ -859,7 +871,9 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                     break;
                 case CAsterixFormat::EJSON:
                 case CAsterixFormat::EJSONH:
-                    strResult += format("\"%s\"", str);
+                    strResult += '"';
+                    strResult += (const char *) str;
+                    strResult += '"';
                     break;
                 case CAsterixFormat::EJSONX:
                     strResult.append("\"val\":\"", 7);
@@ -882,7 +896,7 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                 }
                     break;
                 default:
-                    strResult += format("%s", str);
+                    strResult += (const char *) str;
                     break;
             }
             delete[] str;
@@ -900,7 +914,9 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                     break;
                 case CAsterixFormat::EJSON:
                 case CAsterixFormat::EJSONH:
-                    strResult += format("\"%s\"", str);
+                    strResult += '"';
+                    strResult += (const char *) str;
+                    strResult += '"';
                     break;
                 case CAsterixFormat::EJSONX:
                     strResult.append("\"val\":\"", 7);
@@ -923,7 +939,7 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                 }
                     break;
                 default:
-                    strResult += format("%s", str);
+                    strResult += (const char *) str;
                     break;
             }
             delete[] str;
@@ -940,7 +956,9 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
                     break;
                 case CAsterixFormat::EJSON:
                 case CAsterixFormat::EJSONH:
-                    strResult += format("\"%s\"", pStr);
+                    strResult += '"';
+                    strResult += (const char *) pStr;
+                    strResult += '"';
                     break;
                 case CAsterixFormat::EJSONX:
                     strResult.append("\"val\":\"", 7);
@@ -976,7 +994,7 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
     switch (formatType) {
         case CAsterixFormat::EJSON:
         case CAsterixFormat::EJSONH:
-            strResult += format(",");
+            strResult += ',';
             break;
         case CAsterixFormat::EJSONE:
         case CAsterixFormat::EJSONX:
@@ -984,7 +1002,9 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
             break;
         case CAsterixFormat::EXML:
         case CAsterixFormat::EXMLH:
-            strResult += format("</%s>", m_strShortName.c_str());
+            strResult.append("</", 2);
+            strResult += m_strShortName;
+            strResult += '>';
             break;
     }
 
