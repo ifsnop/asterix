@@ -41,7 +41,7 @@ fail() { failed=$((failed + 1)); echo "FAILED  $1"; [ -n "$2" ] && echo "$2" | h
 # (in -Q INSERTs of category tables, the only value with 6 decimals: field values have 7)
 mask_time() { sed -E 's/("timestamp":)[0-9.]+/\1T/g; s/(timestamp=")[0-9.]+/\1T/g; s/(Timestamp: )[0-9.]+/\1T/g; /^INSERT INTO `cat[0-9]{3}` /s/([(,])[0-9]+\.[0-9]{6}([,)])/\1T\2/'; }
 # -Q output without its CREATE TABLE statements (the schema has golden files of its own, see section_cli)
-sql_data() { sed -n '/^START TRANSACTION;$/,$p'; }
+sql_data() { sed -n '/^INSERT INTO /,$p'; }
 # stderr messages start with the wall-clock time
 mask_log() { sed -E 's/^([A-Z]+: +)[A-Z][a-z]{2} +[0-9]+ [0-9:]{8} [0-9]{4} /\1/'; }
 

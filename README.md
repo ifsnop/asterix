@@ -24,7 +24,7 @@ asterix
 >
 >   Edits must keep the record length. FX bits, UAP selectors (e.g. CAT001 I020 TYP) and the BDS register number change how the rest is decoded.
 > - **New `-Q` / `--sql` output** for loading ASTERIX data into MySQL or MariaDB: `asterix -Q -P -f capture.pcap | mysql db` (see [SQL.md](SQL.md)):
->   - first `CREATE TABLE IF NOT EXISTS` for every category (`cat048`: `rec_id`, the record header and one typed column per field, e.g. `I010_SAC TINYINT UNSIGNED`, `I090_FL DOUBLE`, `I240_TId VARCHAR(8)`), then the `INSERT` statements of every record, one transaction per packet;
+>   - first `CREATE TABLE IF NOT EXISTS` for every category (`cat048`: `rec_id`, the record header and one typed column per field, e.g. `I010_SAC TINYINT UNSIGNED`, `I090_FL DOUBLE`, `I240_TId VARCHAR(8)`), then the `INSERT` statements of every record;
 >   - repetitive data (Repetitive items, BDS registers with one table per register, lists of extents, SP/RE) go to child tables keyed `(rec_id, rep_idx)` with `ON DELETE CASCADE` foreign keys;
 >   - with `-LF`, only the filtered fields become columns; text fields are inserted trimmed; `-Q -L` prints only the schema.
 > - **Record header fields in `-LF` filters**: `asterix -L` now also lists, per category, the record header fields (`CAT048:HDR:id`, `cat`, `length`, `crc`, `timestamp`, `srcip`, `fspec`, `hexdata`). Once a filter file has an `HDR` line for a category, only the header fields listed for it are printed, in every output format (text, XML, JSON, `-Q` columns). A category with no `HDR` line prints its whole header, so existing filter files give the same output.

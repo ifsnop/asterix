@@ -4,7 +4,7 @@
 
 1. first a `CREATE TABLE IF NOT EXISTS` statement for every table, built from the loaded definitions
    (only the fields in the `-LF` filter when one is given);
-2. then, for every decoded record, the `INSERT` statements of its rows, one transaction per input packet.
+2. then, for every decoded record, the `INSERT` statements of its rows.
 
 ```sh
 mysql -e 'CREATE DATABASE asterix'
@@ -145,7 +145,6 @@ How each ASTERIX item structure maps:
 For the sample record of AEE2BR (CAT048, BDS 4,0 and 6,0) `-Q` prints (columns shortened):
 
 ```sql
-START TRANSACTION;
 INSERT INTO `cat048` (`id`,`cat`,`length`,`crc`,`timestamp`,`srcip`,`fspec`,`hexdata`,`I010_SAC`,`I010_SIC`,
   `I140_ToD`,...,`I090_FL`,...,`I220_ACAddr`,`I240_TId`,`I161_Tn`,...)
   VALUES (2,48,60,'F31EC111',27356536.000000,'0.0.0.0','FFFF02','190D356E06A0...',25,13,
@@ -155,11 +154,11 @@ INSERT INTO `cat048_I250_BDS40` (`rec_id`,`rep_idx`,`reg_idx`,`MCP_ALT_STATUS`,`
   VALUES (@asterix_rec,0,0,1,36000.0000000,...,'40');
 INSERT INTO `cat048_I250_BDS60` (`rec_id`,`rep_idx`,`reg_idx`,`HDG_STATUS`,`HDG`,`IAS_STAT`,`IAS`,...,`BDS`)
   VALUES (@asterix_rec,1,0,1,-45.0000000,1,251.0000000,...,'60');
-COMMIT;
 ```
 
 `LAST_INSERT_ID()` belongs to the connection, so several loaders can write to the same database at the
-same time. Each packet is one transaction: with live network input the rows show up packet by packet.
+same time. There is no transaction around the statements: with MySQL's default autocommit each row is
+stored as soon as it is inserted, so with live network input the rows show up as the packets arrive.
 
 The child table of that register:
 
@@ -479,8 +478,9 @@ ROLLBACK;
 
 ## Notes for large captures
 
-- **Loading speed.** Each `INSERT` is a single row. For bulk loads run `mysql` with
-  `--init-command="SET unique_checks=0, foreign_key_checks=0"`, or load from a local socket.
+- **Loading speed.** Each `INSERT` is a single row, committed on its own (autocommit). For bulk loads put
+  the whole file in one transaction, and optionally skip the key checks:
+  `( echo 'START TRANSACTION;'; asterix -Q -P -f capture.pcap; echo 'COMMIT;' ) | mysql --init-command="SET unique_checks=0, foreign_key_checks=0" asterix`.
 - **Indexes.** Add indexes for the columns you search on, e.g.
   `CREATE INDEX icao ON cat048 (I220_ACAddr)` or `CREATE INDEX tod ON cat048 (I140_ToD)`. Child tables are
   already indexed by `rec_id` through their primary key.

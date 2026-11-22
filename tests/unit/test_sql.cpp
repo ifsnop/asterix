@@ -142,11 +142,12 @@ TEST_CASE("sql: rows of nested child tables carry the index of each parent row")
 
 TEST_CASE("sql: a real CAT001 record, with its I210 list of parts in a child table") {
     std::string out = sql("01001AF7C619C9A00EB2767F189408AA42D8033405C8800D400E");
-    CHECK(has(out, "START TRANSACTION;\nINSERT INTO `cat001` (`id`,`cat`,`length`,`crc`,`timestamp`,`srcip`,`fspec`,"
+    CHECK(has(out, "INSERT INTO `cat001` (`id`,`cat`,`length`,`crc`,`timestamp`,`srcip`,`fspec`,"
                    "`hexdata`,`I010_SAC`,`I010_SIC`,"));
     CHECK(has(out, ",'F7C6','19C9A00EB2767F189408AA42D8033405C8800D400E',25,201,"));
     CHECK(has(out, "SET @asterix_rec = LAST_INSERT_ID();\n"
-                   "INSERT INTO `cat001_I210` (`rec_id`,`rep_idx`,`Qty`,`FX`) VALUES (@asterix_rec,0,7,0);\nCOMMIT;\n"));
+                   "INSERT INTO `cat001_I210` (`rec_id`,`rep_idx`,`Qty`,`FX`) VALUES (@asterix_rec,0,7,0);\n"));
+    CHECK(out.compare(0, 12, "INSERT INTO ") == 0); // no transaction around the statements
     CHECK(has(schema(), "CREATE TABLE IF NOT EXISTS `cat001_I210` ("));
 }
 
@@ -167,7 +168,7 @@ TEST_CASE("sql: CAT048 BDS registers (one repeated, one without a definition) an
     CHECK(has(out, "INSERT INTO `cat048_ISP` (`rec_id`,`rep_idx`,`SP`) VALUES (@asterix_rec,0,204);\n"));
 }
 
-TEST_CASE("sql: a packet with nothing to print writes no transaction") {
+TEST_CASE("sql: a packet with nothing to print writes nothing") {
     schema();
     std::vector<unsigned char> data = fromHex("010003");
     std::unique_ptr<AsterixData> d(parser().parsePacket(&data[0], (unsigned int) data.size(), 0));

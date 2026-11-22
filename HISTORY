@@ -380,7 +380,7 @@ stdin is read in 64 KB blocks instead of 3 read() + 1 select() per packet; live 
 Unreleased
 New -Q / --sql output: MySQL statements to load the decoded data into MySQL or MariaDB (SQL.md):
            CREATE TABLE IF NOT EXISTS for every category (only the -LF fields when filtered), then the
-           INSERTs of every record, one transaction per packet. Table catNNN has rec_id (AUTO_INCREMENT),
+           INSERTs of every record. Table catNNN has rec_id (AUTO_INCREMENT),
            the -j record header and one column per field named by its -j path (I010_SAC, I380_ADR_ADR)
            with a MySQL type taken from its encoding, size and scale; repetitive data (Repetitive, BDS
            registers one table each with reg_idx, Variable lists of parts, Explicit SP/RE) go to child

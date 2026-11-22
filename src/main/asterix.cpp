@@ -99,7 +99,7 @@ static void show_usage(std::string name) {
             << "\n\t\t\tThe record header has \"fspec\" (FSPEC bytes) and \"hexdata\" (data items after the FSPEC): the record is fspec+hexdata."
             << "\n\t\t\tEach field has \"hex\", \"mask\" (when it does not fill its bytes) and \"pos\" (byte offset of hex in hexdata)."
             << "\n\t-Q,--sql\tOutput will be printed as MySQL statements: first CREATE TABLE IF NOT EXISTS for every category (only the"
-            << "\n\t\t\tfields in the -LF filter, if given), then the INSERT statements of every record, one transaction per packet."
+            << "\n\t\t\tfields in the -LF filter, if given), then the INSERT statements of every record."
             << "\n\t\t\tTable catNNN has a row per record (rec_id, the record header and one column per field, named like I010_SAC);"
             << "\n\t\t\trepetitive data (Repetitive, BDS registers, lists of extents, Explicit) go to child tables keyed by"
             << "\n\t\t\t(rec_id, rep_idx). Text fields are trimmed. See SQL.md. For example: asterix -Q -P -f file.pcap | mysql db"
