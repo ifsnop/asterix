@@ -47,6 +47,10 @@ bool Category::printsHeader(unsigned bit) const {
 
 bool Category::filterOutHeader(const char *name) {
     m_bFiltered = true; // as for items: the category is in the filter
+    if (strcmp(name, "none") == 0) { // header filter on, no field selected (the fields listed too are printed)
+        m_nHeaderFilter |= HDR_NONE;
+        return true;
+    }
     for (size_t i = 0; i < sizeof(RECORD_HEADER_FIELDS) / sizeof(RECORD_HEADER_FIELDS[0]); i++) {
         if (strcmp(name, RECORD_HEADER_FIELDS[i].name) == 0) {
             m_nHeaderFilter |= RECORD_HEADER_FIELDS[i].bit;

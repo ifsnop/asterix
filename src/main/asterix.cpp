@@ -69,7 +69,7 @@ static void show_usage(std::string name) {
             << "\n\t-L,--list\tList all configured ASTERIX items. Mark which items are filtered. With -Q, print only the MySQL CREATE TABLE statements."
             << "\n\t-LF,--filter\tPrintout only items listed in configured file (lines of -L: CATxxx:Ixxx:FIELD). Record header fields"
             << "\n\t\t\t(id, cat, length, crc, timestamp, srcip, fspec, hexdata) are selected per category with CATxxx:HDR:FIELD"
-            << "\n\t\t\tlines; a category with no HDR line prints its whole header."
+            << "\n\t\t\tlines; a category with no HDR line prints its whole header, CATxxx:HDR:none prints none of it."
             << "\n\t-o,--loop\tLoop the input file. Only relevant when file is data source."
             << "\n\t-s,--sync\tOutput will be printed synchronously with input file (with time delays between packets). This parameter is used only if input is from file."
             << "\n\nInput format"

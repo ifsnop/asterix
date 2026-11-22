@@ -98,7 +98,8 @@ CAT048:I010:SAC
 ```
 
 With these lines, `cat048` has only `rec_id`, `timestamp` and `srcip` as header columns (`rec_id` is always
-there). A category without `HDR` lines keeps all 8 header columns.
+there). A category without `HDR` lines keeps all 8 header columns. With `CAT048:HDR:none` (not listed by
+`-L`), `cat048` has no header column, only `rec_id` and the fields.
 
 ## Data mapping between ASTERIX and MySQL
 

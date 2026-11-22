@@ -47,7 +47,8 @@ enum {
     HDR_SRCIP = 1 << 5,
     HDR_FSPEC = 1 << 6,
     HDR_HEXDATA = 1 << 7,
-    HDR_ALL = (1 << 8) - 1
+    HDR_ALL = (1 << 8) - 1,
+    HDR_NONE = 1 << 8 //!< "CATnnn:HDR:none": the filter has an HDR line for the category, without any field
 };
 
 struct RecordHeaderField {
@@ -83,13 +84,13 @@ public:
     std::string m_strSqlTable; //! -Q output: table of this category (empty: not in the schema)
     bool filterOutItem(std::string item, const char *name);
 
-    unsigned m_nHeaderFilter; //! header fields in the filter (HDR_*), 0: no HDR line for this category
+    unsigned m_nHeaderFilter; //! header fields in the filter (HDR_*, HDR_NONE), 0: no HDR line for this category
 
     /** true if header field bit (HDR_*) is printed: always without -LF, or when the filter has no HDR line
      *  for this category, otherwise only if the filter has it */
     bool printsHeader(unsigned bit) const;
 
-    bool filterOutHeader(const char *name); // marks header field name for printing, false if unknown
+    bool filterOutHeader(const char *name); // marks header field name for printing ("none": none), false if unknown
 
     bool isFiltered(std::string item, const char *name);
 

@@ -277,3 +277,41 @@ TEST_CASE("-LF: record header fields (CATnnn:HDR:name) per category, the whole h
     CHECK(listing.find("\nCAT002:HDR:id ") != std::string::npos); // no HDR line for CAT002: all printed
     CHECK(listing.find("CAT001:HDR:hexdata") < listing.find("CAT001:I010:SAC"));
 }
+
+TEST_CASE("-LF: CATnnn:HDR:none prints no record header field, with fields only those") {
+    extern bool gFiltering;
+    static AsterixDefinition *def = NULL;
+    if (!def) {
+        def = new AsterixDefinition();
+        loadDefinitions(g_definitionsFile, def);
+    }
+    InputParser filtered(def);
+    REQUIRE(filtered.filterOutItem(1, "010", "SAC"));
+    REQUIRE(filtered.filterOutHeader(1, "none"));
+    std::vector<unsigned char> data = block(1, CAT001_RECORD);
+
+    gFiltering = true;
+    std::unique_ptr<AsterixData> d(filtered.parsePacket(&data[0], (unsigned int) data.size(), 12.5));
+    std::string j = text(d.get(), CAsterixFormat::EJSON);
+    std::string jh = text(d.get(), CAsterixFormat::EJSONH);
+    std::string x = text(d.get(), CAsterixFormat::EXML);
+    std::string txt = text(d.get(), CAsterixFormat::ETxt);
+    std::string listing = def->printDescriptors();
+    gFiltering = false;
+
+    CHECK_EQ(j, std::string("{\"CAT001\":{\"I010\":{\"SAC\":25}}}\n"));
+    CHECK(jh.compare(0, 11, "{\"CAT001\":{") == 0);
+    CHECK(x.find("<ASTERIX ver=\"1\"><I010>") != std::string::npos);
+    CHECK(txt.find("\n-------------------------\nData Record\n\nItem 010") != std::string::npos);
+    for (size_t i = 0; i < 8; i++)
+        CHECK(listing.find(std::string("#CAT001:HDR:") + RECORD_HEADER_FIELDS[i].name) != std::string::npos);
+    CHECK(listing.find("HDR:none") == std::string::npos); // not listed by -L
+
+    // none with a field: that field only
+    REQUIRE(filtered.filterOutHeader(1, "timestamp"));
+    gFiltering = true;
+    d.reset(filtered.parsePacket(&data[0], (unsigned int) data.size(), 12.5));
+    j = text(d.get(), CAsterixFormat::EJSON);
+    gFiltering = false;
+    CHECK_EQ(j, std::string("{\"timestamp\":12.500000,\"CAT001\":{\"I010\":{\"SAC\":25}}}\n"));
+}

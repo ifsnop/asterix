@@ -232,6 +232,13 @@ print(len(recs), all([k for k in r if not k.startswith("CAT")] == keys for r in 
     out=$("$BIN" -d $DEFS -R -f install/sample_data/cat_001_002.pcap -j -LF "$FILTER" 2>/dev/null | head -1 | cut -c1-60)
     if [ "$out" = '{"cat":1,"length":23,"crc":"166B4DBF","fspec":"F7C6","CAT001' ]; then ok "-LF with HDR lines prints only those header fields"
     else fail "-LF with HDR lines: unexpected record header" "$out"; fi
+    printf 'CAT001:HDR:none\nCAT001:I010:SAC\n' > "$TMP/nonehdr.txt"
+    out=$("$BIN" -d $DEFS -R -f install/sample_data/cat_001_002.pcap -j -LF "$TMP/nonehdr.txt" 2>/dev/null | python3 -c '
+import json, sys
+recs = [json.loads(l) for l in sys.stdin]
+print(len(recs), all(list(r) == ["CAT001"] for r in recs))')
+    if [ "$out" = "7 True" ]; then ok "-LF with CATxxx:HDR:none prints no record header field"
+    else fail "-LF with CATxxx:HDR:none: unexpected record header" "$out"; fi
     printf 'CAT048:HDR:bogus\nCAT048:I010:SAC\n' > "$TMP/badhdr.txt"
     out=$("$BIN" -d $DEFS -f install/sample_data/cat048.raw -j -LF "$TMP/badhdr.txt" 2>&1 >/dev/null)
     if echo "$out" | grep -q "Filtering item not found.*HDR:bogus"; then ok "unknown header field in -LF is reported"
