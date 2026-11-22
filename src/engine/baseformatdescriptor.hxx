@@ -62,6 +62,11 @@ public:
 
     virtual bool filterOutItem(int cat, std::string item, const char *name) { return false; }
 
+    /**
+     * Select a record header field of a category for printing (-LF "CATnnn:HDR:name")
+     */
+    virtual bool filterOutHeader(int cat, const char *name) { return false; }
+
 };
 
 #endif

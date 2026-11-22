@@ -67,7 +67,9 @@ static void show_usage(std::string name) {
             << "\n\t-v,--verbose\tShow more information during program execution."
             << "\n\t-d,--def\tXML protocol definitions filenames are listed in specified filename. By default are listed in config/asterix.ini"
             << "\n\t-L,--list\tList all configured ASTERIX items. Mark which items are filtered. With -Q, print only the MySQL CREATE TABLE statements."
-            << "\n\t-LF,--filter\tPrintout only items listed in configured file."
+            << "\n\t-LF,--filter\tPrintout only items listed in configured file (lines of -L: CATxxx:Ixxx:FIELD). Record header fields"
+            << "\n\t\t\t(id, cat, length, crc, timestamp, srcip, fspec, hexdata) are selected per category with CATxxx:HDR:FIELD"
+            << "\n\t\t\tlines; a category with no HDR line prints its whole header."
             << "\n\t-o,--loop\tLoop the input file. Only relevant when file is data source."
             << "\n\t-s,--sync\tOutput will be printed synchronously with input file (with time delays between packets). This parameter is used only if input is from file."
             << "\n\nInput format"
@@ -366,22 +368,24 @@ int main(int argc, const char *argv[]) {
 
                 char *p = strtok(line, ":");
                 int ret = 0;
+                bool header = false; // CATxxx:HDR:name, a record header field
                 while (p) {
                     if (sscanf(p, "CAT%03d", &cat) != 1)
                         break;
                     p = strtok(NULL, ":");
                     if (NULL == p) {
                         std::cerr <<
-                                  "Warning: Wrong Filter format. Shall be: \"CATxxx:Ixxx:NAME  DESCRIPTION\" or start with \"#\" for comment . It is: " +
+                                  "Warning: Wrong Filter format. Shall be: \"CATxxx:Ixxx:NAME  DESCRIPTION\", \"CATxxx:HDR:NAME  DESCRIPTION\" or start with \"#\" for comment . It is: " +
                                   std::string(line) << std::endl;
                         exit(3);
                     }
-                    if (sscanf(p, "I%128s", item) != 1)
+                    header = strcmp(p, "HDR") == 0;
+                    if (!header && sscanf(p, "I%128s", item) != 1)
                         break;
                     p = strtok(NULL, "");
                     if (NULL == p) {
                         std::cerr <<
-                                  "Warning: Wrong Filter format. Shall be: \"CATxxx:Ixxx:NAME  DESCRIPTION\" or start with \"#\" for comment . It is: " +
+                                  "Warning: Wrong Filter format. Shall be: \"CATxxx:Ixxx:NAME  DESCRIPTION\", \"CATxxx:HDR:NAME  DESCRIPTION\" or start with \"#\" for comment . It is: " +
                                   std::string(line) << std::endl;
                         exit(3);
                     }
@@ -393,12 +397,17 @@ int main(int argc, const char *argv[]) {
 
                 if (ret == 0) {
                     std::cerr <<
-                              "Warning: Wrong Filter format. Shall be: \"CATxxx:Ixxx:NAME  DESCRIPTION\" or start with \"#\" for comment . It is: " +
+                              "Warning: Wrong Filter format. Shall be: \"CATxxx:Ixxx:NAME  DESCRIPTION\", \"CATxxx:HDR:NAME  DESCRIPTION\" or start with \"#\" for comment . It is: " +
                               std::string(line) << std::endl;
                     exit(3);
                 }
 
-                if (!desc->filterOutItem(cat, std::string(item), name)) {
+                if (header) {
+                    if (!desc->filterOutHeader(cat, name)) {
+                        std::cerr << "Warning: Filtering item not found: " + std::string(line) + ":HDR:" +
+                                     std::string(name) << std::endl;
+                    }
+                } else if (!desc->filterOutItem(cat, std::string(item), name)) {
                     std::cerr << "Warning: Filtering item not found: " + std::string(line) + ":" + std::string(item) +
                                  ":" + std::string(name) << std::endl;
                 }

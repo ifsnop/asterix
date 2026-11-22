@@ -50,13 +50,14 @@ public:
         int parent;                   //!< index of the parent table, -1 for a category table
         int depth;                    //!< 0 category table, 1 its child tables, 2 a child of a child table...
         bool bds;                     //!< BDS register table: has reg_idx
+        unsigned headerFields;        //!< category table: record header columns it has (HDR_* of Category.h)
         std::vector<Column> columns;  //!< field columns (keys and record header are not included)
         std::set<std::string> names;  //!< every column name in use, keys included
     };
 
     SqlSchema() {}
 
-    int addCategoryTable(const std::string &name);
+    int addCategoryTable(const std::string &name, unsigned headerFields); // header columns HDR_* of Category.h
     int addChildTable(int parent, const std::string &suffix, bool bds);
     const std::string &addColumn(int table, const std::string &name, const std::string &type,
                                  const std::string &comment); // returns the unique name given to the column

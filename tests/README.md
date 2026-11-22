@@ -15,7 +15,7 @@ A change is ready when all jobs are green; when a golden output changes on purpo
 | Write-back | `tests/tools/roundtrip.py` | `-jx` values that cannot be edited with `hexdata[pos..] = (hex & ~mask) \| (value & mask)` and decoded back |
 | Input channels | `run_tests.sh` section `inputs` | stdin, UDP multicast (loopback), loop mode `-o` |
 | Robustness | `run_tests.sh` section `robustness` | crashes, hangs and sanitizer reports on malformed inputs (`tests/data/bad`), mutated inputs (`MUTANTS=dir`), `%` in file names |
-| Command line | `run_tests.sh` section `cli` | `-h`, `-V`, option errors, `-L` vs `install/sample_output/filter.txt`, `-Q -L` schema vs `tests/golden/sql_schema` |
+| Command line | `run_tests.sh` section `cli` | `-h`, `-V`, option errors, `-L` vs `install/sample_output/filter.txt`, `-Q -L` schema vs `tests/golden/sql_schema`, record header fields in `-LF` (`HDR` lines, none, unknown) |
 | Unit tests | `tests/unit` (CMake, `ctest`) | bit extraction and encodings, `getLength` contract of every item of every category, parser edge cases, UAP selection, record headers, printf-equivalent helpers, regressions |
 | Fuzzing | `tests/fuzz/fuzz_parse.cpp` (libFuzzer) | crashes and sanitizer reports on arbitrary packets, every output format |
 | Coverage | `tests/tools/coverage_report.py` | coverage under `tests/coverage_min.txt` |

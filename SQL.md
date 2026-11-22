@@ -88,6 +88,18 @@ With a filter, a column exists only for the fields of the filter. A table is cre
 field, or a child table that has one. Categories with no filtered field have no table. An `INSERT` lists only
 the filtered fields.
 
+The record header columns follow the `HDR` lines of the filter (`asterix -L` lists them for each category):
+
+```
+CAT048:HDR:timestamp
+CAT048:HDR:srcip
+CAT048:I010:SAC
+...
+```
+
+With these lines, `cat048` has only `rec_id`, `timestamp` and `srcip` as header columns (`rec_id` is always
+there). A category without `HDR` lines keeps all 8 header columns.
+
 ## Data mapping between ASTERIX and MySQL
 
 Each field has the MySQL type that holds every value `-j` can print for it:

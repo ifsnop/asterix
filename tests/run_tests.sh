@@ -38,8 +38,8 @@ ok() { passed=$((passed + 1)); [ -n "$VERBOSE" ] && echo "OK      $1"; }
 fail() { failed=$((failed + 1)); echo "FAILED  $1"; [ -n "$2" ] && echo "$2" | head -40 | sed 's/^/        /'; }
 
 # wall-clock timestamps of raw/ORADIS file input (and of stdin/multicast) are replaced by T
-# (in -Q INSERTs, the value after the crc)
-mask_time() { sed -E 's/("timestamp":)[0-9.]+/\1T/g; s/(timestamp=")[0-9.]+/\1T/g; s/(Timestamp: )[0-9.]+/\1T/g; s/^(INSERT INTO `cat[0-9]{3}` \(.*\) VALUES \([^,]*,[^,]*,[^,]*,'"'"'[0-9A-F]{8}'"'"',)[0-9.]+/\1T/'; }
+# (in -Q INSERTs of category tables, the only value with 6 decimals: field values have 7)
+mask_time() { sed -E 's/("timestamp":)[0-9.]+/\1T/g; s/(timestamp=")[0-9.]+/\1T/g; s/(Timestamp: )[0-9.]+/\1T/g; /^INSERT INTO `cat[0-9]{3}` /s/([(,])[0-9]+\.[0-9]{6}([,)])/\1T\2/'; }
 # -Q output without its CREATE TABLE statements (the schema has golden files of its own, see section_cli)
 sql_data() { sed -n '/^START TRANSACTION;$/,$p'; }
 # stderr messages start with the wall-clock time
@@ -219,6 +219,23 @@ section_cli() {
     out=$("$BIN" -d $DEFS -L 2>/dev/null)
     if [ "$out" = "$(cat install/sample_output/filter.txt)" ]; then ok "-L matches install/sample_output/filter.txt"
     else fail "-L differs from install/sample_output/filter.txt (definitions changed? regenerate it)" "$(diff <(echo "$out") install/sample_output/filter.txt | head)"; fi
+    # record header fields in -LF: a category with no HDR line prints its whole header (filter files written
+    # before HDR lines existed), one with HDR lines only those fields; an unknown header field is reported
+    grep -v ':HDR:' "$FILTER" > "$TMP/nohdr.txt"
+    out=$("$BIN" -d $DEFS -R -f install/sample_data/cat_001_002.pcap -j -LF "$TMP/nohdr.txt" 2>/dev/null | python3 -c '
+import json, sys
+keys = ["id", "cat", "length", "crc", "timestamp", "srcip", "fspec", "hexdata"]
+recs = [json.loads(l) for l in sys.stdin]
+print(len(recs), all([k for k in r if not k.startswith("CAT")] == keys for r in recs))')
+    if [ "$out" = "8 True" ]; then ok "-LF without HDR lines prints the whole record header"
+    else fail "-LF without HDR lines does not print the whole record header" "$out"; fi
+    out=$("$BIN" -d $DEFS -R -f install/sample_data/cat_001_002.pcap -j -LF "$FILTER" 2>/dev/null | head -1 | cut -c1-60)
+    if [ "$out" = '{"cat":1,"length":23,"crc":"166B4DBF","fspec":"F7C6","CAT001' ]; then ok "-LF with HDR lines prints only those header fields"
+    else fail "-LF with HDR lines: unexpected record header" "$out"; fi
+    printf 'CAT048:HDR:bogus\nCAT048:I010:SAC\n' > "$TMP/badhdr.txt"
+    out=$("$BIN" -d $DEFS -f install/sample_data/cat048.raw -j -LF "$TMP/badhdr.txt" 2>&1 >/dev/null)
+    if echo "$out" | grep -q "Filtering item not found.*HDR:bogus"; then ok "unknown header field in -LF is reported"
+    else fail "unknown header field in -LF is not reported" "$out"; fi
     "$BIN" -d $DEFS -j -Q -f install/sample_data/cat048.raw > /dev/null 2>&1; rc=$?
     if [ $rc -eq 1 ]; then ok "-Q with another output format is rejected"; else fail "-Q -j: exit $rc, expected 1"; fi
     # MySQL schema of -Q (-Q -L prints only the schema): every table, and only the filtered fields with -LF

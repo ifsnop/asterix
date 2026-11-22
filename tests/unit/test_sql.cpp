@@ -9,6 +9,7 @@
 #include "minitest.h"
 #include "test_support.h"
 #include "AsterixData.h"
+#include "Category.h"
 #include "SqlSchema.h"
 
 namespace {
@@ -86,7 +87,7 @@ TEST_CASE("sql: keys of category, child and nested child tables") {
 
 TEST_CASE("sql: schema names, duplicates, child tables and foreign keys") {
     SqlSchema s;
-    int cat = s.addCategoryTable("cat999");
+    int cat = s.addCategoryTable("cat999", HDR_ALL);
     CHECK_EQ(s.addColumn(cat, "I010_FX", "TINYINT UNSIGNED", "x"), std::string("I010_FX"));
     CHECK_EQ(s.addColumn(cat, "I010_FX", "TINYINT UNSIGNED", "x"), std::string("I010_FX1"));
     CHECK_EQ(s.addColumn(cat, "id", "INT", ""), std::string("id1")); // a record header name is taken
@@ -101,6 +102,14 @@ TEST_CASE("sql: schema names, duplicates, child tables and foreign keys") {
     CHECK(has(r, "PRIMARY KEY (`rec_id`,`parent_rep_idx`,`rep_idx`),\n  FOREIGN KEY (`rec_id`,`parent_rep_idx`) "
                  "REFERENCES `cat999_I020` (`rec_id`,`rep_idx`) ON DELETE CASCADE"));
     CHECK(has(r, "`V` INT COMMENT 'it''s'"));
+    CHECK(has(r, "  `hexdata` MEDIUMTEXT,\n"));
+
+    // -LF with HDR lines: only those record header columns
+    SqlSchema f;
+    int t = f.addCategoryTable("cat998", HDR_TIMESTAMP | HDR_SRCIP);
+    f.addColumn(t, "I010_SAC", "TINYINT UNSIGNED", "");
+    CHECK(has(f.render(), "  `rec_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,\n  `timestamp` DOUBLE,\n"
+                          "  `srcip` VARCHAR(15),\n  `I010_SAC` TINYINT UNSIGNED,\n"));
 }
 
 TEST_CASE("sql: rows of nested child tables carry the index of each parent row") {

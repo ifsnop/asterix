@@ -1,4 +1,21 @@
 # Subset of 'asterix -L' used by the -LF cases of tests/run_tests.sh: only these fields are printed.
+# Record header fields: all of CAT048, some of CAT062 and CAT001; the other categories have no HDR line,
+# so they print their whole header
+CAT048:HDR:id
+CAT048:HDR:cat
+CAT048:HDR:length
+CAT048:HDR:crc
+CAT048:HDR:timestamp
+CAT048:HDR:srcip
+CAT048:HDR:fspec
+CAT048:HDR:hexdata
+CAT062:HDR:timestamp
+CAT062:HDR:srcip
+CAT062:HDR:hexdata
+CAT001:HDR:cat
+CAT001:HDR:length
+CAT001:HDR:crc
+CAT001:HDR:fspec
 CAT001:I010:SAC
 CAT001:I010:SIC
 CAT001:I020:TYP

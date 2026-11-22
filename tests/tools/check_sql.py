@@ -200,11 +200,12 @@ def decode_json(line):
 def expected_rows(schema, record):
     header = dict((k, v) for k, v in record if not k.startswith('CAT'))
     cat_items = [v for k, v in record if k.startswith('CAT')][0]
-    table = 'cat%03d' % int(header['cat'])
+    table = 'cat' + [k for k, _ in record if k.startswith('CAT')][0][3:]
     e = Expected(schema)
     root = e.new_row(table, None, 0, False)
     for k in HEADER:
-        root['cols'][k] = header[k]
+        if k in header:  # with -LF, only the header fields of the filter (CATnnn:HDR:...)
+            root['cols'][k] = header[k]
     e.flatten(root, '', cat_items)
     return e.finish()
 

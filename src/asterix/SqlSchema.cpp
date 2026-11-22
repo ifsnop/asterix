@@ -23,7 +23,7 @@
 #include "DataItemBits.h"
 #include "Utils.h"
 
-// Record header columns of every category table, in the order of the -j record header
+// Record header columns of category tables, in the order of the -j record header (bit i: HDR_* of Category.h)
 static const struct {
     const char *name;
     const char *type;
@@ -40,12 +40,13 @@ static const struct {
 
 static const char TABLE_OPTIONS[] = ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n";
 
-int SqlSchema::addCategoryTable(const std::string &name) {
+int SqlSchema::addCategoryTable(const std::string &name, unsigned headerFields) {
     Table t;
     t.name = name;
     t.parent = -1;
     t.depth = 0;
     t.bds = false;
+    t.headerFields = headerFields;
     t.names.insert("rec_id");
     for (size_t i = 0; i < sizeof(HEADER_COLUMNS) / sizeof(HEADER_COLUMNS[0]); i++)
         t.names.insert(HEADER_COLUMNS[i].name);
@@ -63,6 +64,7 @@ int SqlSchema::addChildTable(int parent, const std::string &suffix, bool bds) {
     t.parent = parent;
     t.depth = m_vTables[parent].depth + 1;
     t.bds = bds;
+    t.headerFields = 0;
     std::vector<std::string> keys = keyColumns(t.depth);
     t.names.insert(keys.begin(), keys.end());
     if (bds)
@@ -199,6 +201,8 @@ std::string SqlSchema::render() const {
         if (t.depth == 0) {
             s += "  `rec_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,\n";
             for (size_t h = 0; h < sizeof(HEADER_COLUMNS) / sizeof(HEADER_COLUMNS[0]); h++) {
+                if (!(t.headerFields & (1u << h)))
+                    continue;
                 s += "  ";
                 appendIdentifier(s, HEADER_COLUMNS[h].name);
                 s += ' ';

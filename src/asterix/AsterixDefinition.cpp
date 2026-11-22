@@ -85,6 +85,13 @@ std::string AsterixDefinition::printSqlSchema() {
     return schema.render();
 }
 
+bool AsterixDefinition::filterOutHeader(int cat, const char *name) {
+    if (CategoryDefined(cat)) {
+        return getCategory(cat)->filterOutHeader(name);
+    }
+    return false;
+}
+
 bool AsterixDefinition::filterOutItem(int cat, std::string item, const char *name) {
     if (CategoryDefined(cat)) {
         return getCategory(cat)->filterOutItem(item, name);

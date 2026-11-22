@@ -1,14 +1,10 @@
 -- MySQL schema and data of asterix -Q output: one table per category, child tables for repetitive data items (see SQL.md)
 CREATE TABLE IF NOT EXISTS `cat001` (
   `rec_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `id` INT,
   `cat` TINYINT UNSIGNED,
   `length` INT UNSIGNED,
   `crc` CHAR(8),
-  `timestamp` DOUBLE,
-  `srcip` VARCHAR(15),
   `fspec` VARCHAR(255),
-  `hexdata` MEDIUMTEXT,
   `I010_SAC` TINYINT UNSIGNED COMMENT 'System Area Code',
   `I010_SIC` TINYINT UNSIGNED COMMENT 'System Identification Code',
   `I020_TYP` TINYINT UNSIGNED COMMENT 'TYP',
@@ -127,13 +123,8 @@ CREATE TABLE IF NOT EXISTS `cat048_I250_BDS50` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 CREATE TABLE IF NOT EXISTS `cat062` (
   `rec_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `id` INT,
-  `cat` TINYINT UNSIGNED,
-  `length` INT UNSIGNED,
-  `crc` CHAR(8),
   `timestamp` DOUBLE,
   `srcip` VARCHAR(15),
-  `fspec` VARCHAR(255),
   `hexdata` MEDIUMTEXT,
   `I010_SAC` TINYINT UNSIGNED COMMENT 'System Area Code',
   `I010_SIC` TINYINT UNSIGNED COMMENT 'System Identification Code',

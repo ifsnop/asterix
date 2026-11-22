@@ -389,6 +389,11 @@ New -Q / --sql output: MySQL statements to load the decoded data into MySQL or M
 -LF fix: -j, -jh, -je and -jx printed invalid JSON when a repetition of a Repetitive item printed nothing
            (a BDS register not in the filter left its comma: "{...},]"); such repetitions are now left out
            of the list. Without -LF the output is the same.
+-LF filters can select record header fields per category: "CATnnn:HDR:<field>" with field id, cat,
+           length, crc, timestamp, srcip, fspec or hexdata, listed by -L before the items of each category.
+           A category with HDR lines prints only those header fields in text (record and block header),
+           XML, JSON and -Q (columns); a category without HDR lines prints its whole header, so filter files
+           without HDR lines give the same output as before.
 Tests: -Q golden outputs and schema, tests/tools/check_sql.py (every -Q row and value equals -j),
            tests/sql/load_mysql.sh (every case loaded into MySQL 8 in CI, SQL.md example queries), -Q in
            the robustness runs, unit tests (types, quoting, keys, BDS/Explicit/list rows)

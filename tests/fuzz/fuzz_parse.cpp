@@ -69,6 +69,7 @@ static void init() {
     g_parser->filterOutItem(48, "010", "SAC");
     g_parser->filterOutItem(48, "250", "MCP_ALT");
     g_parser->filterOutItem(62, "105", "Lat");
+    g_parser->filterOutHeader(48, "timestamp"); // only some record header fields in CAT048, all in the others
 }
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
