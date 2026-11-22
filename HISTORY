@@ -377,7 +377,7 @@ stdin is read in 64 KB blocks instead of 3 read() + 1 select() per packet; live 
 -LF fix: an item not in the filter holding an empty Repetitive (e.g. CAT062 I390 "TOD":[]) was printed;
            it is now left out. With -LF, errors inside items not in the filter are no longer reported
 
-Unreleased
+2.8.11-ifsnop.7 (python_v0.7.11 unchanged)
 New -Q / --sql output: MySQL statements to load the decoded data into MySQL or MariaDB (SQL.md):
            CREATE TABLE IF NOT EXISTS for every category (only the -LF fields when filtered), then the
            INSERTs of every record. Table catNNN has rec_id (AUTO_INCREMENT),
