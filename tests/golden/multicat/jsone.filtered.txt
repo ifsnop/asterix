@@ -1,11 +1,7 @@
-{"id":1,
-"cat":1,
+{"cat":1,
 "length":23,
 "crc":"166B4DBF",
-"timestamp":T,
-"srcip":"0.0.0.0",
 "fspec":"F7C6",
-"hexdata":"19C9A00EB2767F189408AA42D8033405C8800D400E",
 "CAT001":{
 	"I010":{
 		"SAC":{"val"=25, "hex"="19", "name"="System Area Code"},
@@ -18,14 +14,10 @@
 		"SPI":{"val"=0, "hex"="A0", "mask"="00000100", "name"="SPI", "meaning"="Default"},
 		"RAB":{"val"=0, "hex"="A0", "mask"="00000010", "name"="RAB", "meaning"="Default"},
 		"FX":{"val"=0, "hex"="A0", "mask"="00000001", "name"="FX", "meaning"="End of Data Item"}}}},
-{"id":2,
-"cat":1,
+{"cat":1,
 "length":23,
 "crc":"451BDC4F",
-"timestamp":T,
-"srcip":"0.0.0.0",
 "fspec":"F7C6",
-"hexdata":"19C9B00F7561EC1A14077EB5550E5205508014400E",
 "CAT001":{
 	"I010":{
 		"SAC":{"val"=25, "hex"="19", "name"="System Area Code"},
@@ -38,14 +30,10 @@
 		"SPI":{"val"=0, "hex"="B0", "mask"="00000100", "name"="SPI", "meaning"="Default"},
 		"RAB":{"val"=0, "hex"="B0", "mask"="00000010", "name"="RAB", "meaning"="Default"},
 		"FX":{"val"=0, "hex"="B0", "mask"="00000001", "name"="FX", "meaning"="End of Data Item"}}}},
-{"id":3,
-"cat":1,
+{"cat":1,
 "length":23,
 "crc":"B1116CF7",
-"timestamp":T,
-"srcip":"0.0.0.0",
 "fspec":"F7C6",
-"hexdata":"19C9B00DCA69DE1A7C07F011110E3006188016400E",
 "CAT001":{
 	"I010":{
 		"SAC":{"val"=25, "hex"="19", "name"="System Area Code"},
@@ -108,13 +96,8 @@
 		"TARGET_ALT_STATUS":{"val"=0, "hex"="00", "mask"="00000100", "name"="Status of Target ALT source bits", "meaning"="No source information provided"},
 		"TARGET_ALT_SOURCE":{"val"=0, "hex"="00", "mask"="00000011", "name"="Target ALT source", "meaning"="Unknown"},
 		"BDS":{"val"="40", "hex"="40", "name"="BDS register"}}]}},
-{"id":1,
-"cat":62,
-"length":66,
-"crc":"943598B9",
-"timestamp":T,
+{"timestamp":T,
 "srcip":"0.0.0.0",
-"fspec":"BFCFFD02",
 "hexdata":"1964043C5FD5007F3E9B0025188DF8B42AFCC2FCFF3302A8000008BE137411030118701D00FF2890000002741B100274FFB9DC190DBAB0B880027408BE40",
 "CAT062":{
 	"I010":{
@@ -123,13 +106,8 @@
 	"I105":{
 		"Lat":{"val"=44.7344130, "hex"="007F3E9B", "name"="Latitude in WGS.84 in two's complement. Range -90 < latitude < 90 deg."},
 		"Lon":{"val"=13.0415279, "hex"="0025188D", "name"="Longitude in WGS.84 in two's complement. Range -180 < longitude < 180 deg."}}}},
-{"id":2,
-"cat":62,
-"length":114,
-"crc":"0F55FD0E",
-"timestamp":T,
+{"timestamp":T,
 "srcip":"0.0.0.0",
-"fspec":"BFDFFF02",
 "hexdata":"1964043C5FEA008123DC002B0BA6FDC917FEE5EB0236FD550000055DC1203C0A554D8134DF2CE020F61F290D13010870040000009000000578161205780000FFE10019645358443437323341BE122D44423733384D4544444C48454C582000200578DC190D5D32C10B0578055DA0",
 "CAT062":{
 	"I010":{
@@ -151,14 +129,10 @@
 		"AIC":{"val"=1, "hex"="F6", "mask"="00100000", "name"="Aircraft identification capability", "meaning"="Yes"},
 		"B1A":{"val"=1, "hex"="F6", "mask"="00010000", "name"="BDS 1,0 bit 16"},
 		"B1B":{"val"=6, "hex"="F6", "mask"="00001111", "name"="BDS 1,0 bits 37/40"}}}}},
-{"id":1,
-"cat":1,
+{"cat":1,
 "length":23,
 "crc":"AA452E46",
-"timestamp":T,
-"srcip":"0.0.0.0",
 "fspec":"F7C6",
-"hexdata":"19C9B00D685C881CE008424FA4004A04D88022400E",
 "CAT001":{
 	"I010":{
 		"SAC":{"val"=25, "hex"="19", "name"="System Area Code"},
@@ -233,13 +207,8 @@
 	"I010":{
 		"SAC":{"val"=25, "hex"="19", "name"="Source Area Code"},
 		"SIC":{"val"=100, "hex"="64", "name"="Source Identification Code"}}}},
-{"id":1,
-"cat":62,
-"length":52,
-"crc":"0FE6E780",
-"timestamp":T,
+{"timestamp":T,
 "srcip":"0.0.0.0",
-"fspec":"BB3D42",
 "hexdata":"196459F8E10E301EFA640CF0A102F20500071DEF7E0400BD011053884155413834385A404C4154494C4F57570108000000",
 "CAT062":{
 	"I010":{
@@ -298,13 +267,8 @@
 		"TARGET_ALT_STATUS":{"val"=0, "hex"="00", "mask"="00000100", "name"="Status of Target ALT source bits", "meaning"="No source information provided"},
 		"TARGET_ALT_SOURCE":{"val"=0, "hex"="00", "mask"="00000011", "name"="Target ALT source", "meaning"="Unknown"},
 		"BDS":{"val"="40", "hex"="40", "name"="BDS register"}}]}},
-{"id":1,
-"cat":62,
-"length":49,
-"crc":"68C510C0",
-"timestamp":T,
+{"timestamp":T,
 "srcip":"0.0.0.0",
-"fspec":"BB3D42",
 "hexdata":"196459F8FA00721E30E70D1884056E0528092F5E870000000110538843464734363020404544444C4845474E0108",
 "CAT062":{
 	"I010":{
@@ -317,14 +281,10 @@
 		"IAS":{
 		"IM":{"val"=0, "hex"="53", "mask"="10000000", "name"="IAS/Mach No", "meaning"="Air Speed = IAS (LSB 2^-14 NM/s)"},
 		"AS":{"val"=21384, "hex"="5388", "mask"="0111111111111111", "name"="Air Speed"}}}}},
-{"id":1,
-"cat":1,
+{"cat":1,
 "length":23,
 "crc":"52C8CF8E",
-"timestamp":T,
-"srcip":"0.0.0.0",
 "fspec":"F7C6",
-"hexdata":"19C9B00CE173571E28081DD1100AC405A08028400E",
 "CAT001":{
 	"I010":{
 		"SAC":{"val"=25, "hex"="19", "name"="System Area Code"},
@@ -348,14 +308,10 @@
 "CAT034":{
 	"I000":{
 		"MsgTyp":{"val"=2, "hex"="02", "name"="Message Type", "meaning"="Sector crossing message"}}}},
-{"id":1,
-"cat":1,
+{"cat":1,
 "length":23,
 "crc":"D32E1DA2",
-"timestamp":T,
-"srcip":"0.0.0.0",
 "fspec":"F7C6",
-"hexdata":"19C9A00C10514C212C05DCE2D7059E025A8038400E",
 "CAT001":{
 	"I010":{
 		"SAC":{"val"=25, "hex"="19", "name"="System Area Code"},
@@ -403,14 +359,10 @@
 		"TARGET_ALT_STATUS":{"val"=0, "hex"="00", "mask"="00000100", "name"="Status of Target ALT source bits", "meaning"="No source information provided"},
 		"TARGET_ALT_SOURCE":{"val"=0, "hex"="00", "mask"="00000011", "name"="Target ALT source", "meaning"="Unknown"},
 		"BDS":{"val"="40", "hex"="40", "name"="BDS register"}}]}},
-{"id":1,
-"cat":1,
+{"cat":1,
 "length":23,
 "crc":"6E189DDB",
-"timestamp":T,
-"srcip":"0.0.0.0",
 "fspec":"F7C6",
-"hexdata":"19C9B00F0D37FE21C80755D1C605A505A0803B400E",
 "CAT001":{
 	"I010":{
 		"SAC":{"val"=25, "hex"="19", "name"="System Area Code"},
@@ -482,7 +434,7 @@
 		"res2":{"val"=0, "hex"="00", "mask"="00011000", "name"="Reserved 2"},
 		"TARGET_ALT_STATUS":{"val"=0, "hex"="00", "mask"="00000100", "name"="Status of Target ALT source bits", "meaning"="No source information provided"},
 		"TARGET_ALT_SOURCE":{"val"=0, "hex"="00", "mask"="00000011", "name"="Target ALT source", "meaning"="Unknown"},
-		"BDS":{"val"="40", "hex"="40", "name"="BDS register"}},]}},
+		"BDS":{"val"="40", "hex"="40", "name"="BDS register"}}]}},
 {"id":3,
 "cat":48,
 "length":52,
@@ -548,13 +500,8 @@
 "CAT034":{
 	"I000":{
 		"MsgTyp":{"val"=2, "hex"="02", "name"="Message Type", "meaning"="Sector crossing message"}}}},
-{"id":1,
-"cat":62,
-"length":46,
-"crc":"9C6366BD",
-"timestamp":T,
+{"timestamp":T,
 "srcip":"0.0.0.0",
-"fspec":"BB3D42",
 "hexdata":"196459F9AE05A3209B9008E4740159057807DF6092000000011053885443583835374B40454747444C475A",
 "CAT062":{
 	"I010":{
@@ -615,7 +562,7 @@
 		"res2":{"val"=0, "hex"="00", "mask"="00011000", "name"="Reserved 2"},
 		"TARGET_ALT_STATUS":{"val"=0, "hex"="00", "mask"="00000100", "name"="Status of Target ALT source bits", "meaning"="No source information provided"},
 		"TARGET_ALT_SOURCE":{"val"=0, "hex"="00", "mask"="00000011", "name"="Target ALT source", "meaning"="Unknown"},
-		"BDS":{"val"="40", "hex"="40", "name"="BDS register"}},]}},
+		"BDS":{"val"="40", "hex"="40", "name"="BDS register"}}]}},
 {"id":3,
 "cat":48,
 "length":52,
@@ -670,13 +617,8 @@
 		"ACAddr":{"val"="A022A3", "hex"="A022A3", "name"="AircraftAddress"}},
 	"I240":{
 		"TId":{"val"="N108CE  ", "hex"="3B1C380C5820", "name"="Characters 1-8 (coded on 6 bits each) defining target identification"}}}},
-{"id":1,
-"cat":62,
-"length":46,
-"crc":"C057B021",
-"timestamp":T,
+{"timestamp":T,
 "srcip":"0.0.0.0",
-"fspec":"BB3D42",
 "hexdata":"196459F9AE0DED20982808E95C00410708081260D0000000011053884E33353242482040454242524C4C42",
 "CAT062":{
 	"I010":{
@@ -700,13 +642,8 @@
 "CAT034":{
 	"I000":{
 		"MsgTyp":{"val"=2, "hex"="02", "name"="Message Type", "meaning"="Sector crossing message"}}}},
-{"id":1,
-"cat":62,
-"length":52,
-"crc":"E4E5ED31",
-"timestamp":T,
+{"timestamp":T,
 "srcip":"0.0.0.0",
-"fspec":"BB3D42",
 "hexdata":"196459F9E10D571FFDF5094B670F4D05C8088147BA0000000110538853554935353620404C535A425A5A5A5A0108000000",
 "CAT062":{
 	"I010":{
@@ -738,7 +675,7 @@
 		"ACAddr":{"val"="4007FA", "hex"="4007FA", "name"="AircraftAddress"}},
 	"I240":{
 		"TId":{"val"="BAW162  ", "hex"="0815F1DB2820", "name"="Characters 1-8 (coded on 6 bits each) defining target identification"}},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":{"val"=1, "hex"="CE", "mask"="10000000", "name"="MCP Altitude Status"},
 		"MCP_ALT":{"val"=40000.0000000, "hex"="CE20", "mask"="0111111111111000", "name"="MCP/FCU Selected Altitude"},
 		"FMS_ALT_STATUS":{"val"=0, "hex"="20", "mask"="00000100", "name"="FMS Altitude Status"},
@@ -773,7 +710,7 @@
 		"ACAddr":{"val"="4007FA", "hex"="4007FA", "name"="AircraftAddress"}},
 	"I240":{
 		"TId":{"val"="BAW162  ", "hex"="0815F1DB2820", "name"="Characters 1-8 (coded on 6 bits each) defining target identification"}},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":{"val"=1, "hex"="CE", "mask"="10000000", "name"="MCP Altitude Status"},
 		"MCP_ALT":{"val"=40000.0000000, "hex"="CE20", "mask"="0111111111111000", "name"="MCP/FCU Selected Altitude"},
 		"FMS_ALT_STATUS":{"val"=0, "hex"="20", "mask"="00000100", "name"="FMS Altitude Status"},

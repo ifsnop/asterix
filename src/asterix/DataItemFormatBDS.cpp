@@ -24,6 +24,7 @@
 #include "DataItemFormatBDS.h"
 #include "Tracer.h"
 #include "asterixformat.hxx"
+#include "SqlSchema.h"
 
 DataItemFormatBDS::DataItemFormatBDS(int id)
         : DataItemFormat(id) {
@@ -70,7 +71,14 @@ bool DataItemFormatBDS::getText(std::string &strResult, std::string &strHeader, 
         if (pFixed->m_nID == BDSid || pFixed->m_nID == 0) {
             std::string item_str;
 
+            // -Q output: the register is a row of its own child table
+            SqlRecord *pRecord = formatType == CAsterixFormat::ESQL ? SqlRecord::s_pCurrent : NULL;
+            int previous = 0;
+            if (pRecord != NULL)
+                previous = pRecord->openRow(&pFixed->m_strSqlTable, pRecord->takeNextRepIdx(), true);
             bool ret2 = pFixed->getText(item_str, strHeader, formatType, pData, 8);
+            if (pRecord != NULL)
+                pRecord->closeRow(previous);
             if (ret2) {
                 ret |= ret2;
                 tmpStr += item_str;
@@ -84,6 +92,20 @@ bool DataItemFormatBDS::getText(std::string &strResult, std::string &strHeader, 
         strResult += tmpStr;
 
     return ret;
+}
+
+void DataItemFormatBDS::addSqlColumns(SqlSchema &schema, int table, const std::string &prefix) {
+    std::string base = SqlSchema::tableSuffix(prefix);
+    std::list<DataItemFormat *>::iterator it;
+    for (it = m_lSubItems.begin(); it != m_lSubItems.end(); it++) {
+        DataItemFormat *pFixed = *it;
+        if (pFixed == NULL)
+            continue;
+        std::string reg = format("BDS%x", pFixed->m_nID); // as in printDescriptors (-L)
+        int child = schema.addChildTable(table, base.empty() ? reg : base + "_" + reg, true);
+        pFixed->m_strSqlTable = schema.tableName(child);
+        pFixed->addSqlColumns(schema, child, "");
+    }
 }
 
 std::string DataItemFormatBDS::printDescriptors(std::string header) {

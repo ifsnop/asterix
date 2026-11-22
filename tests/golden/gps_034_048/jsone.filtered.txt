@@ -32,7 +32,7 @@
 		"res2":{"val"=0, "hex"="00", "mask"="00011000", "name"="Reserved 2"},
 		"TARGET_ALT_STATUS":{"val"=0, "hex"="00", "mask"="00000100", "name"="Status of Target ALT source bits", "meaning"="No source information provided"},
 		"TARGET_ALT_SOURCE":{"val"=0, "hex"="00", "mask"="00000011", "name"="Target ALT source", "meaning"="Unknown"},
-		"BDS":{"val"="40", "hex"="40", "name"="BDS register"}},]}},
+		"BDS":{"val"="40", "hex"="40", "name"="BDS register"}}]}},
 {"id":1,
 "cat":48,
 "length":39,
@@ -112,7 +112,7 @@
 		"res2":{"val"=0, "hex"="00", "mask"="00011000", "name"="Reserved 2"},
 		"TARGET_ALT_STATUS":{"val"=0, "hex"="00", "mask"="00000100", "name"="Status of Target ALT source bits", "meaning"="No source information provided"},
 		"TARGET_ALT_SOURCE":{"val"=0, "hex"="00", "mask"="00000011", "name"="Target ALT source", "meaning"="Unknown"},
-		"BDS":{"val"="40", "hex"="40", "name"="BDS register"}},]}},
+		"BDS":{"val"="40", "hex"="40", "name"="BDS register"}}]}},
 {"id":1,
 "cat":48,
 "length":22,
@@ -391,7 +391,7 @@
 		"ACAddr":{"val"="4CA9EC", "hex"="4CA9EC", "name"="AircraftAddress"}},
 	"I240":{
 		"TId":{"val"="RYR2WA  ", "hex"="4994B25C1820", "name"="Characters 1-8 (coded on 6 bits each) defining target identification"}},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":{"val"=1, "hex"="84", "mask"="10000000", "name"="MCP Altitude Status"},
 		"MCP_ALT":{"val"=2304.0000000, "hex"="8480", "mask"="0111111111111000", "name"="MCP/FCU Selected Altitude"},
 		"FMS_ALT_STATUS":{"val"=0, "hex"="80", "mask"="00000100", "name"="FMS Altitude Status"},

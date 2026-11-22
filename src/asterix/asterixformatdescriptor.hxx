@@ -139,6 +139,10 @@ public:
 
     std::string printDescriptor() { return m_InputParser.printDefinition(); }
 
+    std::string printSqlSchema() { return m_InputParser.printSqlSchema(); }
+
+    bool filterOutHeader(int cat, const char *name) { return m_InputParser.filterOutHeader(cat, name); }
+
     bool filterOutItem(int cat, std::string item, const char *name) {
         return m_InputParser.filterOutItem(cat, item, name);
     }

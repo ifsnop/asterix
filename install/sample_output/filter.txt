@@ -1,3 +1,11 @@
+CAT001:HDR:id                                                Record number in its packet (not unique)
+CAT001:HDR:cat                                               Category
+CAT001:HDR:length                                            Record length (bytes)
+CAT001:HDR:crc                                               CRC-32 of the record (hex)
+CAT001:HDR:timestamp                                         Timestamp of the input
+CAT001:HDR:srcip                                             Source IP address
+CAT001:HDR:fspec                                             FSPEC bytes (hex)
+CAT001:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT001:I010:SAC                                              System Area Code
 CAT001:I010:SIC                                              System Identification Code
 CAT001:I020:TYP                                              
@@ -104,6 +112,14 @@ CAT001:I210:Qty                                              Quality indicator
 CAT001:I210:FX                                               
 CAT001:ISP:SPval                                             
 CAT001:IRFS:RFSval                                           
+CAT002:HDR:id                                                Record number in its packet (not unique)
+CAT002:HDR:cat                                               Category
+CAT002:HDR:length                                            Record length (bytes)
+CAT002:HDR:crc                                               CRC-32 of the record (hex)
+CAT002:HDR:timestamp                                         Timestamp of the input
+CAT002:HDR:srcip                                             Source IP address
+CAT002:HDR:fspec                                             FSPEC bytes (hex)
+CAT002:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT002:I000:type                                             Message Type
 CAT002:I010:SAC                                              System Area Code
 CAT002:I010:SIC                                              System Identification Code
@@ -125,6 +141,14 @@ CAT002:I100:rho_start                                        Rho start
 CAT002:I100:rho_end                                          Rho end
 CAT002:I100:theta_start                                      Theta start
 CAT002:I100:theta_end                                        Theta end
+CAT004:HDR:id                                                Record number in its packet (not unique)
+CAT004:HDR:cat                                               Category
+CAT004:HDR:length                                            Record length (bytes)
+CAT004:HDR:crc                                               CRC-32 of the record (hex)
+CAT004:HDR:timestamp                                         Timestamp of the input
+CAT004:HDR:srcip                                             Source IP address
+CAT004:HDR:fspec                                             FSPEC bytes (hex)
+CAT004:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT004:I000:MessageType                                      Message Type
 CAT004:I010:SAC                                              System Area Code
 CAT004:I010:SIC                                              System Identification Code
@@ -308,6 +332,14 @@ CAT004:IRE:G                                                 Garbled
 CAT004:IRE:MC                                                Last measured Mode C
 CAT004:IRE:Vx                                                Velocity, x-component
 CAT004:IRE:Vy                                                Velocity, y-component
+CAT008:HDR:id                                                Record number in its packet (not unique)
+CAT008:HDR:cat                                               Category
+CAT008:HDR:length                                            Record length (bytes)
+CAT008:HDR:crc                                               CRC-32 of the record (hex)
+CAT008:HDR:timestamp                                         Timestamp of the input
+CAT008:HDR:srcip                                             Source IP address
+CAT008:HDR:fspec                                             FSPEC bytes (hex)
+CAT008:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT008:I000:type                                             Message Type
 CAT008:I010:SAC                                              System Area Code
 CAT008:I010:SIC                                              System Identification Code
@@ -344,6 +376,14 @@ CAT008:I100:fx                                               Field extension
 CAT008:I110:Stat                                             Status
 CAT008:I110:fx                                               Field extension
 CAT008:I120:total_number                                     Total Number of Items
+CAT010:HDR:id                                                Record number in its packet (not unique)
+CAT010:HDR:cat                                               Category
+CAT010:HDR:length                                            Record length (bytes)
+CAT010:HDR:crc                                               CRC-32 of the record (hex)
+CAT010:HDR:timestamp                                         Timestamp of the input
+CAT010:HDR:srcip                                             Source IP address
+CAT010:HDR:fspec                                             FSPEC bytes (hex)
+CAT010:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT010:I000:MsgTyp                                           Type of msg.
 CAT010:I010:SAC                                              System Area Code fixed to zero
 CAT010:I010:SIC                                              System Identification Code
@@ -497,6 +537,14 @@ CAT010:I550:TTF                                              Test Target indicat
 CAT010:I550:spare                                            Spare bits set to zero
 CAT010:IRE:VAL                                               
 CAT010:ISP:SPval                                             
+CAT011:HDR:id                                                Record number in its packet (not unique)
+CAT011:HDR:cat                                               Category
+CAT011:HDR:length                                            Record length (bytes)
+CAT011:HDR:crc                                               CRC-32 of the record (hex)
+CAT011:HDR:timestamp                                         Timestamp of the input
+CAT011:HDR:srcip                                             Source IP address
+CAT011:HDR:fspec                                             FSPEC bytes (hex)
+CAT011:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT011:I000:MsgTyp                                           Message Type
 CAT011:I010:SAC                                              System Area Code fixed to zero
 CAT011:I010:SIC                                              System Identification code
@@ -717,6 +765,14 @@ CAT011:I610:I11                                              Indicator 11
 CAT011:I610:I12                                              Indicator 12
 CAT011:ISP:VAL                                               
 CAT011:IRE:VAL                                               
+CAT015:HDR:id                                                Record number in its packet (not unique)
+CAT015:HDR:cat                                               Category
+CAT015:HDR:length                                            Record length (bytes)
+CAT015:HDR:crc                                               CRC-32 of the record (hex)
+CAT015:HDR:timestamp                                         Timestamp of the input
+CAT015:HDR:srcip                                             Source IP address
+CAT015:HDR:fspec                                             FSPEC bytes (hex)
+CAT015:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT015:I000:MT                                               Message Type
 CAT015:I000:RG                                               Report Generation
 CAT015:I010:SAC                                              System Area Code
@@ -865,6 +921,14 @@ CAT015:I631:RgConStop                                        Range Contour Stop
 CAT015:I631:RgConStart                                       Range Contour Start
 CAT015:ISP:SP                                                SP
 CAT015:IRE:RE                                                RE
+CAT019:HDR:id                                                Record number in its packet (not unique)
+CAT019:HDR:cat                                               Category
+CAT019:HDR:length                                            Record length (bytes)
+CAT019:HDR:crc                                               CRC-32 of the record (hex)
+CAT019:HDR:timestamp                                         Timestamp of the input
+CAT019:HDR:srcip                                             Source IP address
+CAT019:HDR:fspec                                             FSPEC bytes (hex)
+CAT019:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT019:I000:MsgTyp                                           Message Type
 CAT019:I010:SAC                                              System Area Code
 CAT019:I010:SIC                                              System Identification Code
@@ -1016,6 +1080,14 @@ CAT019:I610:height                                           Height (WGS-84) abo
 CAT019:I620:undulation                                       WGS-84 Undulation value (MSL)
 CAT019:ISP:SP                                                SP value
 CAT019:IRE:RE                                                RE value
+CAT020:HDR:id                                                Record number in its packet (not unique)
+CAT020:HDR:cat                                               Category
+CAT020:HDR:length                                            Record length (bytes)
+CAT020:HDR:crc                                               CRC-32 of the record (hex)
+CAT020:HDR:timestamp                                         Timestamp of the input
+CAT020:HDR:srcip                                             Source IP address
+CAT020:HDR:fspec                                             FSPEC bytes (hex)
+CAT020:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT020:I010:SAC                                              System Area Code
 CAT020:I010:SIC                                              System Identification Code
 CAT020:I020:SSR                                              
@@ -1234,6 +1306,14 @@ CAT020:IRE:HPDOPx                                            HPDOP along x axis
 CAT020:IRE:HPDOPy                                            HPDOP along y axis
 CAT020:IRE:HPDOPxy                                           HPDOP Pearson Correlation Coefficient in two's complement form
 CAT020:ISP:SP                                                SP
+CAT021:HDR:id                                                Record number in its packet (not unique)
+CAT021:HDR:cat                                               Category
+CAT021:HDR:length                                            Record length (bytes)
+CAT021:HDR:crc                                               CRC-32 of the record (hex)
+CAT021:HDR:timestamp                                         Timestamp of the input
+CAT021:HDR:srcip                                             Source IP address
+CAT021:HDR:fspec                                             FSPEC bytes (hex)
+CAT021:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT021:I008:RA                                               TCAS Resolution Advisory active
 CAT021:I008:TC                                               Target Trajectory Change Report Capability
 CAT021:I008:TS                                               Target State Report Capability
@@ -1570,6 +1650,14 @@ CAT021:IRE:L                                                 Mode 2 code from tr
 CAT021:IRE:spare                                             Spare bits set to 0
 CAT021:IRE:M2                                                Mode-2 code in octal representation
 CAT021:ISP:SPval                                             
+CAT023:HDR:id                                                Record number in its packet (not unique)
+CAT023:HDR:cat                                               Category
+CAT023:HDR:length                                            Record length (bytes)
+CAT023:HDR:crc                                               CRC-32 of the record (hex)
+CAT023:HDR:timestamp                                         Timestamp of the input
+CAT023:HDR:srcip                                             Source IP address
+CAT023:HDR:fspec                                             FSPEC bytes (hex)
+CAT023:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT023:I000:report_type                                      Report Type
 CAT023:I010:SAC                                              System Area Code
 CAT023:I010:SIC                                              System Identification Code
@@ -1602,6 +1690,14 @@ CAT023:I120:counter                                          32-bit counter valu
 CAT023:I200:Range                                            Operational range of the GS
 CAT023:ISP:SP                                                SP
 CAT023:IRE:RE                                                RE
+CAT025:HDR:id                                                Record number in its packet (not unique)
+CAT025:HDR:cat                                               Category
+CAT025:HDR:length                                            Record length (bytes)
+CAT025:HDR:crc                                               CRC-32 of the record (hex)
+CAT025:HDR:timestamp                                         Timestamp of the input
+CAT025:HDR:srcip                                             Source IP address
+CAT025:HDR:fspec                                             FSPEC bytes (hex)
+CAT025:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT025:I000:Typ                                              Report Type
 CAT025:I000:RG                                               Report Generation
 CAT025:I010:SAC                                              System Area Code
@@ -1630,6 +1726,14 @@ CAT025:I600:Lat                                              Latitude in WGS-84
 CAT025:I600:Lon                                              Longitude in WGS-84
 CAT025:I610:Height                                           Height above MSL.
 CAT025:ISP:SP                                                SP
+CAT030:HDR:id                                                Record number in its packet (not unique)
+CAT030:HDR:cat                                               Category
+CAT030:HDR:length                                            Record length (bytes)
+CAT030:HDR:crc                                               CRC-32 of the record (hex)
+CAT030:HDR:timestamp                                         Timestamp of the input
+CAT030:HDR:srcip                                             Source IP address
+CAT030:HDR:fspec                                             FSPEC bytes (hex)
+CAT030:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT030:I010:SAC                                              System Area Code
 CAT030:I010:SIC                                              System Identification Code
 CAT030:I015:UserN                                            User number
@@ -1783,6 +1887,14 @@ CAT030:I490:CENTRE                                           Group identificatio
 CAT030:I490:POSITION                                         Control Position identification code
 CAT030:IRE:MSA                                               Age of the last Mode S Address used to update the track.
 CAT030:IRE:MAI                                               Age of the last Mode S Aircraft Identification used to update the track.
+CAT031:HDR:id                                                Record number in its packet (not unique)
+CAT031:HDR:cat                                               Category
+CAT031:HDR:length                                            Record length (bytes)
+CAT031:HDR:crc                                               CRC-32 of the record (hex)
+CAT031:HDR:timestamp                                         Timestamp of the input
+CAT031:HDR:srcip                                             Source IP address
+CAT031:HDR:fspec                                             FSPEC bytes (hex)
+CAT031:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT031:I010:SAC                                              Source Area Code
 CAT031:I010:SIC                                              Source Identification Code
 CAT031:I015:UserN                                            User number
@@ -1801,6 +1913,14 @@ CAT031:I080:spare                                            Spare bits se to 0
 CAT031:I080:PRRB                                             PR range bias
 CAT031:I080:PRRG                                             PR range gain
 CAT031:I090:PRAB                                             PR azimuth bias
+CAT032:HDR:id                                                Record number in its packet (not unique)
+CAT032:HDR:cat                                               Category
+CAT032:HDR:length                                            Record length (bytes)
+CAT032:HDR:crc                                               CRC-32 of the record (hex)
+CAT032:HDR:timestamp                                         Timestamp of the input
+CAT032:HDR:srcip                                             Source IP address
+CAT032:HDR:fspec                                             FSPEC bytes (hex)
+CAT032:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT032:I010:SAC                                              Source Area Code
 CAT032:I010:SIC                                              Source Identification Code
 CAT032:I015:UserN                                            User number
@@ -1853,6 +1973,14 @@ CAT032:I460:Mode3A                                           Mode 3/A Code
 CAT032:I480:CCFL                                             Current cleared flight level
 CAT032:I490:CENTRE                                           Group identification code
 CAT032:I490:POSITION                                         Control Position identification code
+CAT034:HDR:id                                                Record number in its packet (not unique)
+CAT034:HDR:cat                                               Category
+CAT034:HDR:length                                            Record length (bytes)
+CAT034:HDR:crc                                               CRC-32 of the record (hex)
+CAT034:HDR:timestamp                                         Timestamp of the input
+CAT034:HDR:srcip                                             Source IP address
+CAT034:HDR:fspec                                             FSPEC bytes (hex)
+CAT034:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT034:I000:MsgTyp                                           Message Type
 CAT034:I010:SAC                                              System Area Code
 CAT034:I010:SIC                                              System Identification Code
@@ -1913,6 +2041,14 @@ CAT034:I120:LAT                                              Latitude in WGS-84
 CAT034:I120:Lon                                              Longitude in WGS-84
 CAT034:ISP:SP                                                SP
 CAT034:IRE:RE                                                RE
+CAT048:HDR:id                                                Record number in its packet (not unique)
+CAT048:HDR:cat                                               Category
+CAT048:HDR:length                                            Record length (bytes)
+CAT048:HDR:crc                                               CRC-32 of the record (hex)
+CAT048:HDR:timestamp                                         Timestamp of the input
+CAT048:HDR:srcip                                             Source IP address
+CAT048:HDR:fspec                                             FSPEC bytes (hex)
+CAT048:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT048:I010:SAC                                              System Area Code
 CAT048:I010:SIC                                              System Identification Code
 CAT048:I020:TYP                                              TYP
@@ -2135,6 +2271,14 @@ CAT048:I260:TTI                                              Threat Type Indicat
 CAT048:I260:TID                                              Threat Identity Data
 CAT048:ISP:SP                                                SP
 CAT048:IRE:VAL                                               
+CAT062:HDR:id                                                Record number in its packet (not unique)
+CAT062:HDR:cat                                               Category
+CAT062:HDR:length                                            Record length (bytes)
+CAT062:HDR:crc                                               CRC-32 of the record (hex)
+CAT062:HDR:timestamp                                         Timestamp of the input
+CAT062:HDR:srcip                                             Source IP address
+CAT062:HDR:fspec                                             FSPEC bytes (hex)
+CAT062:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT062:I010:SAC                                              System Area Code
 CAT062:I010:SIC                                              System Identification Code
 CAT062:I015:SID                                              Service Identification
@@ -2532,6 +2676,14 @@ CAT062:IRE:FDR                                               Flight Data Retaine
 CAT062:IRE:spare                                             spare bits set to 0
 CAT062:IRE:FX                                                Extension indicator
 CAT062:ISP:TRI                                               TargetReportIdentifier
+CAT063:HDR:id                                                Record number in its packet (not unique)
+CAT063:HDR:cat                                               Category
+CAT063:HDR:length                                            Record length (bytes)
+CAT063:HDR:crc                                               CRC-32 of the record (hex)
+CAT063:HDR:timestamp                                         Timestamp of the input
+CAT063:HDR:srcip                                             Source IP address
+CAT063:HDR:fspec                                             FSPEC bytes (hex)
+CAT063:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT063:I010:SAC                                              Source Area Code
 CAT063:I010:SIC                                              Source Identification Code
 CAT063:I015:ServiceID                                        Service Identification
@@ -2561,6 +2713,14 @@ CAT063:I090:PRG                                              PR range gain
 CAT063:I090:PRB                                              PR range bias
 CAT063:I091:PAB                                              PSR azimuth bias
 CAT063:I092:PEB                                              PSR Elevation bias
+CAT065:HDR:id                                                Record number in its packet (not unique)
+CAT065:HDR:cat                                               Category
+CAT065:HDR:length                                            Record length (bytes)
+CAT065:HDR:crc                                               CRC-32 of the record (hex)
+CAT065:HDR:timestamp                                         Timestamp of the input
+CAT065:HDR:srcip                                             Source IP address
+CAT065:HDR:fspec                                             FSPEC bytes (hex)
+CAT065:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT065:I000:Typ                                              Message Type
 CAT065:I010:SAC                                              Source Area Code
 CAT065:I010:SIC                                              Source Identification Code
@@ -2573,6 +2733,14 @@ CAT065:I040:TSV                                              Time Source Status
 CAT065:I040:PSS                                              Processing System Status
 CAT065:I040:spare                                            Spare bits se to 0
 CAT065:I050:REPORT                                           Service Status Report
+CAT205:HDR:id                                                Record number in its packet (not unique)
+CAT205:HDR:cat                                               Category
+CAT205:HDR:length                                            Record length (bytes)
+CAT205:HDR:crc                                               CRC-32 of the record (hex)
+CAT205:HDR:timestamp                                         Timestamp of the input
+CAT205:HDR:srcip                                             Source IP address
+CAT205:HDR:fspec                                             FSPEC bytes (hex)
+CAT205:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT205:I000:TYP                                              Message Type
 CAT205:I010:SAC                                              System Area Code
 CAT205:I010:SIC                                              System Identification Code
@@ -2600,6 +2768,14 @@ CAT205:I180:SIGNAL                                           Signal Level
 CAT205:I190:Quality                                          Signal Quality
 CAT205:I200:ELEVATION                                        Signal Elevation
 CAT205:ISP:VAL                                               
+CAT240:HDR:id                                                Record number in its packet (not unique)
+CAT240:HDR:cat                                               Category
+CAT240:HDR:length                                            Record length (bytes)
+CAT240:HDR:crc                                               CRC-32 of the record (hex)
+CAT240:HDR:timestamp                                         Timestamp of the input
+CAT240:HDR:srcip                                             Source IP address
+CAT240:HDR:fspec                                             FSPEC bytes (hex)
+CAT240:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT240:I000:TYP                                              Message Type
 CAT240:I010:SAC                                              System Area Code
 CAT240:I010:SIC                                              System Identification Code
@@ -2624,6 +2800,14 @@ CAT240:I052:VIDEO                                            Video signal amplit
 CAT240:I140:ToD                                              Time Of Day
 CAT240:ISP:SP                                                SP value
 CAT240:IRE:RE                                                RE value
+CAT252:HDR:id                                                Record number in its packet (not unique)
+CAT252:HDR:cat                                               Category
+CAT252:HDR:length                                            Record length (bytes)
+CAT252:HDR:crc                                               CRC-32 of the record (hex)
+CAT252:HDR:timestamp                                         Timestamp of the input
+CAT252:HDR:srcip                                             Source IP address
+CAT252:HDR:fspec                                             FSPEC bytes (hex)
+CAT252:HDR:hexdata                                           Data items after the FSPEC (hex)
 CAT252:I010:SAC                                              System Area Code
 CAT252:I010:SIC                                              System Identity Code
 CAT252:I015:UserN                                            User number

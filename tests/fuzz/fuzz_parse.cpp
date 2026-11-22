@@ -64,10 +64,12 @@ static void init() {
     }
     fclose(f);
     g_parser = new InputParser(def);
+    g_parser->printSqlSchema(); // gives the -Q output (ESQL) its table and column names
     // filter some items, so that the filtered paths run too (they only print when gFiltering is set)
     g_parser->filterOutItem(48, "010", "SAC");
     g_parser->filterOutItem(48, "250", "MCP_ALT");
     g_parser->filterOutItem(62, "105", "Lat");
+    g_parser->filterOutHeader(48, "timestamp"); // only some record header fields in CAT048, all in the others
 }
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
@@ -76,7 +78,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
     if (d) {
         static const unsigned int formats[] = {CAsterixFormat::ETxt, CAsterixFormat::EOut, CAsterixFormat::EJSON,
                                                CAsterixFormat::EJSONH, CAsterixFormat::EJSONE, CAsterixFormat::EJSONX,
-                                               CAsterixFormat::EXML, CAsterixFormat::EXMLH};
+                                               CAsterixFormat::EXML, CAsterixFormat::EXMLH, CAsterixFormat::ESQL};
         for (int filtered = 0; filtered < 2; filtered++) {
             gFiltering = filtered != 0;
             for (size_t i = 0; i < sizeof(formats) / sizeof(formats[0]); i++) {

@@ -60,14 +60,16 @@ static void show_usage(std::string name) {
             << "\nReads and parses ASTERIX data from stdin, file or network multicast stream\nand prints it in textual presentation on standard output.\n\n"
             << "Usage:\n"
             << name
-            << " [-h] [-V] [-v] [-L] [-o] [-s] [-P|-O|-R|-F|-H|-G] [-l|-x|-xh|-j|-jh|-je|-jx] [-d filename] [-LF filename] -f filename|-i (mcastaddress:ipaddress:port[:srcaddress]@)+"
+            << " [-h] [-V] [-v] [-L] [-o] [-s] [-P|-O|-R|-F|-H|-G] [-l|-x|-xh|-j|-jh|-je|-jx|-Q] [-d filename] [-LF filename] -f filename|-i (mcastaddress:ipaddress:port[:srcaddress]@)+"
             << "\n\nOptions:"
             << "\n\t-h,--help\tShow this help message and exit."
             << "\n\t-V,--version\tShow version information and exit."
             << "\n\t-v,--verbose\tShow more information during program execution."
             << "\n\t-d,--def\tXML protocol definitions filenames are listed in specified filename. By default are listed in config/asterix.ini"
-            << "\n\t-L,--list\tList all configured ASTERIX items. Mark which items are filtered."
-            << "\n\t-LF,--filter\tPrintout only items listed in configured file."
+            << "\n\t-L,--list\tList all configured ASTERIX items. Mark which items are filtered. With -Q, print only the MySQL CREATE TABLE statements."
+            << "\n\t-LF,--filter\tPrintout only items listed in configured file (lines of -L: CATxxx:Ixxx:FIELD). Record header fields"
+            << "\n\t\t\t(id, cat, length, crc, timestamp, srcip, fspec, hexdata) are selected per category with CATxxx:HDR:FIELD"
+            << "\n\t\t\tlines; a category with no HDR line prints its whole header, CATxxx:HDR:none prints none of it."
             << "\n\t-o,--loop\tLoop the input file. Only relevant when file is data source."
             << "\n\t-s,--sync\tOutput will be printed synchronously with input file (with time delays between packets). This parameter is used only if input is from file."
             << "\n\nInput format"
@@ -96,6 +98,11 @@ static void show_usage(std::string name) {
             << "\n\t-jx,--json-hex\tOutput will be printed in compact line-delimited JSON format with hex and mask of each item (one object per line, suitable for parsing)."
             << "\n\t\t\tThe record header has \"fspec\" (FSPEC bytes) and \"hexdata\" (data items after the FSPEC): the record is fspec+hexdata."
             << "\n\t\t\tEach field has \"hex\", \"mask\" (when it does not fill its bytes) and \"pos\" (byte offset of hex in hexdata)."
+            << "\n\t-Q,--sql\tOutput will be printed as MySQL statements: first CREATE TABLE IF NOT EXISTS for every category (only the"
+            << "\n\t\t\tfields in the -LF filter, if given), then the INSERT statements of every record."
+            << "\n\t\t\tTable catNNN has a row per record (rec_id, the record header and one column per field, named like I010_SAC);"
+            << "\n\t\t\trepetitive data (Repetitive, BDS registers, lists of extents, Explicit) go to child tables keyed by"
+            << "\n\t\t\t(rec_id, rep_idx). Text fields are trimmed. See SQL.md. For example: asterix -Q -P -f file.pcap | mysql db"
             << "\n\nData source"
             << "\n------------"
             << "\n\t-f filename\tFile generated from libpcap (tcpdump or Wireshark) or file in FINAL or HDLC format.\n\t\t\tFor example: -f filename.pcap"
@@ -228,6 +235,13 @@ int main(int argc, const char *argv[]) {
                 return 1;
             }
             strOutputFormat = "ASTERIX_JSONE";
+        } else if ((arg == "-Q") || (arg == "--sql")) {
+            if (strOutputFormat != "ASTERIX_TXT") {
+                std::cerr << "Error: Option -Q not allowed because output format already defined as " + strOutputFormat
+                          << std::endl;
+                return 1;
+            }
+            strOutputFormat = "ASTERIX_SQL";
         } else if ((arg == "-k") || (arg == "--kml")) {
             if (strOutputFormat != "ASTERIX_TXT") {
                 std::cerr << "Error: Option -k not allowed because output format already defined as " + strOutputFormat
@@ -354,22 +368,24 @@ int main(int argc, const char *argv[]) {
 
                 char *p = strtok(line, ":");
                 int ret = 0;
+                bool header = false; // CATxxx:HDR:name, a record header field
                 while (p) {
                     if (sscanf(p, "CAT%03d", &cat) != 1)
                         break;
                     p = strtok(NULL, ":");
                     if (NULL == p) {
                         std::cerr <<
-                                  "Warning: Wrong Filter format. Shall be: \"CATxxx:Ixxx:NAME  DESCRIPTION\" or start with \"#\" for comment . It is: " +
+                                  "Warning: Wrong Filter format. Shall be: \"CATxxx:Ixxx:NAME  DESCRIPTION\", \"CATxxx:HDR:NAME  DESCRIPTION\" or start with \"#\" for comment . It is: " +
                                   std::string(line) << std::endl;
                         exit(3);
                     }
-                    if (sscanf(p, "I%128s", item) != 1)
+                    header = strcmp(p, "HDR") == 0;
+                    if (!header && sscanf(p, "I%128s", item) != 1)
                         break;
                     p = strtok(NULL, "");
                     if (NULL == p) {
                         std::cerr <<
-                                  "Warning: Wrong Filter format. Shall be: \"CATxxx:Ixxx:NAME  DESCRIPTION\" or start with \"#\" for comment . It is: " +
+                                  "Warning: Wrong Filter format. Shall be: \"CATxxx:Ixxx:NAME  DESCRIPTION\", \"CATxxx:HDR:NAME  DESCRIPTION\" or start with \"#\" for comment . It is: " +
                                   std::string(line) << std::endl;
                         exit(3);
                     }
@@ -381,17 +397,32 @@ int main(int argc, const char *argv[]) {
 
                 if (ret == 0) {
                     std::cerr <<
-                              "Warning: Wrong Filter format. Shall be: \"CATxxx:Ixxx:NAME  DESCRIPTION\" or start with \"#\" for comment . It is: " +
+                              "Warning: Wrong Filter format. Shall be: \"CATxxx:Ixxx:NAME  DESCRIPTION\", \"CATxxx:HDR:NAME  DESCRIPTION\" or start with \"#\" for comment . It is: " +
                               std::string(line) << std::endl;
                     exit(3);
                 }
 
-                if (!desc->filterOutItem(cat, std::string(item), name)) {
+                if (header) {
+                    if (!desc->filterOutHeader(cat, name)) {
+                        std::cerr << "Warning: Filtering item not found: " + std::string(line) + ":HDR:" +
+                                     std::string(name) << std::endl;
+                    }
+                } else if (!desc->filterOutItem(cat, std::string(item), name)) {
                     std::cerr << "Warning: Filtering item not found: " + std::string(line) + ":" + std::string(item) +
                                  ":" + std::string(name) << std::endl;
                 }
             }
             fclose(ff);
+        }
+
+        std::string strSqlSchema;
+        if (strOutputFormat == "ASTERIX_SQL") { // MySQL schema, also gives the INSERT statements their table names
+            CBaseFormatDescriptor *desc = CChannelFactory::Instance()->GetInputChannel()->GetFormatDescriptor();
+            if (desc == NULL) {
+                std::cerr << "Error: Format description not found." << std::endl;
+                exit(2);
+            }
+            strSqlSchema = desc->printSqlSchema();
         }
 
         if (bListDefinitions) { // Parse definitions file and print all items
@@ -400,8 +431,13 @@ int main(int argc, const char *argv[]) {
                 std::cerr << "Error: Format description not found." << std::endl;
                 exit(2);
             }
-            std::cout << desc->printDescriptor();
+            if (strOutputFormat == "ASTERIX_SQL")
+                std::cout << strSqlSchema;
+            else
+                std::cout << desc->printDescriptor();
         } else {
+            if (strOutputFormat == "ASTERIX_SQL")
+                std::cout << strSqlSchema << std::flush;
             CConverterEngine::Instance()->Start();
         }
     } else {

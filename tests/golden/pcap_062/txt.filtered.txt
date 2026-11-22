@@ -2,25 +2,18 @@
 
 -------------------------
 Data Block 1
-Category: 62
-Len: 52
 Timestamp: 46065763.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 2
-Category: 62
-Len: 52
 Timestamp: 46065763.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 52
-CRC: 0FE6E780
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459F8E10E301EFA640CF0A102F20500071DEF7E0400BD011053884155413834385A404C4154494C4F57570108000000
 
 Item 010 : Data Source Identifier
@@ -40,17 +33,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 3
-Category: 62
-Len: 52
 Timestamp: 46065964.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 49
-CRC: 68C510C0
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459F8FA00721E30E70D1884056E0528092F5E870000000110538843464734363020404544444C4845474E0108
 
 Item 010 : Data Source Identifier
@@ -70,49 +58,36 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 4
-Category: 62
-Len: 47
 Timestamp: 46065964.000000
 HexData: 3E0032
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 5
-Category: 62
-Len: 52
 Timestamp: 46066164.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 6
-Category: 62
-Len: 52
 Timestamp: 46066363.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 7
-Category: 62
-Len: 52
 Timestamp: 46067165.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 8
-Category: 62
-Len: 52
 Timestamp: 46067364.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 46
-CRC: 9C6366BD
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459F9AE05A3209B9008E4740159057807DF6092000000011053885443583835374B40454747444C475A
 
 Item 010 : Data Source Identifier
@@ -132,17 +107,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 9
-Category: 62
-Len: 52
 Timestamp: 46067364.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 46
-CRC: C057B021
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459F9AE0DED20982808E95C00410708081260D0000000011053884E33353242482040454242524C4C42
 
 Item 010 : Data Source Identifier
@@ -162,17 +132,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 10
-Category: 62
-Len: 52
 Timestamp: 46067764.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 52
-CRC: E4E5ED31
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459F9E10D571FFDF5094B670F4D05C8088147BA0000000110538853554935353620404C535A425A5A5A5A0108000000
 
 Item 010 : Data Source Identifier
@@ -192,17 +157,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 11
-Category: 62
-Len: 52
 Timestamp: 46067964.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 49
-CRC: 0385F569
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459F9FA028B1F94B7098EB50D4E05280777972600000001105388415A413535332040455057414C4952460108
 
 Item 010 : Data Source Identifier
@@ -222,17 +182,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 12
-Category: 62
-Len: 52
 Timestamp: 46068164.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 52
-CRC: 5D2C3529
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FA1401BC1FBAFA09AB040D420668077F92E30000000110538845534B33504420404C4B50524C49524E0108000000
 
 Item 010 : Data Source Identifier
@@ -252,65 +207,48 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 13
-Category: 62
-Len: 52
 Timestamp: 46068164.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 14
-Category: 62
-Len: 52
 Timestamp: 46068364.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 15
-Category: 62
-Len: 52
 Timestamp: 46068364.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 16
-Category: 62
-Len: 52
 Timestamp: 46068364.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 17
-Category: 62
-Len: 52
 Timestamp: 46068364.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 18
-Category: 62
-Len: 52
 Timestamp: 46068364.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 19
-Category: 62
-Len: 52
 Timestamp: 46068563.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 46
-CRC: F6F80737
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FA4705CF2003510A70740E2C02A806F525B70000000110538845424A32303433404C44504C4C445A
 
 Item 010 : Data Source Identifier
@@ -330,17 +268,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 20
-Category: 62
-Len: 52
 Timestamp: 46068563.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 50
-CRC: 52400F3C
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FA470F2320D6880A83090E5D05C807299487000000011053884C4F543331332040455057414C495246010800
 
 Item 010 : Data Source Identifier
@@ -360,41 +293,30 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 21
-Category: 62
-Len: 52
 Timestamp: 46068563.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 22
-Category: 62
-Len: 52
 Timestamp: 46068772.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 23
-Category: 62
-Len: 52
 Timestamp: 46068772.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 24
-Category: 62
-Len: 52
 Timestamp: 46068772.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 52
-CRC: 6C997BD3
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FA610D4520A4140AB00F02B30550080114B7000000011053884E4C5938343637404C4952464C4F57570108000000
 
 Item 010 : Data Source Identifier
@@ -414,17 +336,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 25
-Category: 62
-Len: 52
 Timestamp: 46068772.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 52
-CRC: 93377BB4
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FA6106E51EDBB30ABA9502F104600693CE70000000011053884C424332323620404C4154494C4950450108000000
 
 Item 010 : Data Source Identifier
@@ -444,25 +361,18 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 26
-Category: 62
-Len: 52
 Timestamp: 46068965.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 27
-Category: 62
-Len: 52
 Timestamp: 46068965.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 46
-CRC: 29F06B60
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FA7B07D82114700AD0F60E490398048487A70000000110538843544E34343520404C4F57574C4453
 
 Item 010 : Data Source Identifier
@@ -482,33 +392,24 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 28
-Category: 62
-Len: 52
 Timestamp: 46068965.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 29
-Category: 62
-Len: 52
 Timestamp: 46069165.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 30
-Category: 62
-Len: 52
 Timestamp: 46069165.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 50
-CRC: 07FCC32C
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FA940D322039270B30720F6B05C808865CFB0000000110538854564631353334404C46504F4C544645010800
 
 Item 010 : Data Source Identifier
@@ -528,17 +429,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 31
-Category: 62
-Len: 52
 Timestamp: 46069165.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 50
-CRC: 59CEDBBC
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FA940F92202C2A0B460F0487052808535CC10000000110538841454535343120404544444C4C475453010800
 
 Item 010 : Data Source Identifier
@@ -558,33 +454,24 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 32
-Category: 62
-Len: 52
 Timestamp: 46069165.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 33
-Category: 62
-Len: 52
 Timestamp: 46069366.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 34
-Category: 62
-Len: 52
 Timestamp: 46069366.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 49
-CRC: 151AE27A
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FAAE02362082EE0B56FF0D5800F002E105360400F601105388435341325A4120404C445A414C4B50520108
 
 Item 010 : Data Source Identifier
@@ -604,17 +491,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 35
-Category: 62
-Len: 52
 Timestamp: 46069366.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 46
-CRC: DC8D8F5A
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FAAE0AA41F17750B710F0D43052807FB6D9A0000000110538841445238383420404C4A4C4A4C4741
 
 Item 010 : Data Source Identifier
@@ -634,17 +516,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 36
-Category: 62
-Len: 52
 Timestamp: 46069366.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 52
-CRC: 16A651AD
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FAAE01DC208A300B5EC40E1900380208C64F040029011053883941445A472020604C4456414C445A4101080C0300
 
 Item 010 : Data Source Identifier
@@ -664,17 +541,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 37
-Category: 62
-Len: 52
 Timestamp: 46069565.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 50
-CRC: E7DCD5ED
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FAC705032093FE0B809304540060033AA12408FF73011053884757493239373640454444534C445A41010800
 
 Item 010 : Data Source Identifier
@@ -694,17 +566,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 38
-Category: 62
-Len: 52
 Timestamp: 46069565.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 42
-CRC: 0E230151
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FAC701631EC2B20B87760060052809046A52000000011053884D50483038312040454841
 
 Item 010 : Data Source Identifier
@@ -724,25 +591,18 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 39
-Category: 62
-Len: 52
 Timestamp: 46069565.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 40
-Category: 62
-Len: 52
 Timestamp: 46069764.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 46
-CRC: 4A042425
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FAE10CF0208CC10B96FB02A805F0081D1F7A00000001105388575A5A3234384E404C4952464C4842
 
 Item 010 : Data Source Identifier
@@ -762,41 +622,30 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 41
-Category: 62
-Len: 52
 Timestamp: 46069764.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 42
-Category: 62
-Len: 52
 Timestamp: 46069764.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 43
-Category: 62
-Len: 52
 Timestamp: 46069764.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 44
-Category: 62
-Len: 52
 Timestamp: 46069965.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 46
-CRC: 0ED18C81
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FAFA016D1FCE0D0BDFAB0E6B057808B05CD30000000110538841454538303320404544444D4C4741
 
 Item 010 : Data Source Identifier
@@ -816,17 +665,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 45
-Category: 62
-Len: 52
 Timestamp: 46069965.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 52
-CRC: 78CC21C9
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FAFA02B11EF41E0BFB73029F057808142E6400000001105388415A4135393420404C4952464C5942450108000000
 
 Item 010 : Data Source Identifier
@@ -846,17 +690,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 46
-Category: 62
-Len: 52
 Timestamp: 46069965.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 50
-CRC: 1146F1A9
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FAFA03831FE56B0BF08502B405A0076303A500000001105388544152373332304044544D4245505741010800
 
 Item 010 : Data Source Identifier
@@ -876,17 +715,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 47
-Category: 62
-Len: 52
 Timestamp: 46070165.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 50
-CRC: D116EE1A
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FB1408341EDAEF0C066F016905C808BD5B8E00000001105388464341383735434045474B4B4C475453010800
 
 Item 010 : Data Source Identifier
@@ -906,25 +740,18 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 48
-Category: 62
-Len: 52
 Timestamp: 46070165.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 49
-Category: 62
-Len: 52
 Timestamp: 46070165.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 49
-CRC: 97837D71
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FB140C7320E0320C0E3D080200C801D915450000000110538844454649442020504C444C4F4C48534D0108
 
 Item 010 : Data Source Identifier
@@ -944,65 +771,48 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 50
-Category: 62
-Len: 52
 Timestamp: 46070165.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 51
-Category: 62
-Len: 52
 Timestamp: 46070365.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 52
-Category: 62
-Len: 52
 Timestamp: 46070365.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 53
-Category: 62
-Len: 52
 Timestamp: 46070365.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 54
-Category: 62
-Len: 52
 Timestamp: 46070365.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 55
-Category: 62
-Len: 52
 Timestamp: 46070365.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 56
-Category: 62
-Len: 52
 Timestamp: 46070565.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 46
-CRC: 4E25DCCB
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FB470E631F3DF30CCDB201A6052808605A21000000011053884F414C32303420404C4650474C4741
 
 Item 010 : Data Source Identifier
@@ -1022,25 +832,18 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 57
-Category: 62
-Len: 52
 Timestamp: 46070765.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 58
-Category: 62
-Len: 52
 Timestamp: 46070765.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 52
-CRC: 30112176
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FB610E301EFBE20CEFB402F20500071BEF51000000011053884155413834385A404C4154494C4F57570108000000
 
 Item 010 : Data Source Identifier
@@ -1060,17 +863,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 59
-Category: 62
-Len: 52
 Timestamp: 46070964.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 49
-CRC: 226EB9AF
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FB7A00721E2F560D1AA3056E0528092F5E8B0000000110538843464734363020404544444C4845474E0108
 
 Item 010 : Data Source Identifier
@@ -1090,41 +888,30 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 60
-Category: 62
-Len: 52
 Timestamp: 46071165.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 61
-Category: 62
-Len: 52
 Timestamp: 46071366.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 62
-Category: 62
-Len: 52
 Timestamp: 46072165.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 63
-Category: 62
-Len: 52
 Timestamp: 46072366.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 46
-CRC: 03FCEDFA
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FC2E05A3209A4B08E65F0159057807DD60A1000000011053885443583835374B40454747444C475A
 
 Item 010 : Data Source Identifier
@@ -1144,17 +931,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 64
-Category: 62
-Len: 52
 Timestamp: 46072366.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 46
-CRC: 67B8E7D7
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FC2E0DED2096CB08EB5900410708081360D7000000011053884E33353242482040454242524C4C42
 
 Item 010 : Data Source Identifier
@@ -1174,17 +956,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 65
-Category: 62
-Len: 52
 Timestamp: 46072765.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 52
-CRC: 39D2C064
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FC610D571FFDA7094E3A0F4D05C8088047B50000000110538853554935353620404C535A425A5A5A5A0108000000
 
 Item 010 : Data Source Identifier
@@ -1204,17 +981,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 66
-Category: 62
-Len: 52
 Timestamp: 46072965.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 49
-CRC: BA7CD3EE
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FC7A028B1F9337098D730D4E05280777974800000001105388415A413535332040455057414C4952460108
 
 Item 010 : Data Source Identifier
@@ -1234,17 +1006,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 67
-Category: 62
-Len: 52
 Timestamp: 46073165.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 52
-CRC: FD426EF8
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FC9401BC1FB95709A9F40D420668078192FA0000000110538845534B33504420404C4B50524C49524E0108000000
 
 Item 010 : Data Source Identifier
@@ -1264,65 +1031,48 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 68
-Category: 62
-Len: 52
 Timestamp: 46073165.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 69
-Category: 62
-Len: 52
 Timestamp: 46073366.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 70
-Category: 62
-Len: 52
 Timestamp: 46073366.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 71
-Category: 62
-Len: 52
 Timestamp: 46073366.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 72
-Category: 62
-Len: 52
 Timestamp: 46073366.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 73
-Category: 62
-Len: 52
 Timestamp: 46073366.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 74
-Category: 62
-Len: 52
 Timestamp: 46073564.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 46
-CRC: A8E87753
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FCC705CF20046D0A722A0E2C02A806F225330000000110538845424A32303433404C44504C4C445A
 
 Item 010 : Data Source Identifier
@@ -1342,17 +1092,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 75
-Category: 62
-Len: 52
 Timestamp: 46073564.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 50
-CRC: 87697957
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FCC70F2320D50C0A81C60E5D05C8072994F0000000011053884C4F543331332040455057414C495246010800
 
 Item 010 : Data Source Identifier
@@ -1372,41 +1117,30 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 76
-Category: 62
-Len: 52
 Timestamp: 46073565.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 77
-Category: 62
-Len: 52
 Timestamp: 46073765.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 78
-Category: 62
-Len: 52
 Timestamp: 46073765.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 79
-Category: 62
-Len: 52
 Timestamp: 46073765.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 52
-CRC: ECF0D918
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FCE10D4520A5BF0AB15102B30550080114A8000000011053884E4C5938343637404C4952464C4F57570108000000
 
 Item 010 : Data Source Identifier
@@ -1426,17 +1160,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 80
-Category: 62
-Len: 52
 Timestamp: 46073765.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 52
-CRC: 71931B09
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FCE106E51EDC340AB88E02F104600693CE79000000011053884C424332323620404C4154494C4950450108000000
 
 Item 010 : Data Source Identifier
@@ -1456,25 +1185,18 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 81
-Category: 62
-Len: 52
 Timestamp: 46073965.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 82
-Category: 62
-Len: 52
 Timestamp: 46073965.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 46
-CRC: 6A6FFA3C
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FCFA07D82113650AD10C0E490398047884CA0000000110538843544E34343520404C4F57574C4453
 
 Item 010 : Data Source Identifier
@@ -1494,33 +1216,24 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 83
-Category: 62
-Len: 52
 Timestamp: 46073965.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 84
-Category: 62
-Len: 52
 Timestamp: 46074165.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 85
-Category: 62
-Len: 52
 Timestamp: 46074165.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 50
-CRC: E80A250E
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FD140D322037D40B329A0F6B05C808865CFB0000000110538854564631353334404C46504F4C544645010800
 
 Item 010 : Data Source Identifier
@@ -1540,17 +1253,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 86
-Category: 62
-Len: 52
 Timestamp: 46074165.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 50
-CRC: 31787C42
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FD140F92202AE40B48250487052808535CC10000000110538841454535343120404544444C4C475453010800
 
 Item 010 : Data Source Identifier
@@ -1570,33 +1278,24 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 87
-Category: 62
-Len: 52
 Timestamp: 46074166.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 88
-Category: 62
-Len: 52
 Timestamp: 46074365.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 89
-Category: 62
-Len: 52
 Timestamp: 46074365.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 49
-CRC: AA2ACCD2
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FD2E02362083980B57100D5800F002E105360400F601105388435341325A4120404C445A414C4B50520108
 
 Item 010 : Data Source Identifier
@@ -1616,17 +1315,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 90
-Category: 62
-Len: 52
 Timestamp: 46074365.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 52
-CRC: 19356BFF
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FD2E01DC208A480B5DF40E1900380225C65F040017011053883941445A472020604C4456414C445A4101080C0300
 
 Item 010 : Data Source Identifier
@@ -1646,17 +1340,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 91
-Category: 62
-Len: 52
 Timestamp: 46074565.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 46
-CRC: AD82C925
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FD470AA41F15B40B723C0D43052807FB6D9A0000000110538841445238383420404C4A4C4A4C4741
 
 Item 010 : Data Source Identifier
@@ -1676,17 +1365,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 92
-Category: 62
-Len: 52
 Timestamp: 46074565.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 50
-CRC: 3C7878DE
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FD4705032093910B7FE504540058032CA12B08FF67011053884757493239373640454444534C445A41010800
 
 Item 010 : Data Source Identifier
@@ -1706,17 +1390,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 93
-Category: 62
-Len: 52
 Timestamp: 46074565.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 42
-CRC: 7CEEB689
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FD4701631EC0D80B88F30060052809046A52000000011053884D50483038312040454841
 
 Item 010 : Data Source Identifier
@@ -1736,25 +1415,18 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 94
-Category: 62
-Len: 52
 Timestamp: 46074565.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 95
-Category: 62
-Len: 52
 Timestamp: 46074764.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 46
-CRC: 2A41D354
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FD610CF0208E200B98E202A805F0081C1FAE00000001105388575A5A3234384E404C4952464C4842
 
 Item 010 : Data Source Identifier
@@ -1774,41 +1446,30 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 96
-Category: 62
-Len: 52
 Timestamp: 46074765.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 97
-Category: 62
-Len: 52
 Timestamp: 46074765.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 98
-Category: 62
-Len: 52
 Timestamp: 46074765.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 
 -------------------------
 Data Block 99
-Category: 62
-Len: 52
 Timestamp: 46074965.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 46
-CRC: 8A0E5DA0
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FD7A016D1FCCB60BE1D90E6B057808B05CD30000000110538841454538303320404544444D4C4741
 
 Item 010 : Data Source Identifier
@@ -1828,17 +1489,12 @@ Item 380 : Aircraft Derived Data
 
 -------------------------
 Data Block 100
-Category: 62
-Len: 52
 Timestamp: 46074965.000000
 HexData: 3E0037
 Src IP: 0.0.0.0
 -------------------------
-Data Record 1
-Len: 50
-CRC: 85CE3BD1
+Data Record
 Source IP: 0.0.0.0
-Fspec: BB3D42
 HexData: 196459FD7A03831FE71F0BF0CF02B405A0076303A500000001105388544152373332304044544D4245505741010800
 
 Item 010 : Data Source Identifier

@@ -24,6 +24,7 @@
 #include "DataItemFormatRepetitive.h"
 #include "Tracer.h"
 #include "asterixformat.hxx"
+#include "SqlSchema.h"
 
 DataItemFormatRepetitive::DataItemFormatRepetitive(int id)
         : DataItemFormat(id) {
@@ -90,12 +91,17 @@ bool DataItemFormatRepetitive::getText(std::string &strResult, std::string &strH
             if (nRepetition == 0) {
                 ret = true;
             } else {
+                // a repetition that prints nothing (with -LF, a BDS register not in the filter) is left out,
+                // with its separator: the list stays valid JSON
                 while (nRepetition--) {
-                    ret |= pF->getText(tmpStr, strHeader, formatType, pData, fixedLength);
+                    const std::string::size_type elementStart = tmpStr.length();
+                    if (ret)
+                        tmpStr += ',';
+                    if (pF->getText(tmpStr, strHeader, formatType, pData, fixedLength))
+                        ret = true;
+                    else
+                        tmpStr.resize(elementStart);
                     pData += fixedLength;
-
-                    if (nRepetition > 0)
-                        tmpStr += format(",");
                 }
             }
             tmpStr += format("]");
@@ -103,6 +109,33 @@ bool DataItemFormatRepetitive::getText(std::string &strResult, std::string &strH
             if (ret)
                 strResult += tmpStr;
 
+            break;
+        }
+        case CAsterixFormat::ESQL: {
+            // each repetition is a row of the child table (a BDS register opens the row of its own table)
+            SqlRecord *pRecord = SqlRecord::s_pCurrent;
+            bool bds = pF->isBDS();
+            if (nRepetition == 0) {
+                ret = true;
+            }
+            // rep_idx is the index in the -j list, which leaves out the repetitions that print nothing
+            int index = 0;
+            for (int i = 0; i < nRepetition; i++) {
+                int previous = 0;
+                if (pRecord != NULL) {
+                    if (bds)
+                        pRecord->setNextRepIdx(index);
+                    else
+                        previous = pRecord->openRow(&m_strSqlTable, index, false);
+                }
+                if (pF->getText(strResult, strHeader, formatType, pData, fixedLength)) {
+                    ret = true;
+                    index++;
+                }
+                if (pRecord != NULL && !bds)
+                    pRecord->closeRow(previous);
+                pData += fixedLength;
+            }
             break;
         }
         default: {
@@ -128,6 +161,19 @@ std::string DataItemFormatRepetitive::printDescriptors(std::string header) {
     }
 
     return pFixed->printDescriptors(header);
+}
+
+void DataItemFormatRepetitive::addSqlColumns(SqlSchema &schema, int table, const std::string &prefix) {
+    DataItemFormat *pF = m_lSubItems.size() ? m_lSubItems.front() : NULL; // Fixed or BDS
+    if (pF == NULL)
+        return;
+    if (pF->isBDS()) { // a child table per BDS register
+        pF->addSqlColumns(schema, table, prefix);
+        return;
+    }
+    int child = schema.addChildTable(table, SqlSchema::tableSuffix(prefix), false);
+    m_strSqlTable = schema.tableName(child);
+    pF->addSqlColumns(schema, child, "");
 }
 
 bool DataItemFormatRepetitive::filterOutItem(const char *name) {

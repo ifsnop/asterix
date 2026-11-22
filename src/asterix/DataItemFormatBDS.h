@@ -41,6 +41,7 @@ public:
     bool getText(std::string &strResult, std::string &strHeader, const unsigned int formatType, unsigned char *pData,
                  long nLength); // appends value description to strResult
     std::string printDescriptors(std::string header); // print items format descriptors
+    void addSqlColumns(SqlSchema &schema, int table, const std::string &prefix);
     bool filterOutItem(const char *name); // mark item for filtering
     bool isFiltered(const char *name);
 

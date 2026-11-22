@@ -4,7 +4,7 @@
 #
 # usage: tests/run_tests.sh [asterix binary] [section...]
 #   binary    default obj/main/release/asterix (make), relative to the repository root
-#   sections  golden consistency roundtrip inputs robustness cli (default: all)
+#   sections  golden consistency sql roundtrip inputs robustness cli (default: all)
 # environment:
 #   UPDATE=1      rewrite the golden files instead of comparing (review the diff before committing)
 #   TIMEOUT=n     seconds allowed per run in the robustness section (default 20)
@@ -18,7 +18,7 @@ cd "$(dirname "$0")/.." || exit 100
 ROOT=$(pwd)
 BIN=${1:-obj/main/release/asterix}
 shift 2>/dev/null
-SECTIONS=${*:-golden consistency roundtrip inputs robustness cli}
+SECTIONS=${*:-golden consistency sql roundtrip inputs robustness cli}
 case $BIN in /*) ;; *) BIN="$ROOT/$BIN" ;; esac
 [ -x "$BIN" ] || { echo "asterix binary not found: $BIN"; exit 100; }
 
@@ -30,7 +30,7 @@ TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
 
 # output formats: golden file name and option
-FORMATS="txt: line:-l xml:-x xmlh:-xh json:-j jsonh:-jh jsone:-je jsonx:-jx"
+FORMATS="txt: line:-l xml:-x xmlh:-xh json:-j jsonh:-jh jsone:-je jsonx:-jx sql:-Q"
 
 passed=0
 failed=0
@@ -38,7 +38,10 @@ ok() { passed=$((passed + 1)); [ -n "$VERBOSE" ] && echo "OK      $1"; }
 fail() { failed=$((failed + 1)); echo "FAILED  $1"; [ -n "$2" ] && echo "$2" | head -40 | sed 's/^/        /'; }
 
 # wall-clock timestamps of raw/ORADIS file input (and of stdin/multicast) are replaced by T
-mask_time() { sed -E 's/("timestamp":)[0-9.]+/\1T/g; s/(timestamp=")[0-9.]+/\1T/g; s/(Timestamp: )[0-9.]+/\1T/g'; }
+# (in -Q INSERTs of category tables, the only value with 6 decimals: field values have 7)
+mask_time() { sed -E 's/("timestamp":)[0-9.]+/\1T/g; s/(timestamp=")[0-9.]+/\1T/g; s/(Timestamp: )[0-9.]+/\1T/g; /^INSERT INTO `cat[0-9]{3}` /s/([(,])[0-9]+\.[0-9]{6}([,)])/\1T\2/'; }
+# -Q output without its CREATE TABLE statements (the schema has golden files of its own, see section_cli)
+sql_data() { sed -n '/^INSERT INTO /,$p'; }
 # stderr messages start with the wall-clock time
 mask_log() { sed -E 's/^([A-Z]+: +)[A-Z][a-z]{2} +[0-9]+ [0-9:]{8} [0-9]{4} /\1/'; }
 
@@ -56,6 +59,7 @@ section_golden() {
                 out="$TMP/out.txt"
                 # shellcheck disable=SC2086
                 "$BIN" -d $DEFS $input $opt $lf 2>/dev/null > "$out"
+                [ "$fmt" = "sql" ] && { sql_data < "$out" > "$out.s"; mv "$out.s" "$out"; }
                 [ "$mask" = "mask" ] && { mask_time < "$out" > "$out.m"; mv "$out.m" "$out"; }
                 expected="$GOLDEN/$name/$fmt$suffix.txt"
                 if [ -n "$UPDATE" ]; then
@@ -77,6 +81,13 @@ section_consistency() {
     local r
     if r=$(python3 tests/tools/check_outputs.py "$BIN" 2>&1); then ok "consistency"; [ -n "$VERBOSE" ] && echo "$r"
     else fail "consistency" "$r"; fi
+}
+
+section_sql() {
+    echo "== -Q (MySQL): every INSERT matches -j and its schema"
+    local r
+    if r=$(python3 tests/tools/check_sql.py "$BIN" 2>&1); then ok "sql"; [ -n "$VERBOSE" ] && echo "$r"
+    else fail "sql" "$r"; fi
 }
 
 section_roundtrip() {
@@ -141,7 +152,7 @@ section_robustness() {
     local f opt name input mask fmt
     for f in tests/data/bad/*; do
         opt=$(input_option "$f")
-        for fmt in "" -jx -je -xh; do
+        for fmt in "" -jx -je -xh -Q; do
             # shellcheck disable=SC2086
             run_guarded "bad $(basename "$f") ${fmt:-txt}" "$BIN" -d $DEFS $opt -f "$f" $fmt
         done
@@ -154,13 +165,16 @@ section_robustness() {
             run_guarded "mutant $(basename "$f")" "$BIN" -d $DEFS $opt -f "$f" -jx
             # shellcheck disable=SC2086
             run_guarded "mutant $(basename "$f") -LF" "$BIN" -d $DEFS $opt -f "$f" -je -LF $FILTER
+            # shellcheck disable=SC2086
+            run_guarded "mutant $(basename "$f") -Q" "$BIN" -d $DEFS $opt -f "$f" -Q
         done
     fi
-    # whatever the input, -j and -jx must be valid JSON (text fields only keep characters that need no escaping)
+    # whatever the input, -j and -jx must be valid JSON (text fields only keep characters that need no escaping),
+    # also with -LF (a BDS repetition not in the filter used to leave its comma behind: "{...},]")
     local jsonbad
-    jsonbad=$(for f in tests/data/bad/* ${MUTANTS:+"$MUTANTS"/*}; do
+    jsonbad=$(for f in tests/data/bad/* ${MUTANTS:+"$MUTANTS"/*} $(cases | cut -d'|' -f2 | grep -o -- '-f [^ ]*' | cut -c4-); do
                   opt=$(input_option "$f")
-                  for fmt in -j -jx; do
+                  for fmt in -j -jx "-j -LF $FILTER" "-jx -LF $FILTER"; do
                       # shellcheck disable=SC2086
                       timeout "$TIMEOUT" "$BIN" -d $DEFS $opt -f "$f" $fmt 2>/dev/null
                   done
@@ -175,8 +189,8 @@ for line in sys.stdin:
         if bad <= 3:
             print(line[:200])
 print(bad)' )
-    if [ "$(echo "$jsonbad" | tail -1)" = "0" ]; then ok "-j/-jx output of malformed inputs is valid JSON"
-    else fail "-j/-jx output of malformed inputs is not valid JSON" "$jsonbad"; fi
+    if [ "$(echo "$jsonbad" | tail -1)" = "0" ]; then ok "-j/-jx output (with and without -LF) of the cases and malformed inputs is valid JSON"
+    else fail "-j/-jx output (with and without -LF) is not valid JSON" "$jsonbad"; fi
     # a '%' in the definitions file name or in the XML error used to be read as a printf format
     mkdir -p "$TMP/defs"
     printf '<?xml version="1.0"?>\n<Category id="1">\n<Bad%%s%%s%%n>\n</Category>\n' > "$TMP/defs/bad%s%s%n.xml"
@@ -188,7 +202,7 @@ section_cli() {
     echo "== command line"
     local out rc
     out=$("$BIN" -h 2>&1)
-    if echo "$out" | grep -q "(default)" && echo "$out" | grep -q -- "-xh,--xmlh" && echo "$out" | grep -q "\[-l|-x|-xh|-j|-jh|-je|-jx\]"; then
+    if echo "$out" | grep -q "(default)" && echo "$out" | grep -q -- "-xh,--xmlh" && echo "$out" | grep -q -- "-Q,--sql" && echo "$out" | grep -q "\[-l|-x|-xh|-j|-jh|-je|-jx|-Q\]"; then
         ok "-h documents the default output and every format"; else fail "-h text" "$out"; fi
     out=$("$BIN" -V 2>&1)
     if echo "$out" | grep -qE "Asterix [0-9]+\.[0-9]+\.[0-9]+-ifsnop\.[0-9]+"; then ok "-V"; else fail "-V" "$out"; fi
@@ -205,6 +219,49 @@ section_cli() {
     out=$("$BIN" -d $DEFS -L 2>/dev/null)
     if [ "$out" = "$(cat install/sample_output/filter.txt)" ]; then ok "-L matches install/sample_output/filter.txt"
     else fail "-L differs from install/sample_output/filter.txt (definitions changed? regenerate it)" "$(diff <(echo "$out") install/sample_output/filter.txt | head)"; fi
+    # record header fields in -LF: a category with no HDR line prints its whole header (filter files written
+    # before HDR lines existed), one with HDR lines only those fields; an unknown header field is reported
+    grep -v ':HDR:' "$FILTER" > "$TMP/nohdr.txt"
+    out=$("$BIN" -d $DEFS -R -f install/sample_data/cat_001_002.pcap -j -LF "$TMP/nohdr.txt" 2>/dev/null | python3 -c '
+import json, sys
+keys = ["id", "cat", "length", "crc", "timestamp", "srcip", "fspec", "hexdata"]
+recs = [json.loads(l) for l in sys.stdin]
+print(len(recs), all([k for k in r if not k.startswith("CAT")] == keys for r in recs))')
+    if [ "$out" = "8 True" ]; then ok "-LF without HDR lines prints the whole record header"
+    else fail "-LF without HDR lines does not print the whole record header" "$out"; fi
+    out=$("$BIN" -d $DEFS -R -f install/sample_data/cat_001_002.pcap -j -LF "$FILTER" 2>/dev/null | head -1 | cut -c1-60)
+    if [ "$out" = '{"cat":1,"length":23,"crc":"166B4DBF","fspec":"F7C6","CAT001' ]; then ok "-LF with HDR lines prints only those header fields"
+    else fail "-LF with HDR lines: unexpected record header" "$out"; fi
+    printf 'CAT001:HDR:none\nCAT001:I010:SAC\n' > "$TMP/nonehdr.txt"
+    out=$("$BIN" -d $DEFS -R -f install/sample_data/cat_001_002.pcap -j -LF "$TMP/nonehdr.txt" 2>/dev/null | python3 -c '
+import json, sys
+recs = [json.loads(l) for l in sys.stdin]
+print(len(recs), all(list(r) == ["CAT001"] for r in recs))')
+    if [ "$out" = "7 True" ]; then ok "-LF with CATxxx:HDR:none prints no record header field"
+    else fail "-LF with CATxxx:HDR:none: unexpected record header" "$out"; fi
+    printf 'CAT048:HDR:bogus\nCAT048:I010:SAC\n' > "$TMP/badhdr.txt"
+    out=$("$BIN" -d $DEFS -f install/sample_data/cat048.raw -j -LF "$TMP/badhdr.txt" 2>&1 >/dev/null)
+    if echo "$out" | grep -q "Filtering item not found.*HDR:bogus"; then ok "unknown header field in -LF is reported"
+    else fail "unknown header field in -LF is not reported" "$out"; fi
+    "$BIN" -d $DEFS -j -Q -f install/sample_data/cat048.raw > /dev/null 2>&1; rc=$?
+    if [ $rc -eq 1 ]; then ok "-Q with another output format is rejected"; else fail "-Q -j: exit $rc, expected 1"; fi
+    # MySQL schema of -Q (-Q -L prints only the schema): every table, and only the filtered fields with -LF
+    local suffix lf expected
+    mkdir -p "$GOLDEN/sql_schema"
+    for suffix in "" ".filtered"; do
+        lf=""; [ -n "$suffix" ] && lf="-LF $FILTER"
+        expected="$GOLDEN/sql_schema/schema$suffix.sql"
+        # shellcheck disable=SC2086
+        "$BIN" -d $DEFS -Q -L $lf > "$TMP/schema.sql" 2>/dev/null
+        if [ -n "$UPDATE" ]; then cp "$TMP/schema.sql" "$expected"
+        elif cmp -s "$TMP/schema.sql" "$expected"; then ok "-Q -L $lf matches $expected"
+        else fail "-Q -L $lf differs from $expected" "$(diff -u "$expected" "$TMP/schema.sql" | head -40)"; fi
+        # the schema is also the start of the -Q output
+        # shellcheck disable=SC2086
+        "$BIN" -d $DEFS -Q $lf -f install/sample_data/cat048.raw 2>/dev/null | head -n "$(wc -l < "$TMP/schema.sql")" > "$TMP/head.sql"
+        if cmp -s "$TMP/head.sql" "$TMP/schema.sql"; then ok "-Q $lf starts with the schema of -Q -L"
+        else fail "-Q $lf does not start with the schema of -Q -L"; fi
+    done
 }
 
 for s in $SECTIONS; do "section_$s"; done

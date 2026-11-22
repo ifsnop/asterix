@@ -208,7 +208,7 @@
 		"res2":0,
 		"TARGET_ALT_STATUS":0,
 		"TARGET_ALT_SOURCE":0,
-		"BDS":"40"},]}},
+		"BDS":"40"}]}},
 {"id":3,
 "cat":48,
 "length":52,
@@ -322,7 +322,7 @@
 		"res2":0,
 		"TARGET_ALT_STATUS":0,
 		"TARGET_ALT_SOURCE":0,
-		"BDS":"40"},]}},
+		"BDS":"40"}]}},
 {"id":3,
 "cat":48,
 "length":52,
@@ -407,7 +407,7 @@
 		"ACAddr":"4007FA"},
 	"I240":{
 		"TId":"BAW162  "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":40000.0000000,
 		"FMS_ALT_STATUS":0,
@@ -442,7 +442,7 @@
 		"ACAddr":"4007FA"},
 	"I240":{
 		"TId":"BAW162  "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":40000.0000000,
 		"FMS_ALT_STATUS":0,
@@ -1028,7 +1028,7 @@
 		"res2":0,
 		"TARGET_ALT_STATUS":0,
 		"TARGET_ALT_SOURCE":0,
-		"BDS":"40"},]}},
+		"BDS":"40"}]}},
 {"id":1,
 "cat":34,
 "length":8,
@@ -1074,7 +1074,7 @@
 		"res2":0,
 		"TARGET_ALT_STATUS":0,
 		"TARGET_ALT_SOURCE":0,
-		"BDS":"40"},]}},
+		"BDS":"40"}]}},
 {"id":1,
 "cat":34,
 "length":8,
@@ -1429,7 +1429,7 @@
 		"ACAddr":"3003AD"},
 	"I240":{
 		"TId":"DLH1970 "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":37008.0000000,
 		"FMS_ALT_STATUS":1,
@@ -1464,7 +1464,7 @@
 		"ACAddr":"3003AD"},
 	"I240":{
 		"TId":"DLH1970 "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":37008.0000000,
 		"FMS_ALT_STATUS":1,
@@ -1797,7 +1797,7 @@
 		"TAR":-0.0312500,
 		"TAS_STATUS":1,
 		"TAS":454.0000000,
-		"BDS":"50"},]}},
+		"BDS":"50"}]}},
 {"id":1,
 "cat":48,
 "length":68,
@@ -1843,7 +1843,7 @@
 		"TAR":-0.0312500,
 		"TAS_STATUS":1,
 		"TAS":454.0000000,
-		"BDS":"50"},]}},
+		"BDS":"50"}]}},
 {"id":1,
 "cat":34,
 "length":13,
@@ -1933,7 +1933,7 @@
 		"TAR":-0.0312500,
 		"TAS_STATUS":1,
 		"TAS":436.0000000,
-		"BDS":"50"},]}},
+		"BDS":"50"}]}},
 {"id":1,
 "cat":48,
 "length":68,
@@ -1979,7 +1979,7 @@
 		"TAR":-0.0312500,
 		"TAS_STATUS":1,
 		"TAS":436.0000000,
-		"BDS":"50"},]}},
+		"BDS":"50"}]}},
 {"id":1,
 "cat":48,
 "length":55,
@@ -1999,7 +1999,7 @@
 		"ACAddr":"4CA97D"},
 	"I240":{
 		"TId":"RYR108K "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":35008.0000000,
 		"FMS_ALT_STATUS":0,
@@ -2034,7 +2034,7 @@
 		"ACAddr":"4CA97D"},
 	"I240":{
 		"TId":"RYR108K "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":35008.0000000,
 		"FMS_ALT_STATUS":0,
@@ -2139,7 +2139,7 @@
 		"ACAddr":"4BA8C4"},
 	"I240":{
 		"TId":"THY49V  "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":38000.0000000,
 		"FMS_ALT_STATUS":0,
@@ -2174,7 +2174,7 @@
 		"ACAddr":"4BA8C4"},
 	"I240":{
 		"TId":"THY49V  "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":38000.0000000,
 		"FMS_ALT_STATUS":0,
@@ -2247,7 +2247,7 @@
 		"ACAddr":"4A3062"},
 	"I240":{
 		"TId":"ROT361R "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":38000.0000000,
 		"FMS_ALT_STATUS":0,
@@ -2282,7 +2282,7 @@
 		"ACAddr":"4A3062"},
 	"I240":{
 		"TId":"ROT361R "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":38000.0000000,
 		"FMS_ALT_STATUS":0,
@@ -2317,7 +2317,7 @@
 		"ACAddr":"3C5EF7"},
 	"I240":{
 		"TId":"GWI7753 "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":37008.0000000,
 		"FMS_ALT_STATUS":0,
@@ -2352,7 +2352,7 @@
 		"ACAddr":"3C5EF7"},
 	"I240":{
 		"TId":"GWI7753 "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":37008.0000000,
 		"FMS_ALT_STATUS":0,
@@ -2402,7 +2402,7 @@
 		"res2":0,
 		"TARGET_ALT_STATUS":1,
 		"TARGET_ALT_SOURCE":1,
-		"BDS":"40"},]}},
+		"BDS":"40"}]}},
 {"id":1,
 "cat":48,
 "length":53,
@@ -2437,7 +2437,7 @@
 		"res2":0,
 		"TARGET_ALT_STATUS":1,
 		"TARGET_ALT_SOURCE":1,
-		"BDS":"40"},]}},
+		"BDS":"40"}]}},
 {"id":1,
 "cat":48,
 "length":47,
@@ -2657,7 +2657,7 @@
 		"ACAddr":"4CA8EF"},
 	"I240":{
 		"TId":"AZA1209 "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":38000.0000000,
 		"FMS_ALT_STATUS":0,
@@ -2692,7 +2692,7 @@
 		"ACAddr":"4CA8EF"},
 	"I240":{
 		"TId":"AZA1209 "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":38000.0000000,
 		"FMS_ALT_STATUS":0,
@@ -2857,7 +2857,7 @@
 		"ACAddr":"4691C4"},
 	"I240":{
 		"TId":"AEE634  "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":38000.0000000,
 		"FMS_ALT_STATUS":0,
@@ -2892,7 +2892,7 @@
 		"ACAddr":"4691C4"},
 	"I240":{
 		"TId":"AEE634  "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":38000.0000000,
 		"FMS_ALT_STATUS":0,
@@ -3120,7 +3120,7 @@
 		"res2":0,
 		"TARGET_ALT_STATUS":0,
 		"TARGET_ALT_SOURCE":0,
-		"BDS":"40"},]}},
+		"BDS":"40"}]}},
 {"id":2,
 "cat":48,
 "length":43,
@@ -3344,7 +3344,7 @@
 		"res2":0,
 		"TARGET_ALT_STATUS":0,
 		"TARGET_ALT_SOURCE":0,
-		"BDS":"40"},]}},
+		"BDS":"40"}]}},
 {"id":2,
 "cat":48,
 "length":43,
@@ -3883,7 +3883,7 @@
 		"ACAddr":"47878B"},
 	"I240":{
 		"TId":"NAX19X  "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":37008.0000000,
 		"FMS_ALT_STATUS":1,
@@ -3918,7 +3918,7 @@
 		"ACAddr":"47878B"},
 	"I240":{
 		"TId":"NAX19X  "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":37008.0000000,
 		"FMS_ALT_STATUS":1,

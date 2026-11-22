@@ -26,6 +26,7 @@
 #include "Tracer.h"
 #include "Utils.h"
 #include "asterixformat.hxx"
+#include "SqlSchema.h"
 #include <vector>
 
 extern bool gFiltering;
@@ -173,6 +174,9 @@ bool DataRecord::getText(std::string &strResult, std::string &strHeader, const u
         Tracer::Error("Record not parsed properly. CAT%03d len=%ld", m_pCategory->m_id, m_nLength);
         return false;
     }
+    if (formatType == CAsterixFormat::ESQL) {
+        return getSqlText(strResult, strHeader);
+    }
     unsigned char ip[4];
     ip[0] = (unsigned char)(m_nIP >> 24);
     ip[1] = (unsigned char)(m_nIP >> 16);
@@ -202,59 +206,78 @@ bool DataRecord::getText(std::string &strResult, std::string &strHeader, const u
         }
     }
 
+    // Record header: only the fields the -LF filter keeps (Category::printsHeader, all without a filter).
+    // JSON: same text as format("{\"id\":%d,\"cat\":%d,\"length\":%ld,\"crc\":\"%08X\",\"timestamp\":%lf,
+    // \"srcip\":\"%u.%u.%u.%u\",\"fspec\":\"...\",\"hexdata\":\"...\",\"CAT%03d\":{") (-jh and -je with ",\n"
+    // between keys), written without printf because it is done for every record.
+    const size_t nHeaderFields = sizeof(RECORD_HEADER_FIELDS) / sizeof(RECORD_HEADER_FIELDS[0]);
     switch (formatType) {
         case CAsterixFormat::ETxt:
-            strNewResult += format("\n-------------------------\nData Record %d", m_nID);
-            strNewResult += format("\nLen: %ld", m_nLength);
-            strNewResult += format("\nCRC: %08X", m_nCrc);
-            strNewResult += format("\nSource IP: %u.%u.%u.%u", ip[0], ip[1], ip[2], ip[3]);
-            strNewResult += "\nFspec: ";
-            strNewResult += strFSPEC;
-            strNewResult += "\nHexData: ";
-            strNewResult += pItemsHex;
+            strNewResult += "\n-------------------------\nData Record";
+            if (m_pCategory->printsHeader(HDR_ID))
+                strNewResult += format(" %d", m_nID);
+            if (m_pCategory->printsHeader(HDR_LENGTH))
+                strNewResult += format("\nLen: %ld", m_nLength);
+            if (m_pCategory->printsHeader(HDR_CRC))
+                strNewResult += format("\nCRC: %08X", m_nCrc);
+            if (m_pCategory->printsHeader(HDR_SRCIP))
+                strNewResult += format("\nSource IP: %u.%u.%u.%u", ip[0], ip[1], ip[2], ip[3]);
+            if (m_pCategory->printsHeader(HDR_FSPEC)) {
+                strNewResult += "\nFspec: ";
+                strNewResult += strFSPEC;
+            }
+            if (m_pCategory->printsHeader(HDR_HEXDATA)) {
+                strNewResult += "\nHexData: ";
+                strNewResult += pItemsHex;
+            }
             break;
         case CAsterixFormat::EJSON:
-        case CAsterixFormat::EJSONX: {
-            // same text as format("{\"id\":%d,\"cat\":%d,\"length\":%ld,\"crc\":\"%08X\",\"timestamp\":%lf,
-            // \"srcip\":\"%u.%u.%u.%u\",\"fspec\":\"...\",\"hexdata\":\"...\",\"CAT%03d\":{"), written without printf
-            // because it is done for every record
-            strNewResult.append("{\"id\":", 6);
-            appendLong(strNewResult, m_nID);
-            strNewResult.append(",\"cat\":", 7);
-            appendLong(strNewResult, m_pCategory->m_id);
-            strNewResult.append(",\"length\":", 10);
-            appendLong(strNewResult, (long) m_nLength);
-            strNewResult.append(",\"crc\":\"", 8);
-            appendHex32(strNewResult, m_nCrc);
-            strNewResult.append("\",\"timestamp\":", 14);
-            appendDoubleFixed(strNewResult, m_nTimestamp, 6);
-            strNewResult.append(",\"srcip\":\"", 10);
-            appendIPv4(strNewResult, m_nIP);
-            strNewResult.append("\",\"fspec\":\"", 11);
-            strNewResult += strFSPEC;
-            strNewResult.append("\",\"hexdata\":\"", 13);
-            strNewResult += pItemsHex;
-            strNewResult.append("\",\"CAT", 6);
+        case CAsterixFormat::EJSONX:
+        case CAsterixFormat::EJSONH:
+        case CAsterixFormat::EJSONE: {
+            const bool human = formatType == CAsterixFormat::EJSONH || formatType == CAsterixFormat::EJSONE;
+            bool first = true;
+            strNewResult += '{';
+            for (size_t i = 0; i < nHeaderFields; i++) {
+                unsigned bit = RECORD_HEADER_FIELDS[i].bit;
+                if (!m_pCategory->printsHeader(bit))
+                    continue;
+                if (!first)
+                    strNewResult.append(",\n", human ? 2 : 1);
+                first = false;
+                bool text = bit == HDR_CRC || bit == HDR_SRCIP || bit == HDR_FSPEC || bit == HDR_HEXDATA;
+                strNewResult += '"';
+                strNewResult += RECORD_HEADER_FIELDS[i].name;
+                strNewResult.append(text ? "\":\"" : "\":", text ? 3 : 2);
+                appendHeaderValue(strNewResult, bit, strFSPEC, pItemsHex);
+                if (text)
+                    strNewResult += '"';
+            }
+            if (!first)
+                strNewResult.append(",\n", human ? 2 : 1);
+            strNewResult.append("\"CAT", 4);
             appendInt03(strNewResult, m_pCategory->m_id);
-            strNewResult.append("\":{", 3);
+            strNewResult.append(human ? "\":{\n" : "\":{", human ? 4 : 3);
             break;
         }
-        case CAsterixFormat::EJSONH:
-        case CAsterixFormat::EJSONE:
-            strNewResult += format(
-                    "{\"id\":%d,\n\"cat\":%d,\n\"length\":%ld,\n\"crc\":\"%08X\",\n\"timestamp\":%lf,\n\"srcip\":\"%u.%u.%u.%u\",\n\"fspec\":\"",
-                    m_nID, m_pCategory->m_id, m_nLength, m_nCrc, m_nTimestamp, ip[0], ip[1], ip[2], ip[3]);
-            strNewResult += strFSPEC;
-            strNewResult += "\",\n\"hexdata\":\"";
-            strNewResult += pItemsHex;
-            strNewResult += format("\",\n\"CAT%03d\":{\n", m_pCategory->m_id);
-            break;
         case CAsterixFormat::EXML:
         case CAsterixFormat::EXMLH: {
-            const int nXIDEFv = 1;
-            strNewResult += format(
-                    "<ASTERIX ver=\"%d\" cat=\"%d\" length=\"%ld\" crc=\"%08X\" timestamp=\"%lf\" srcip=\"%u.%u.%u.%u\" hexdata=\"%s\">",
-                    nXIDEFv, m_pCategory->m_id, m_nLength, m_nCrc, m_nTimestamp, ip[0], ip[1], ip[2], ip[3], m_pHexData);
+            // no id and fspec in XML, and hexdata is the whole record
+            strNewResult += "<ASTERIX ver=\"1\"";
+            for (size_t i = 0; i < nHeaderFields; i++) {
+                unsigned bit = RECORD_HEADER_FIELDS[i].bit;
+                if (bit == HDR_ID || bit == HDR_FSPEC || !m_pCategory->printsHeader(bit))
+                    continue;
+                strNewResult += ' ';
+                strNewResult += RECORD_HEADER_FIELDS[i].name;
+                strNewResult += "=\"";
+                if (bit == HDR_HEXDATA)
+                    strNewResult += m_pHexData;
+                else
+                    appendHeaderValue(strNewResult, bit, strFSPEC, pItemsHex);
+                strNewResult += '"';
+            }
+            strNewResult += '>';
             break;
         }
     }
@@ -311,6 +334,88 @@ bool DataRecord::getText(std::string &strResult, std::string &strHeader, const u
         }
     }
 
+    return ret;
+}
+
+void DataRecord::appendHeaderValue(std::string &s, unsigned bit, const std::string &strFSPEC,
+                                   const char *pItemsHex) const {
+    switch (bit) {
+        case HDR_ID:
+            appendLong(s, m_nID);
+            break;
+        case HDR_CAT:
+            appendLong(s, m_pCategory->m_id);
+            break;
+        case HDR_LENGTH:
+            appendLong(s, (long) m_nLength);
+            break;
+        case HDR_CRC:
+            appendHex32(s, m_nCrc);
+            break;
+        case HDR_TIMESTAMP:
+            appendDoubleFixed(s, m_nTimestamp, 6);
+            break;
+        case HDR_SRCIP:
+            appendIPv4(s, m_nIP);
+            break;
+        case HDR_FSPEC:
+            s += strFSPEC;
+            break;
+        case HDR_HEXDATA:
+            s += pItemsHex;
+            break;
+        default:
+            break;
+    }
+}
+
+/*
+ * -Q output: the record is a row of its category table (same header values as -j), its items fill that row
+ * and the child rows of their repetitive data; nothing is written if no item has anything to print.
+ */
+bool DataRecord::getSqlText(std::string &strResult, std::string &strHeader) {
+    // column names (rows keep pointers to them)
+    static const std::string columns[] = {"id", "cat", "length", "crc", "timestamp", "srcip", "fspec", "hexdata"};
+
+    if (m_pCategory->m_strSqlTable.empty())
+        return false; // not in the schema printed by -Q
+
+    std::string strFSPEC;
+    appendHexBytes(strFSPEC, m_pFSPECData, m_nFSPECLength);
+    size_t hexLen = strlen(m_pHexData);
+    const char *pItemsHex = m_pHexData + (strFSPEC.length() < hexLen ? strFSPEC.length() : hexLen);
+
+    SqlRecord record(&m_pCategory->m_strSqlTable);
+    for (size_t i = 0; i < sizeof(RECORD_HEADER_FIELDS) / sizeof(RECORD_HEADER_FIELDS[0]); i++) {
+        unsigned bit = RECORD_HEADER_FIELDS[i].bit;
+        if (!m_pCategory->printsHeader(bit))
+            continue; // not in the -LF filter: no column
+        std::string *v = record.addField(columns[i]);
+        bool text = bit == HDR_CRC || bit == HDR_SRCIP || bit == HDR_FSPEC || bit == HDR_HEXDATA;
+        if (text)
+            *v += '\'';
+        appendHeaderValue(*v, bit, strFSPEC, pItemsHex); // hex digits, digits and dots: nothing to escape
+        if (text)
+            *v += '\'';
+    }
+
+    bool ret = false;
+    {
+        SqlRecord::Scope scope(&record);
+        std::string unused; // items write their values to record
+        std::list<DataItem *>::iterator it;
+        for (it = m_lDataItems.begin(); it != m_lDataItems.end(); it++) {
+            DataItem *di = (DataItem *) (*it);
+            if (di != NULL && di->getText(unused, strHeader, CAsterixFormat::ESQL)) {
+                ret = true;
+            }
+            unused.clear();
+        }
+    }
+
+    if (ret) {
+        record.render(strResult);
+    }
     return ret;
 }
 

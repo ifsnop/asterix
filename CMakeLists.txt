@@ -82,6 +82,8 @@ add_library(asterix_decoder STATIC
         src/asterix/DataRecord.h
         src/asterix/InputParser.cpp
         src/asterix/InputParser.h
+        src/asterix/SqlSchema.cpp
+        src/asterix/SqlSchema.h
         src/asterix/Tracer.cpp
         src/asterix/Tracer.h
         src/asterix/UAP.cpp

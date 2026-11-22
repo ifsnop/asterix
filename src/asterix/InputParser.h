@@ -45,6 +45,10 @@ public:
 
     std::string printDefinition();
 
+    std::string printSqlSchema() { return m_pDefinition->printSqlSchema(); }
+
+    bool filterOutHeader(int cat, const char *name) { return m_pDefinition->filterOutHeader(cat, name); }
+
     bool filterOutItem(int cat, std::string item, const char *name);
 
     bool isFiltered(int cat, std::string item, const char *name);

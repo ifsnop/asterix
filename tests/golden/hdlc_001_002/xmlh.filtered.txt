@@ -1,4 +1,4 @@
-<ASTERIX ver="1" cat="1" length="23" crc="166B4DBF" timestamp="0.000000" srcip="0.0.0.0" hexdata="F7C619C9A00EB2767F189408AA42D8033405C8800D400E">
+<ASTERIX ver="1" cat="1" length="23" crc="166B4DBF">
     <I010>
         <SAC>25</SAC>
         <SIC>201</SIC>
@@ -13,7 +13,7 @@
         <FX>0</FX>
     </I020>
 </ASTERIX>
-<ASTERIX ver="1" cat="1" length="23" crc="451BDC4F" timestamp="0.000000" srcip="0.0.0.0" hexdata="F7C619C9B00F7561EC1A14077EB5550E5205508014400E">
+<ASTERIX ver="1" cat="1" length="23" crc="451BDC4F">
     <I010>
         <SAC>25</SAC>
         <SIC>201</SIC>
@@ -28,7 +28,7 @@
         <FX>0</FX>
     </I020>
 </ASTERIX>
-<ASTERIX ver="1" cat="1" length="23" crc="B1116CF7" timestamp="0.000000" srcip="0.0.0.0" hexdata="F7C619C9B00DCA69DE1A7C07F011110E3006188016400E">
+<ASTERIX ver="1" cat="1" length="23" crc="B1116CF7">
     <I010>
         <SAC>25</SAC>
         <SIC>201</SIC>
@@ -43,7 +43,7 @@
         <FX>0</FX>
     </I020>
 </ASTERIX>
-<ASTERIX ver="1" cat="1" length="23" crc="AA452E46" timestamp="0.000000" srcip="0.0.0.0" hexdata="F7C619C9B00D685C881CE008424FA4004A04D88022400E">
+<ASTERIX ver="1" cat="1" length="23" crc="AA452E46">
     <I010>
         <SAC>25</SAC>
         <SIC>201</SIC>
@@ -63,7 +63,7 @@
         <type>2</type>
     </I000>
 </ASTERIX>
-<ASTERIX ver="1" cat="1" length="23" crc="52C8CF8E" timestamp="0.000000" srcip="0.0.0.0" hexdata="F7C619C9B00CE173571E28081DD1100AC405A08028400E">
+<ASTERIX ver="1" cat="1" length="23" crc="52C8CF8E">
     <I010>
         <SAC>25</SAC>
         <SIC>201</SIC>
@@ -78,7 +78,7 @@
         <FX>0</FX>
     </I020>
 </ASTERIX>
-<ASTERIX ver="1" cat="1" length="23" crc="D32E1DA2" timestamp="0.000000" srcip="0.0.0.0" hexdata="F7C619C9A00C10514C212C05DCE2D7059E025A8038400E">
+<ASTERIX ver="1" cat="1" length="23" crc="D32E1DA2">
     <I010>
         <SAC>25</SAC>
         <SIC>201</SIC>
@@ -93,7 +93,7 @@
         <FX>0</FX>
     </I020>
 </ASTERIX>
-<ASTERIX ver="1" cat="1" length="23" crc="6E189DDB" timestamp="0.000000" srcip="0.0.0.0" hexdata="F7C619C9B00F0D37FE21C80755D1C605A505A0803B400E">
+<ASTERIX ver="1" cat="1" length="23" crc="6E189DDB">
     <I010>
         <SAC>25</SAC>
         <SIC>201</SIC>

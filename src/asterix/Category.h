@@ -32,6 +32,33 @@
 #include "WiresharkWrapper.h"
 #endif
 
+class SqlSchema;
+
+/**
+ * Fields of the record header (the keys of the -j record header, in that order). With -LF they are selected
+ * per category with "CATnnn:HDR:<name>" lines; a category with no such line prints all of them.
+ */
+enum {
+    HDR_ID = 1 << 0,
+    HDR_CAT = 1 << 1,
+    HDR_LENGTH = 1 << 2,
+    HDR_CRC = 1 << 3,
+    HDR_TIMESTAMP = 1 << 4,
+    HDR_SRCIP = 1 << 5,
+    HDR_FSPEC = 1 << 6,
+    HDR_HEXDATA = 1 << 7,
+    HDR_ALL = (1 << 8) - 1,
+    HDR_NONE = 1 << 8 //!< "CATnnn:HDR:none": the filter has an HDR line for the category, without any field
+};
+
+struct RecordHeaderField {
+    const char *name;        //!< name in -L, -LF and the JSON key
+    const char *description; //!< description in -L
+    unsigned bit;
+};
+
+extern const RecordHeaderField RECORD_HEADER_FIELDS[8];
+
 class Category {
 public:
     Category(int id);
@@ -53,7 +80,17 @@ public:
     UAP *newUAP(); //!< creates and returns new UAP
     UAP *getUAP(const unsigned char *data, unsigned long len); // get UAP that matches condition
     std::string printDescriptors(); // print item descriptors
+    void addSqlTables(SqlSchema &schema); // -Q output: table catNNN and its child tables
+    std::string m_strSqlTable; //! -Q output: table of this category (empty: not in the schema)
     bool filterOutItem(std::string item, const char *name);
+
+    unsigned m_nHeaderFilter; //! header fields in the filter (HDR_*, HDR_NONE), 0: no HDR line for this category
+
+    /** true if header field bit (HDR_*) is printed: always without -LF, or when the filter has no HDR line
+     *  for this category, otherwise only if the filter has it */
+    bool printsHeader(unsigned bit) const;
+
+    bool filterOutHeader(const char *name); // marks header field name for printing ("none": none), false if unknown
 
     bool isFiltered(std::string item, const char *name);
 

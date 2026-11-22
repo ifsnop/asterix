@@ -24,6 +24,7 @@
 #include "DataItemFormatCompound.h"
 #include "Tracer.h"
 #include "asterixformat.hxx"
+#include "SqlSchema.h"
 
 DataItemFormatCompound::DataItemFormatCompound(int id)
         : DataItemFormat(id) {
@@ -228,6 +229,34 @@ std::string DataItemFormatCompound::printDescriptors(std::string header) {
         strDef += dip->printDescriptors(header);
     }
     return strDef;
+}
+
+/*
+ * Name of secondary subfield part (1, 2, ...) of a Compound item: the short name of the primary bit with that
+ * presence number, as printed by getText (looked up here without DataItemFormatFixed::getPartName, which
+ * reports an error for every primary part that does not have it)
+ */
+static std::string compoundPartName(DataItemFormat *pPrimary, int part) {
+    std::list<DataItemFormat *>::iterator it, bitit;
+    for (it = pPrimary->m_lSubItems.begin(); it != pPrimary->m_lSubItems.end(); it++) {
+        for (bitit = (*it)->m_lSubItems.begin(); bitit != (*it)->m_lSubItems.end(); bitit++) {
+            DataItemBits *bit = (DataItemBits *) (*bitit);
+            if (bit != NULL && bit->m_nPresenceOfField == part)
+                return bit->m_strShortName.empty() ? bit->m_strName : bit->m_strShortName;
+        }
+    }
+    return "part" + std::to_string(part);
+}
+
+void DataItemFormatCompound::addSqlColumns(SqlSchema &schema, int table, const std::string &prefix) {
+    std::list<DataItemFormat *>::iterator it = m_lSubItems.begin();
+    if (it == m_lSubItems.end())
+        return;
+    DataItemFormat *pPrimary = *it; // not printed
+    int part = 1;
+    for (it++; it != m_lSubItems.end(); it++, part++) {
+        (*it)->addSqlColumns(schema, table, prefix + compoundPartName(pPrimary, part) + "_");
+    }
 }
 
 bool DataItemFormatCompound::filterOutItem(const char *name) {

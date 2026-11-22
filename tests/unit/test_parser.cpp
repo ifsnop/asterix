@@ -231,3 +231,87 @@ TEST_CASE("-LF: items with no field in the filter are stepped over, the rest pri
     }
     CHECK_EQ(jx.substr(0, jx.find("\"CAT001\"")), all.substr(0, all.find("\"CAT001\"")));
 }
+
+TEST_CASE("-LF: record header fields (CATnnn:HDR:name) per category, the whole header without HDR lines") {
+    extern bool gFiltering;
+    static AsterixDefinition *def = NULL;
+    if (!def) {
+        def = new AsterixDefinition();
+        loadDefinitions(g_definitionsFile, def);
+    }
+    InputParser filtered(def);
+    REQUIRE(filtered.filterOutItem(1, "010", "SAC"));
+    REQUIRE(filtered.filterOutItem(2, "010", "SAC"));
+    REQUIRE(filtered.filterOutHeader(1, "timestamp"));
+    REQUIRE(filtered.filterOutHeader(1, "fspec"));
+    CHECK(!filtered.filterOutHeader(1, "bogus"));
+    CHECK(!filtered.filterOutHeader(7, "id")); // category not defined
+
+    std::vector<unsigned char> data = block(1, CAT001_RECORD);
+    std::vector<unsigned char> cat2 = block(2, "C0" "19C9" "02");  // CAT002 I010, I000
+    data.insert(data.end(), cat2.begin(), cat2.end());
+
+    gFiltering = true;
+    std::unique_ptr<AsterixData> d(filtered.parsePacket(&data[0], (unsigned int) data.size(), 12.5));
+    std::string j = text(d.get(), CAsterixFormat::EJSON);
+    std::string jh = text(d.get(), CAsterixFormat::EJSONH);
+    std::string x = text(d.get(), CAsterixFormat::EXML);
+    std::string txt = text(d.get(), CAsterixFormat::ETxt);
+    std::string listing = def->printDescriptors();
+    gFiltering = false;
+
+    // CAT001: only timestamp and fspec, in every format
+    CHECK(j.find("{\"timestamp\":12.500000,\"fspec\":\"F7C6\",\"CAT001\":{\"I010\":{\"SAC\":25}}}\n") != std::string::npos);
+    CHECK(jh.find("{\"timestamp\":12.500000,\n\"fspec\":\"F7C6\",\n\"CAT001\":{\n") != std::string::npos);
+    CHECK(x.find("<ASTERIX ver=\"1\" timestamp=\"12.500000\"><I010>") != std::string::npos);
+    CHECK(txt.find("\nTimestamp: 12.500000\n-------------------------\nData Record\nFspec: F7C6\n") != std::string::npos);
+    CHECK(txt.find("CRC:") == std::string::npos || txt.find("Category: 2") < txt.find("CRC:")); // only CAT002 has a CRC line
+    // CAT002 has no HDR line: its whole header, as before HDR lines existed
+    CHECK(j.find("{\"id\":1,\"cat\":2,\"length\":4,\"crc\":\"0874C3AB\",\"timestamp\":12.500000,") != std::string::npos);
+    CHECK(x.find("<ASTERIX ver=\"1\" cat=\"2\" length=\"4\" crc=\"0874C3AB\" timestamp=\"12.500000\"") != std::string::npos);
+
+    // -L: 8 HDR lines per category before its items, the ones not printed marked with #
+    CHECK(listing.find("#CAT001:HDR:id") != std::string::npos);
+    CHECK(listing.find("\nCAT001:HDR:timestamp ") != std::string::npos);
+    CHECK(listing.find("\nCAT001:HDR:fspec ") != std::string::npos);
+    CHECK(listing.find("\nCAT002:HDR:id ") != std::string::npos); // no HDR line for CAT002: all printed
+    CHECK(listing.find("CAT001:HDR:hexdata") < listing.find("CAT001:I010:SAC"));
+}
+
+TEST_CASE("-LF: CATnnn:HDR:none prints no record header field, with fields only those") {
+    extern bool gFiltering;
+    static AsterixDefinition *def = NULL;
+    if (!def) {
+        def = new AsterixDefinition();
+        loadDefinitions(g_definitionsFile, def);
+    }
+    InputParser filtered(def);
+    REQUIRE(filtered.filterOutItem(1, "010", "SAC"));
+    REQUIRE(filtered.filterOutHeader(1, "none"));
+    std::vector<unsigned char> data = block(1, CAT001_RECORD);
+
+    gFiltering = true;
+    std::unique_ptr<AsterixData> d(filtered.parsePacket(&data[0], (unsigned int) data.size(), 12.5));
+    std::string j = text(d.get(), CAsterixFormat::EJSON);
+    std::string jh = text(d.get(), CAsterixFormat::EJSONH);
+    std::string x = text(d.get(), CAsterixFormat::EXML);
+    std::string txt = text(d.get(), CAsterixFormat::ETxt);
+    std::string listing = def->printDescriptors();
+    gFiltering = false;
+
+    CHECK_EQ(j, std::string("{\"CAT001\":{\"I010\":{\"SAC\":25}}}\n"));
+    CHECK(jh.compare(0, 11, "{\"CAT001\":{") == 0);
+    CHECK(x.find("<ASTERIX ver=\"1\"><I010>") != std::string::npos);
+    CHECK(txt.find("\n-------------------------\nData Record\n\nItem 010") != std::string::npos);
+    for (size_t i = 0; i < 8; i++)
+        CHECK(listing.find(std::string("#CAT001:HDR:") + RECORD_HEADER_FIELDS[i].name) != std::string::npos);
+    CHECK(listing.find("HDR:none") == std::string::npos); // not listed by -L
+
+    // none with a field: that field only
+    REQUIRE(filtered.filterOutHeader(1, "timestamp"));
+    gFiltering = true;
+    d.reset(filtered.parsePacket(&data[0], (unsigned int) data.size(), 12.5));
+    j = text(d.get(), CAsterixFormat::EJSON);
+    gFiltering = false;
+    CHECK_EQ(j, std::string("{\"timestamp\":12.500000,\"CAT001\":{\"I010\":{\"SAC\":25}}}\n"));
+}

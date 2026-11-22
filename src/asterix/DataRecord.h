@@ -52,6 +52,14 @@ public:
 
     DataItem *getItem(std::string itemid);
 
+private:
+    bool getSqlText(std::string &strResult, std::string &strHeader); // -Q output: INSERT statements
+
+    // value of record header field bit (HDR_* of Category.h) with the text of -j, without quotes
+    void appendHeaderValue(std::string &s, unsigned bit, const std::string &strFSPEC, const char *pItemsHex) const;
+
+public:
+
 #if defined(WIRESHARK_WRAPPER) || defined(ETHEREAL_WRAPPER)
     fulliautomatix_data* getData(int byteoffset);
 #endif

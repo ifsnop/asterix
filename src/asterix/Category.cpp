@@ -22,9 +22,42 @@
  */
 
 #include "Category.h"
+#include "SqlSchema.h"
+
+extern bool gFiltering;
+
+const RecordHeaderField RECORD_HEADER_FIELDS[8] = {
+        {"id",        "Record number in its packet (not unique)", HDR_ID},
+        {"cat",       "Category",                                 HDR_CAT},
+        {"length",    "Record length (bytes)",                    HDR_LENGTH},
+        {"crc",       "CRC-32 of the record (hex)",               HDR_CRC},
+        {"timestamp", "Timestamp of the input",                   HDR_TIMESTAMP},
+        {"srcip",     "Source IP address",                        HDR_SRCIP},
+        {"fspec",     "FSPEC bytes (hex)",                        HDR_FSPEC},
+        {"hexdata",   "Data items after the FSPEC (hex)",         HDR_HEXDATA},
+};
 
 Category::Category(int id)
-        : m_id(id), m_bFiltered(false) {
+        : m_id(id), m_bFiltered(false), m_nHeaderFilter(0) {
+}
+
+bool Category::printsHeader(unsigned bit) const {
+    return !gFiltering || m_nHeaderFilter == 0 || (m_nHeaderFilter & bit) != 0;
+}
+
+bool Category::filterOutHeader(const char *name) {
+    m_bFiltered = true; // as for items: the category is in the filter
+    if (strcmp(name, "none") == 0) { // header filter on, no field selected (the fields listed too are printed)
+        m_nHeaderFilter |= HDR_NONE;
+        return true;
+    }
+    for (size_t i = 0; i < sizeof(RECORD_HEADER_FIELDS) / sizeof(RECORD_HEADER_FIELDS[0]); i++) {
+        if (strcmp(name, RECORD_HEADER_FIELDS[i].name) == 0) {
+            m_nHeaderFilter |= RECORD_HEADER_FIELDS[i].bit;
+            return true;
+        }
+    }
+    return false;
 }
 
 Category::~Category() {
@@ -134,6 +167,18 @@ std::string Category::printDescriptors() {
     std::string strDef = "";
     char header[32];
 
+    // record header fields first, laid out as DataItemBits::printDescriptors does for fields
+    for (size_t i = 0; i < sizeof(RECORD_HEADER_FIELDS) / sizeof(RECORD_HEADER_FIELDS[0]); i++) {
+        std::string line = printsHeader(RECORD_HEADER_FIELDS[i].bit) ? "" : "#";
+        line += format("CAT%03d:HDR:%s", m_id, RECORD_HEADER_FIELDS[i].name);
+        if (line.length() < 60)
+            line.append(60 - line.length(), ' ');
+        line += " ";
+        line += RECORD_HEADER_FIELDS[i].description;
+        line += "\n";
+        strDef += line;
+    }
+
     std::list<DataItemDescription *>::iterator it;
     DataItemDescription *di = NULL;
 
@@ -146,6 +191,28 @@ std::string Category::printDescriptors() {
     }
 
     return strDef;
+}
+
+void Category::addSqlTables(SqlSchema &schema) {
+    if (gFiltering && !m_bFiltered) { // no field of this category is in the filter
+        m_strSqlTable.clear();
+        return;
+    }
+    unsigned headerFields = 0;
+    for (size_t i = 0; i < sizeof(RECORD_HEADER_FIELDS) / sizeof(RECORD_HEADER_FIELDS[0]); i++) {
+        if (printsHeader(RECORD_HEADER_FIELDS[i].bit))
+            headerFields |= RECORD_HEADER_FIELDS[i].bit;
+    }
+    int table = schema.addCategoryTable(format("cat%03d", m_id), headerFields);
+    m_strSqlTable = schema.tableName(table);
+
+    std::list<DataItemDescription *>::iterator it;
+    for (it = m_lDataItems.begin(); it != m_lDataItems.end(); it++) {
+        DataItemDescription *di = (DataItemDescription *) (*it);
+        if (di->m_pFormat == NULL || (gFiltering && !di->m_bFiltered))
+            continue;
+        di->m_pFormat->addSqlColumns(schema, table, "I" + di->m_strID + "_");
+    }
 }
 
 bool Category::filterOutItem(std::string item, const char *name) {
