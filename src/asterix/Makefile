@@ -49,6 +49,7 @@ OBJS = AsterixData.o \
 	DataItemFormatBDS.o \
 	DataRecord.o \
 	InputParser.o \
+	SqlSchema.o \
 	Tracer.o \
 	UAP.o \
 	UAPItem.o \

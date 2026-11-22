@@ -52,6 +52,11 @@ public:
 
     DataItem *getItem(std::string itemid);
 
+private:
+    bool getSqlText(std::string &strResult, std::string &strHeader); // -Q output: INSERT statements
+
+public:
+
 #if defined(WIRESHARK_WRAPPER) || defined(ETHEREAL_WRAPPER)
     fulliautomatix_data* getData(int byteoffset);
 #endif

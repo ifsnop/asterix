@@ -24,6 +24,7 @@
 #include "DataItemFormatExplicit.h"
 #include "Tracer.h"
 #include "asterixformat.hxx"
+#include "SqlSchema.h"
 
 DataItemFormatExplicit::DataItemFormatExplicit(int id)
         : DataItemFormat(id) {
@@ -97,7 +98,11 @@ bool DataItemFormatExplicit::getText(std::string &strResult, std::string &strHea
         }
     }
 
-    for (int i = 0; i < nFullLength; i += bodyLength) {
+    // -Q output: each body is a row of the child table
+    SqlRecord *pRecord = formatType == CAsterixFormat::ESQL ? SqlRecord::s_pCurrent : NULL;
+    int body = 0;
+    for (int i = 0; i < nFullLength; i += bodyLength, body++) {
+        int previous = pRecord != NULL ? pRecord->openRow(&m_strSqlTable, body, false) : 0;
         for (it = m_lSubItems.begin(); it != m_lSubItems.end(); it++) {
             DataItemFormat *di = (DataItemFormat *) (*it);
             ret |= di->getText(tmpStr, strHeader, formatType, pData, bodyLength);
@@ -114,6 +119,8 @@ bool DataItemFormatExplicit::getText(std::string &strResult, std::string &strHea
                 }
             }
         }
+        if (pRecord != NULL)
+            pRecord->closeRow(previous);
     }
 
     if (nFullLength != bodyLength) {
@@ -145,6 +152,15 @@ std::string DataItemFormatExplicit::printDescriptors(std::string header) {
         strDef += dip->printDescriptors(header);
     }
     return strDef;
+}
+
+void DataItemFormatExplicit::addSqlColumns(SqlSchema &schema, int table, const std::string &prefix) {
+    int child = schema.addChildTable(table, SqlSchema::tableSuffix(prefix), false); // a row per body
+    m_strSqlTable = schema.tableName(child);
+    std::list<DataItemFormat *>::iterator it;
+    for (it = m_lSubItems.begin(); it != m_lSubItems.end(); it++) {
+        (*it)->addSqlColumns(schema, child, "");
+    }
 }
 
 bool DataItemFormatExplicit::filterOutItem(const char *name) {

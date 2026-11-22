@@ -80,6 +80,7 @@ public:
     std::list<BitsValue *> m_lValue;
 
     bool m_bFiltered; //! item shall be printed when filter is applied
+    std::string m_strSqlColumn; //! -Q output: column of this field in its table (empty: not in the schema)
 
 private:
     std::string m_strJsonMask;            //!< EJSONX ,"mask":"..." text (empty: no mask) for bits below
@@ -117,6 +118,7 @@ public:
         long m_nPrevOffset;
     };
     std::string printDescriptors(std::string header); // print items format descriptors
+    void addSqlColumns(SqlSchema &schema, int table, const std::string &prefix);
     bool filterOutItem(const char *name); // mark item for filtering
     bool isFiltered(const char *) { return m_bFiltered; } // true if item is in filter (shall be printed)
     bool isBits() { return true; }; // true if this is Bits description format
@@ -135,6 +137,8 @@ public:
     long getLength(const unsigned char *pData, long nMaxLength);
 
 private:
+    bool appendSqlValue(unsigned char *pData, long nLength); // -Q output: value of this field in the current row
+
     unsigned char *getBits(unsigned char *pData, int bytes, int frombit, int tobit);
 
     unsigned long getUnsigned(unsigned char *pData, int bytes, int frombit, int tobit);

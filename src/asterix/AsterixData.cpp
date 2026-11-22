@@ -44,6 +44,13 @@ AsterixData::~AsterixData() {
 bool AsterixData::getText(std::string &strResult, const unsigned int formatType) {
     static int i = 1;
 
+    // -Q output: the statements of a packet are one transaction (nothing is written for an empty packet)
+    static const char strBegin[] = "START TRANSACTION;\n";
+    const std::string::size_type packetStart = strResult.length();
+    if (formatType == CAsterixFormat::ESQL) {
+        strResult.append(strBegin, sizeof(strBegin) - 1);
+    }
+
     std::list<DataBlock *>::iterator it;
     for (it = m_lDataBlocks.begin(); it != m_lDataBlocks.end(); it++) {
         DataBlock *db = (DataBlock *) (*it);
@@ -55,6 +62,13 @@ bool AsterixData::getText(std::string &strResult, const unsigned int formatType)
             }
             db->getText(strResult, formatType);
         }
+    }
+
+    if (formatType == CAsterixFormat::ESQL) {
+        if (strResult.length() == packetStart + sizeof(strBegin) - 1)
+            strResult.resize(packetStart);
+        else
+            strResult += "COMMIT;\n";
     }
     return true;
 }

@@ -482,7 +482,7 @@
 		"res2":0,
 		"TARGET_ALT_STATUS":0,
 		"TARGET_ALT_SOURCE":0,
-		"BDS":"40"},]}},
+		"BDS":"40"}]}},
 {"id":3,
 "cat":48,
 "length":52,
@@ -615,7 +615,7 @@
 		"res2":0,
 		"TARGET_ALT_STATUS":0,
 		"TARGET_ALT_SOURCE":0,
-		"BDS":"40"},]}},
+		"BDS":"40"}]}},
 {"id":3,
 "cat":48,
 "length":52,
@@ -738,7 +738,7 @@
 		"ACAddr":"4007FA"},
 	"I240":{
 		"TId":"BAW162  "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":40000.0000000,
 		"FMS_ALT_STATUS":0,
@@ -773,7 +773,7 @@
 		"ACAddr":"4007FA"},
 	"I240":{
 		"TId":"BAW162  "},
-	"I250":[,{
+	"I250":[{
 		"MCP_ALT_STATUS":1,
 		"MCP_ALT":40000.0000000,
 		"FMS_ALT_STATUS":0,

@@ -22,6 +22,9 @@
  */
 
 #include "Category.h"
+#include "SqlSchema.h"
+
+extern bool gFiltering;
 
 Category::Category(int id)
         : m_id(id), m_bFiltered(false) {
@@ -146,6 +149,23 @@ std::string Category::printDescriptors() {
     }
 
     return strDef;
+}
+
+void Category::addSqlTables(SqlSchema &schema) {
+    if (gFiltering && !m_bFiltered) { // no field of this category is in the filter
+        m_strSqlTable.clear();
+        return;
+    }
+    int table = schema.addCategoryTable(format("cat%03d", m_id));
+    m_strSqlTable = schema.tableName(table);
+
+    std::list<DataItemDescription *>::iterator it;
+    for (it = m_lDataItems.begin(); it != m_lDataItems.end(); it++) {
+        DataItemDescription *di = (DataItemDescription *) (*it);
+        if (di->m_pFormat == NULL || (gFiltering && !di->m_bFiltered))
+            continue;
+        di->m_pFormat->addSqlColumns(schema, table, "I" + di->m_strID + "_");
+    }
 }
 
 bool Category::filterOutItem(std::string item, const char *name) {

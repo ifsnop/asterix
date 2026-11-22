@@ -23,6 +23,11 @@ asterix
 >   - keys are unique in every object, so standard JSON parsers keep all fields: FX bits are numbered by extent (`FX0`, `FX1`, ...) and other repeated names get a number (`spare`, `spare1`).
 >
 >   Edits must keep the record length. FX bits, UAP selectors (e.g. CAT001 I020 TYP) and the BDS register number change how the rest is decoded.
+> - **New `-Q` / `--sql` output** for loading ASTERIX data into MySQL or MariaDB: `asterix -Q -P -f capture.pcap | mysql db` (see [SQL.md](SQL.md)):
+>   - first `CREATE TABLE IF NOT EXISTS` for every category (`cat048`: `rec_id`, the record header and one typed column per field, e.g. `I010_SAC TINYINT UNSIGNED`, `I090_FL DOUBLE`, `I240_TId VARCHAR(8)`), then the `INSERT` statements of every record, one transaction per packet;
+>   - repetitive data (Repetitive items, BDS registers with one table per register, lists of extents, SP/RE) go to child tables keyed `(rec_id, rep_idx)` with `ON DELETE CASCADE` foreign keys;
+>   - with `-LF`, only the filtered fields become columns; text fields are inserted trimmed; `-Q -L` prints only the schema.
+> - **`-LF` fix**: the JSON outputs were invalid when a repetition of a Repetitive item printed nothing (a BDS register not in the filter left its comma behind: `{...},]`).
 > - **Record header with the FSPEC apart**: `-j`, `-jh`, `-je` and the default text output print the FSPEC bytes separately (`"fspec"` in JSON, a `Fspec:` line in text), and `hexdata` / `HexData:` holds only the data items after the FSPEC (same as `-jx`). **This differs from the original**, where hexdata was the whole record: use `fspec + hexdata` to get it. XML (`-x`, `-xh`) keeps the whole record.
 > - **`-h`** documents the default text output (used when no output format option is given).
 > - **Text fields** (callsign, aircraft type, airports, stands...) only print `A-Z`, `0-9`, space and `.`; any other byte, including control characters used as padding, is printed as `@`, so JSON and XML outputs are always valid.

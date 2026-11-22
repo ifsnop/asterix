@@ -26,6 +26,7 @@
 #include "Tracer.h"
 #include "Utils.h"
 #include "asterixformat.hxx"
+#include "SqlSchema.h"
 #include <vector>
 
 extern bool gFiltering;
@@ -173,6 +174,9 @@ bool DataRecord::getText(std::string &strResult, std::string &strHeader, const u
         Tracer::Error("Record not parsed properly. CAT%03d len=%ld", m_pCategory->m_id, m_nLength);
         return false;
     }
+    if (formatType == CAsterixFormat::ESQL) {
+        return getSqlText(strResult, strHeader);
+    }
     unsigned char ip[4];
     ip[0] = (unsigned char)(m_nIP >> 24);
     ip[1] = (unsigned char)(m_nIP >> 16);
@@ -311,6 +315,58 @@ bool DataRecord::getText(std::string &strResult, std::string &strHeader, const u
         }
     }
 
+    return ret;
+}
+
+/*
+ * -Q output: the record is a row of its category table (same header values as -j), its items fill that row
+ * and the child rows of their repetitive data; nothing is written if no item has anything to print.
+ */
+bool DataRecord::getSqlText(std::string &strResult, std::string &strHeader) {
+    static const std::string colId("id"), colCat("cat"), colLength("length"), colCrc("crc"),
+            colTimestamp("timestamp"), colSrcIp("srcip"), colFspec("fspec"), colHexdata("hexdata");
+
+    if (m_pCategory->m_strSqlTable.empty())
+        return false; // not in the schema printed by -Q
+
+    std::string strFSPEC;
+    appendHexBytes(strFSPEC, m_pFSPECData, m_nFSPECLength);
+    size_t hexLen = strlen(m_pHexData);
+    const char *pItemsHex = m_pHexData + (strFSPEC.length() < hexLen ? strFSPEC.length() : hexLen);
+
+    SqlRecord record(&m_pCategory->m_strSqlTable);
+    appendLong(*record.addField(colId), m_nID);
+    appendLong(*record.addField(colCat), m_pCategory->m_id);
+    appendLong(*record.addField(colLength), (long) m_nLength);
+    std::string *v = record.addField(colCrc);
+    *v += '\'';
+    appendHex32(*v, m_nCrc);
+    *v += '\'';
+    appendDoubleFixed(*record.addField(colTimestamp), m_nTimestamp, 6);
+    v = record.addField(colSrcIp);
+    *v += '\'';
+    appendIPv4(*v, m_nIP);
+    *v += '\'';
+    SqlSchema::appendString(*record.addField(colFspec), strFSPEC.c_str(), false);
+    SqlSchema::appendString(*record.addField(colHexdata), pItemsHex, false);
+
+    bool ret = false;
+    {
+        SqlRecord::Scope scope(&record);
+        std::string unused; // items write their values to record
+        std::list<DataItem *>::iterator it;
+        for (it = m_lDataItems.begin(); it != m_lDataItems.end(); it++) {
+            DataItem *di = (DataItem *) (*it);
+            if (di != NULL && di->getText(unused, strHeader, CAsterixFormat::ESQL)) {
+                ret = true;
+            }
+            unused.clear();
+        }
+    }
+
+    if (ret) {
+        record.render(strResult);
+    }
     return ret;
 }
 

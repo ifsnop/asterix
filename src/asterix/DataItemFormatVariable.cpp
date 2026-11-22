@@ -24,6 +24,7 @@
 #include "DataItemFormatVariable.h"
 #include "Tracer.h"
 #include "asterixformat.hxx"
+#include "SqlSchema.h"
 
 DataItemFormatVariable::DataItemFormatVariable(int id)
         : DataItemFormat(id) {
@@ -114,6 +115,7 @@ bool DataItemFormatVariable::getText(std::string &strResult, std::string &strHea
 
     it = m_lSubItems.begin();
     int extent = 0;                 // index of the current part, numbers the FX bits in EJSONX
+    int sqlIndex = 0;               // ESQL: index of the next part printed (rep_idx)
 
     DataItemFormatFixed *dip = (DataItemFormatFixed *) (*it);
 
@@ -157,6 +159,19 @@ bool DataItemFormatVariable::getText(std::string &strResult, std::string &strHea
                 } else {
                     strResult.resize(partStart);
                 }
+            }
+                break;
+            case CAsterixFormat::ESQL: {
+                // a list of parts: each part is a row of the child table
+                // (rep_idx is the index in the -j list, which leaves out the parts that print nothing)
+                SqlRecord *pRecord = listOfSubItems ? SqlRecord::s_pCurrent : NULL;
+                int previous = pRecord ? pRecord->openRow(&m_strSqlTable, sqlIndex, false) : 0;
+                if (dip->getText(strResult, strHeader, formatType, pData, dip->getLength())) {
+                    ret = true;
+                    sqlIndex++;
+                }
+                if (pRecord)
+                    pRecord->closeRow(previous);
             }
                 break;
             default:
@@ -208,6 +223,19 @@ std::string DataItemFormatVariable::printDescriptors(std::string header) {
         strDef += dip->printDescriptors(header);
     }
     return strDef;
+}
+
+void DataItemFormatVariable::addSqlColumns(SqlSchema &schema, int table, const std::string &prefix) {
+    if (m_lSubItems.size() == 1) { // a list of parts in -j: one row per part in a child table
+        int child = schema.addChildTable(table, SqlSchema::tableSuffix(prefix), false);
+        m_strSqlTable = schema.tableName(child);
+        m_lSubItems.front()->addSqlColumns(schema, child, "");
+        return;
+    }
+    std::list<DataItemFormat *>::iterator it;
+    for (it = m_lSubItems.begin(); it != m_lSubItems.end(); it++) {
+        (*it)->addSqlColumns(schema, table, prefix);
+    }
 }
 
 bool DataItemFormatVariable::filterOutItem(const char *name) {

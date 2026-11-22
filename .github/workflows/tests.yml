@@ -59,6 +59,32 @@ jobs:
       - name: ctest
         run: ctest --test-dir build --output-on-failure
 
+  mysql:
+    name: -Q output loaded into MySQL 8, SQL.md example queries
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: asterix
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h127.0.0.1 -uroot -pasterix"
+          --health-interval=5s --health-timeout=5s --health-retries=30
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libexpat1-dev mysql-client
+      - name: Build
+        run: make -C src -j"$(nproc)"
+      - name: tests/sql/load_mysql.sh
+        env:
+          MYSQL_PWD: asterix   # not -p: the client warns on stderr about passwords on the command line
+        run: tests/sql/load_mysql.sh obj/main/release/asterix mysql -h127.0.0.1 -P3306 -uroot
+
   sanitizers:
     name: AddressSanitizer + UBSan (unit tests, regression tests, mutated inputs)
     runs-on: ubuntu-latest

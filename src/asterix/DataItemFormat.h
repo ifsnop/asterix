@@ -38,6 +38,8 @@
 
 class DataItemBits;
 
+class SqlSchema;
+
 class DataItemFormat {
 public:
     DataItemFormat(int id = 0);
@@ -49,6 +51,7 @@ public:
 
     DataItemFormat *m_pParentFormat; //! Pointer to parent format (used only in XML parsing)
     int m_nID; //! ID of the item
+    std::string m_strSqlTable; //! -Q output: child table the rows of this format go to (empty: none)
 
 #if defined(WIRESHARK_WRAPPER) || defined(ETHEREAL_WRAPPER)
     static int m_nLastPID; //!< static used for allocation of m_nPID
@@ -77,6 +80,12 @@ public:
     virtual bool isExplicit() { return false; }; // true if this is Explicit format
     virtual bool isCompound() { return false; }; // true if this is Compound format
     virtual bool isBits() { return false; }; // true if this is Bits description format
+
+    /**
+     * -Q output: adds the columns of this format to table of schema (child tables for repetitive data),
+     * column names start with prefix. Fields remember their column and formats their child table.
+     */
+    virtual void addSqlColumns(SqlSchema &, int, const std::string &) {}
 
 
 #if defined(WIRESHARK_WRAPPER) || defined(ETHEREAL_WRAPPER)

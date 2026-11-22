@@ -27,6 +27,8 @@
 #include "DataItemBits.h"
 #include "Tracer.h"
 #include "asterixformat.hxx"
+#include "SqlSchema.h"
+#include <climits>
 
 extern bool gFiltering;
 
@@ -552,6 +554,10 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
     else if (m_strShortName.empty())
         m_strShortName = m_strName;
 
+    if (formatType == CAsterixFormat::ESQL) {
+        return appendSqlValue(pData, nLength);
+    }
+
     switch (formatType) {
         case CAsterixFormat::EJSON:
             strResult += '"';
@@ -1005,6 +1011,75 @@ bool DataItemBits::getText(std::string &strResult, std::string &strHeader, const
     }
 
     return true;
+}
+
+/*
+ * -Q output: the value of this field in the current row of SqlRecord, with the same text as in -j
+ * (scaled values with 7 decimals); text fields are quoted and trimmed.
+ */
+bool DataItemBits::appendSqlValue(unsigned char *pData, long nLength) {
+    SqlRecord *pRecord = SqlRecord::s_pCurrent;
+    if (pRecord == NULL || m_strSqlColumn.empty())
+        return false;
+    std::string *pValues = pRecord->addField(m_strSqlColumn);
+    if (pValues == NULL)
+        return true; // already in this row
+    std::string &v = *pValues;
+
+    switch (m_eEncoding) {
+        case DATAITEM_ENCODING_UNSIGNED: {
+            unsigned long value = getUnsigned(pData, nLength, m_nFrom, m_nTo);
+            if (m_dScale != 0)
+                appendDouble7(v, value * m_dScale);
+            else if (value <= (unsigned long) LONG_MAX)
+                appendLong(v, (long) value);
+            else
+                v += std::to_string(value);
+            break;
+        }
+        case DATAITEM_ENCODING_SIGNED: {
+            signed long value = getSigned(pData, nLength, m_nFrom, m_nTo);
+            if (m_dScale != 0)
+                appendDouble7(v, (double) value * m_dScale);
+            else
+                appendLong(v, value);
+            break;
+        }
+        case DATAITEM_ENCODING_SIX_BIT_CHAR: {
+            std::unique_ptr<unsigned char[]> str(getSixBitString(pData, nLength, m_nFrom, m_nTo));
+            SqlSchema::appendString(v, (const char *) str.get(), true);
+            break;
+        }
+        case DATAITEM_ENCODING_HEX_BIT_CHAR: {
+            std::unique_ptr<unsigned char[]> str(getHexBitString(pData, nLength, m_nFrom, m_nTo));
+            SqlSchema::appendString(v, (const char *) str.get(), true);
+            break;
+        }
+        case DATAITEM_ENCODING_OCTAL: {
+            std::unique_ptr<unsigned char[]> str(getOctal(pData, nLength, m_nFrom, m_nTo));
+            SqlSchema::appendString(v, (const char *) str.get(), true);
+            break;
+        }
+        case DATAITEM_ENCODING_ASCII: {
+            std::unique_ptr<char[]> str(getASCII(pData, nLength, m_nFrom, m_nTo));
+            SqlSchema::appendString(v, str.get(), true);
+            break;
+        }
+        default:
+            Tracer::Error("Unknown encoding");
+            v += "NULL";
+            break;
+    }
+    return true;
+}
+
+void DataItemBits::addSqlColumns(SqlSchema &schema, int table, const std::string &prefix) {
+    if (gFiltering && !m_bFiltered)
+        return;
+    std::string comment = m_strName.empty() ? m_strShortName : m_strName;
+    if (!m_strUnit.empty())
+        comment += " [" + m_strUnit + "]";
+    m_strSqlColumn = schema.addColumn(table, prefix + getJsonBaseName(), SqlSchema::columnType(*this), comment);
 }
 
 std::string DataItemBits::printDescriptors(std::string header) {

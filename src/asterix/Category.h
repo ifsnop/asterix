@@ -32,6 +32,8 @@
 #include "WiresharkWrapper.h"
 #endif
 
+class SqlSchema;
+
 class Category {
 public:
     Category(int id);
@@ -53,6 +55,8 @@ public:
     UAP *newUAP(); //!< creates and returns new UAP
     UAP *getUAP(const unsigned char *data, unsigned long len); // get UAP that matches condition
     std::string printDescriptors(); // print item descriptors
+    void addSqlTables(SqlSchema &schema); // -Q output: table catNNN and its child tables
+    std::string m_strSqlTable; //! -Q output: table of this category (empty: not in the schema)
     bool filterOutItem(std::string item, const char *name);
 
     bool isFiltered(std::string item, const char *name);

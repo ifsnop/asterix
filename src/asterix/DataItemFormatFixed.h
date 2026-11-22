@@ -75,6 +75,7 @@ public:
      */
     void makeJsonPrefixes(std::set<std::string> &jsonKeys, int extent, std::vector<std::string> &jsonPrefixes);
     std::string printDescriptors(std::string header); // print items format descriptors
+    void addSqlColumns(SqlSchema &schema, int table, const std::string &prefix);
     bool filterOutItem(const char *name); // mark item for filtering
     bool isFiltered(const char *name);
 

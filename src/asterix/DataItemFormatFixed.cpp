@@ -24,6 +24,7 @@
 #include "DataItemFormatFixed.h"
 #include "Tracer.h"
 #include "asterixformat.hxx"
+#include "SqlSchema.h"
 
 extern bool gFiltering;
 
@@ -288,6 +289,13 @@ std::string DataItemFormatFixed::printDescriptors(std::string header) {
         strDef += bv->printDescriptors(header);
     }
     return strDef;
+}
+
+void DataItemFormatFixed::addSqlColumns(SqlSchema &schema, int table, const std::string &prefix) {
+    std::list<DataItemFormat *>::iterator it;
+    for (it = m_lSubItems.begin(); it != m_lSubItems.end(); it++) {
+        (*it)->addSqlColumns(schema, table, prefix);
+    }
 }
 
 bool DataItemFormatFixed::filterOutItem(const char *name) {

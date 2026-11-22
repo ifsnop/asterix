@@ -46,6 +46,8 @@ public:
 
     std::string printDescriptors();
 
+    std::string printSqlSchema(); // CREATE TABLE statements of -Q output (resolves its table and column names)
+
     bool filterOutItem(int cat, std::string item, const char *name);
 
     bool isFiltered(int cat, std::string item, const char *name);

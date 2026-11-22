@@ -55,6 +55,11 @@ public:
      */
     virtual std::string printDescriptor() { return "Not available"; }
 
+    /**
+     * Print MySQL CREATE TABLE statements of the -Q output (also prepares the definitions for that output)
+     */
+    virtual std::string printSqlSchema() { return "Not available"; }
+
     virtual bool filterOutItem(int cat, std::string item, const char *name) { return false; }
 
 };

@@ -58,6 +58,7 @@ public:
         EOut,           // textual output (one line text, easy for parsing)
         EGPS,           // GPS (timestamped datablocks + 2200 bytes header)
         EJSONX,         // JSON compact line-delimited form (like EJSON) with hex and mask of each item
+        ESQL,           // MySQL INSERT statements (the CREATE TABLE statements are printed by asterix -Q first)
         ETotalFormats
     };
 

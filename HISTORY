@@ -376,3 +376,19 @@ README: build and coverage badges of this fork; the coverage job publishes the l
 stdin is read in 64 KB blocks instead of 3 read() + 1 select() per packet; live input is not delayed
 -LF fix: an item not in the filter holding an empty Repetitive (e.g. CAT062 I390 "TOD":[]) was printed;
            it is now left out. With -LF, errors inside items not in the filter are no longer reported
+
+Unreleased
+New -Q / --sql output: MySQL statements to load the decoded data into MySQL or MariaDB (SQL.md):
+           CREATE TABLE IF NOT EXISTS for every category (only the -LF fields when filtered), then the
+           INSERTs of every record, one transaction per packet. Table catNNN has rec_id (AUTO_INCREMENT),
+           the -j record header and one column per field named by its -j path (I010_SAC, I380_ADR_ADR)
+           with a MySQL type taken from its encoding, size and scale; repetitive data (Repetitive, BDS
+           registers one table each with reg_idx, Variable lists of parts, Explicit SP/RE) go to child
+           tables keyed (rec_id, [parent_rep_idx,] rep_idx) with ON DELETE CASCADE. Text fields are trimmed.
+           -Q -L prints only the schema. The other outputs are byte for byte the same.
+-LF fix: -j, -jh, -je and -jx printed invalid JSON when a repetition of a Repetitive item printed nothing
+           (a BDS register not in the filter left its comma: "{...},]"); such repetitions are now left out
+           of the list. Without -LF the output is the same.
+Tests: -Q golden outputs and schema, tests/tools/check_sql.py (every -Q row and value equals -j),
+           tests/sql/load_mysql.sh (every case loaded into MySQL 8 in CI, SQL.md example queries), -Q in
+           the robustness runs, unit tests (types, quoting, keys, BDS/Explicit/list rows)

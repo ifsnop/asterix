@@ -55,7 +55,8 @@ const char *CAsterixFormat::_FormatName[CAsterixFormat::ETotalFormats] =
                 "ASTERIX_ORADIS_PCAP",
                 "ASTERIX_OUT",
                 "ASTERIX_GPS",
-                "ASTERIX_JSONX"
+                "ASTERIX_JSONX",
+                "ASTERIX_SQL"
         };
 
 //CBaseFormatDescriptor* CAsterixFormat::m_pFormatDescriptor = NULL;
@@ -85,6 +86,7 @@ CAsterixFormat::ReadPacket(CBaseFormatDescriptor &formatDescriptor, CBaseDevice 
         case EJSONH:
         case EJSONE:
         case EJSONX:
+        case ESQL:
             //todo not supported
             return false;
         default:
@@ -120,6 +122,7 @@ CAsterixFormat::WritePacket(CBaseFormatDescriptor &formatDescriptor, CBaseDevice
         case EJSONH:
         case EJSONE:
         case EJSONX:
+        case ESQL:
         case ETxt:
         case EOut: {
             CAsterixFormatDescriptor &Descriptor((CAsterixFormatDescriptor &) formatDescriptor);
@@ -172,6 +175,7 @@ bool CAsterixFormat::ProcessPacket(CBaseFormatDescriptor &formatDescriptor, CBas
         case EJSONH:
         case EJSONE:
         case EJSONX:
+        case ESQL:
         case EOut:
             return false;
         default:
@@ -207,6 +211,7 @@ bool CAsterixFormat::HeartbeatProcessing(
         case EJSONH:
         case EJSONE:
         case EJSONX:
+        case ESQL:
         case EOut:
             return false;
         default:

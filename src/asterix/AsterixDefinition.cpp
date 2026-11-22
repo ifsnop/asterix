@@ -23,6 +23,7 @@
 
 #include "AsterixDefinition.h"
 #include <memory.h>
+#include "SqlSchema.h"
 
 AsterixDefinition::AsterixDefinition() {
     for (int i = 0; i < MAX_CATEGORIES; i++) {
@@ -72,6 +73,16 @@ std::string AsterixDefinition::printDescriptors() {
         }
     }
     return strDef;
+}
+
+std::string AsterixDefinition::printSqlSchema() {
+    SqlSchema schema;
+    for (int i = 1; i < MAX_CATEGORIES - 1; i++) {
+        if (CategoryDefined(i)) {
+            getCategory(i)->addSqlTables(schema);
+        }
+    }
+    return schema.render();
 }
 
 bool AsterixDefinition::filterOutItem(int cat, std::string item, const char *name) {
